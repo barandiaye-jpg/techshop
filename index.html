@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TechShop — Ordinateurs</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <span class="logo">🖥️</span>
+        <span class="brand__name">TechShop</span>
+      </div>
+
+      <div class="search">
+        <input id="q" type="search" placeholder="Rechercher: ultrabook, gaming, 16Go RAM..." />
+      </div>
+
+      <button class="cartbtn" id="cartBtn">
+        🛍️ Panier <span id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nav categories -->
+  <div class="nav">
+    <div class="container nav__inner">
+      <a class="nav__link nav__link--active" href="#">Ordinateurs</a>
+      <a class="nav__link" href="#">Tablettes</a>
+      <a class="nav__link" href="#">Téléphones</a>
+      <a class="nav__link" href="#">Audio</a>
+      <a class="nav__link" href="#">Promos</a>
+      <div class="nav__spacer"></div>
+      <a class="nav__link" href="#assistant">Assistant IA</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container hero__inner">
+      <div class="hero__left">
+        <h1>Trouvez l’ordinateur idéal, en toute confiance</h1>
+        <p>
+          Comparez facilement les modèles selon vos besoins (études, travail, jeux, création).
+          Prototype vitrine + module d’assistant d’achat.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#assistant">🤖 Parler à l’assistant</a>
+          <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
+        </div>
+        <div class="hero__badges">
+          <span class="badge">Livraison rapide</span>
+          <span class="badge">Prix compétitifs</span>
+          <span class="badge">Conseils personnalisés</span>
+        </div>
+      </div>
+
+
+
+
+
+
+
+  </header>
+
+  <!-- Main layout -->
+  <main class="container layout" id="catalogue">
+
+    <!-- Sidebar filters -->
+    <aside class="filters">
+      <h2>Filtres</h2>
+
+      <div class="field">
+        <label>Prix max</label>
+        <input id="maxPrice" type="range" min="500" max="2500" value="1800" step="50" />
+        <div class="muted"><span id="maxPriceOut">1800</span> $</div>
+      </div>
+
+      <div class="field">
+        <label>RAM min</label>
+        <select id="ramMin">
+          <option value="8">8 Go</option>
+          <option value="16" selected>16 Go</option>
+          <option value="32">32 Go</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>OS</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" id="osWin" checked /> Windows</label>
+          <label class="chip"><input type="checkbox" id="osMac" checked /> macOS</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Trier par</label>
+        <select id="sortBy">
+          <option value="reco" selected>Recommandé</option>
+          <option value="priceAsc">Prix (croissant)</option>
+          <option value="priceDesc">Prix (décroissant)</option>
+          <option value="rating">Note</option>
+        </select>
+      </div>
+
+      <div class="note">
+        Astuce: utilise aussi la recherche en haut ou l’assistant IA.
+      </div>
+    </aside>
+
+    <!-- Product grid -->
+    <section class="products">
+      <div class="sectionHead">
+        <h2>Ordinateurs portables</h2>
+        <p class="muted">Catalogue </p>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </section>
+  </main>
+
+  <!-- Assistant section -->
+  <section class="assistant" id="assistant">
+    <div class="container assistant__inner">
+      <div class="assistant__text">
+        <h2>Assistant d’achat </h2>
+        <p class="muted">
+          Ici tu peux.
+        </p>
+        <ul>
+          <li>Pose des questions: usage, budget, portabilité, autonomie.</li>
+          <li>Explique les compromis (prix vs performance).</li>
+          <li>Recommande 3 options.</li>
+        </ul>
+
+      
+
+        <!-- Option: intégration iframe (si streamlit tourne) -->
+        <div class="iframeWrap">
+          <div class="muted tiny">Intégration iframe (si Streamlit est lancé)</div>
+          <iframe src="http://localhost:8501/?embed=1" title="Assistant IA"></iframe>
+        </div>
+      </div>
+
+      <div class="assistant__card">
+        <h3>Pourquoi c’est “IA” ?</h3>
+        <p class="muted">
+          L’assistant utilise des règles/score (ou un LLM encadré) pour recommander un produit
+          en se basant sur des contraintes explicites.
+        </p>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi__v">3</div><div class="kpi__l">Recommandations</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__v">4</div><div class="kpi__l">Usages</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__v">≈</div><div class="kpi__l">Explicable</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart drawer -->
+  <div class="drawer" id="drawer">
+    <div class="drawer__panel">
+      <div class="drawer__head">
+        <h3>🛍️ Panier</h3>
+        <button class="iconbtn" id="closeDrawer">✕</button>
+      </div>
+      <div id="cartItems" class="drawer__items"></div>
+      <div class="drawer__foot">
+        <div>Total: <strong id="cartTotal">0 $</strong></div>
+        <button class="btn btn--ghost" id="clearCart">Vider</button>
+        <button class="btn btn--primary">Commander (démo)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  
+  
+  
+  
+  <!-- Bouton flottant chatbot -->
+<button class="chatFab" id="chatFab" title="Assistant IA">💬</button>
+
+<!-- Widget chatbot -->
+<div class="chatWidget" id="chatWidget" aria-hidden="true">
+  <div class="chatWidget__head">
+    <div><strong>Assistant IA</strong></div>
+    <button class="chatWidget__close" id="chatClose">✕</button>
+  </div>
+
+  <iframe class="chatWidget__frame"
+          src="http://localhost:8501/?embed=1"
+          title="Assistant IA">
+  </iframe>
+</div>
+
+</body>
+</html>
