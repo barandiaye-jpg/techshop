@@ -183,26 +183,34 @@
     </div>
   </div>
 
-  <script src="js/app.js"></script>
   
   
   
   
-  <!-- Bouton flottant chatbot -->
+  
+<!-- Bouton flottant chatbot -->
 <button class="chatFab" id="chatFab" title="Assistant IA">💬</button>
 
 <!-- Widget chatbot -->
 <div class="chatWidget" id="chatWidget" aria-hidden="true">
-  <div class="chatWidget__head">
+  <div class="chatWidget__header">
     <div><strong>Assistant IA</strong></div>
-    <button class="chatWidget__close" id="chatClose">✕</button>
+    <button class="chatWidget__close" id="chatClose" aria-label="Fermer">✕</button>
   </div>
 
-  <iframe class="chatWidget__frame"
-          src="http://localhost:8501/?embed=1"
-          title="Assistant IA">
-  </iframe>
+  <div class="chatWidget__body">
+    <div id="chatMessages"></div>
+  </div>
+
+  <div class="chatWidget__composer">
+    <input class="chatWidget__input" id="chatInput" type="text" placeholder="Écris ta question…" />
+    <button class="chatWidget__send" id="chatSend">Envoyer</button>
+  </div>
 </div>
+
+<!-- IMPORTANT : ton app.js doit être chargé après le HTML -->
+<script src="js/app.js" defer></script>
+
 
 </body>
 </html>
