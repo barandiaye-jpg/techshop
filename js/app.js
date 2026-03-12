@@ -331,7 +331,7 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
   let animationFrameId = null;
 
   const SILENCE_THRESHOLD = 8;      // sensibilité silence (à ajuster si besoin)
-  const SILENCE_DURATION_MS = 1500; // arrêt auto après 1,5 sec de silence
+  const SILENCE_DURATION_MS = 2000; // arrêt auto après 1,5 sec de silence
 
   function cleanupAudioMonitoring(){
     if (animationFrameId) {
@@ -492,6 +492,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
 
