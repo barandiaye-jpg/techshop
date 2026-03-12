@@ -212,10 +212,26 @@ function renderMiniMarkdown(text) {
 
   if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn) return;
 
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let isRecording = false;
+  let conversationMode = false;
+  let isProcessingVoice = false;
+
+  let streamRef = null;
+  let audioContext = null;
+  let analyser = null;
+  let sourceNode = null;
+  let silenceStartedAt = null;
+  let animationFrameId = null;
+
+  const SILENCE_THRESHOLD = 8;
+  const SILENCE_DURATION_MS = 2000;
+
   function openChat(){
     widget.classList.add("chatWidget--open");
     widget.setAttribute("aria-hidden", "false");
-    setTimeout(()=>input.focus(), 50);
+    setTimeout(() => input.focus(), 50);
   }
 
   function closeChat(){
@@ -231,117 +247,11 @@ function renderMiniMarkdown(text) {
 
   function appendMsg(role, text){
     const div = document.createElement("div");
-    div.className = `msg ${role}`; // .msg.user / .msg.bot (match CSS)
+    div.className = `msg ${role}`;
     div.textContent = text;
     messages.appendChild(div);
     scrollToBottom();
   }
-
-    async function sendVoiceMessage(audioBlob){
-    appendMsg("bot", "🎤 Transcription en cours...");
-    const typingBubble = messages.lastElementChild;
-
-    sendBtn.disabled = true;
-      isProcessingVoice = true;
-    try{
-      const formData = new FormData();
-      formData.append("audio", audioBlob, "voice.webm");
-      formData.append("k", "5");
-
-      const res = await fetch(VOICE_API_URL, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-
-      const transcript = (data && data.transcript) ? data.transcript : "";
-      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
-
-      if (transcript) {
-        const allMsgs = messages.querySelectorAll(".msg.bot");
-        if (allMsgs.length > 0 && allMsgs[allMsgs.length - 1] === typingBubble) {
-          typingBubble.remove();
-        }
-        appendMsg("user", `🎤 ${transcript}`);
-        appendMsg("bot", answer);
-        messages.lastElementChild.innerHTML = renderMiniMarkdown(answer);
-      } else {
-        typingBubble.innerHTML = renderMiniMarkdown(answer);
-      }
-
-      scrollToBottom();
-    } catch (e){
-      typingBubble.textContent = "Erreur: backend vocal inaccessible.";
-      console.error(e);
-      scrollToBottom();
-    } finally {
-      sendBtn.disabled = false;
-      input.focus();
-    }
-  }
-  
-  async function sendMessage(){
-    const text = input.value.trim();
-    if (!text) return;
-
-    appendMsg("user", text);
-    input.value = "";
-
-    // typing bubble
-    appendMsg("bot", "…");
-    const typingBubble = messages.lastElementChild;
-
-    sendBtn.disabled = true;
-
-    try{
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-
-      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
-typingBubble.innerHTML = renderMiniMarkdown(answer);
-
-      scrollToBottom();
-    } catch (e){
-      typingBubble.textContent = "Erreur: backend inaccessible. Vérifie le service Render du backend.";
-      console.error(e);
-      scrollToBottom();
-    } finally {
-  sendBtn.disabled = false;
-  input.focus();
-  isProcessingVoice = false;
-
-  if (conversationMode) {
-    setTimeout(() => {
-      if (!isRecording && !isProcessingVoice && conversationMode) {
-        startVoiceRecording();
-      }
-    }, 500);
-  }
-}
-  }
-
-    let mediaRecorder = null;
-  let audioChunks = [];
-  let isRecording = false;
-  let conversationMode = false;
-let isProcessingVoice = false;
-  let streamRef = null;
-  let audioContext = null;
-  let analyser = null;
-  let sourceNode = null;
-  let silenceStartedAt = null;
-  let animationFrameId = null;
-
-  const SILENCE_THRESHOLD = 8;      // sensibilité silence (à ajuster si besoin)
-  const SILENCE_DURATION_MS = 2000; // arrêt auto après 1,5 sec de silence
 
   function cleanupAudioMonitoring(){
     if (animationFrameId) {
@@ -426,6 +336,11 @@ let isProcessingVoice = false;
 
         isRecording = false;
 
+        // éviter d’envoyer un blob vide
+        if (!audioBlob || audioBlob.size === 0) {
+          return;
+        }
+
         await sendVoiceMessage(audioBlob);
       };
 
@@ -456,40 +371,129 @@ let isProcessingVoice = false;
       mediaRecorder.stop();
     }
   }
-  
+
+  async function sendVoiceMessage(audioBlob){
+    appendMsg("bot", "🎤 Transcription en cours...");
+    const typingBubble = messages.lastElementChild;
+
+    sendBtn.disabled = true;
+    isProcessingVoice = true;
+
+    try{
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "voice.webm");
+      formData.append("k", "5");
+
+      const res = await fetch(VOICE_API_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      const transcript = (data && data.transcript) ? data.transcript : "";
+      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
+
+      if (transcript) {
+        const allMsgs = messages.querySelectorAll(".msg.bot");
+        if (allMsgs.length > 0 && allMsgs[allMsgs.length - 1] === typingBubble) {
+          typingBubble.remove();
+        }
+
+        appendMsg("user", `🎤 ${transcript}`);
+        appendMsg("bot", answer);
+        messages.lastElementChild.innerHTML = renderMiniMarkdown(answer);
+      } else {
+        typingBubble.innerHTML = renderMiniMarkdown(answer);
+      }
+
+      scrollToBottom();
+    } catch (e){
+      typingBubble.textContent = "Erreur: backend vocal inaccessible.";
+      console.error(e);
+      scrollToBottom();
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+      isProcessingVoice = false;
+
+      if (conversationMode) {
+        setTimeout(() => {
+          if (!isRecording && !isProcessingVoice && conversationMode) {
+            startVoiceRecording();
+          }
+        }, 600);
+      }
+    }
+  }
+
+  async function sendMessage(){
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMsg("user", text);
+    input.value = "";
+
+    appendMsg("bot", "…");
+    const typingBubble = messages.lastElementChild;
+
+    sendBtn.disabled = true;
+
+    try{
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
+      typingBubble.innerHTML = renderMiniMarkdown(answer);
+
+      scrollToBottom();
+    } catch (e){
+      typingBubble.textContent = "Erreur: backend inaccessible. Vérifie le service Render du backend.";
+      console.error(e);
+      scrollToBottom();
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
- voiceTrigger?.addEventListener("click", async () => {
-  if (!conversationMode) {
-    conversationMode = true;
-    voiceTrigger.textContent = "🛑 Arrêter la conversation";
+  voiceTrigger?.addEventListener("click", async () => {
+    if (!conversationMode) {
+      conversationMode = true;
+      voiceTrigger.textContent = "🛑 Arrêter la conversation";
 
-    if (!isRecording && !isProcessingVoice) {
-      await startVoiceRecording();
+      if (!isRecording && !isProcessingVoice) {
+        await startVoiceRecording();
+      }
+    } else {
+      conversationMode = false;
+      voiceTrigger.textContent = "🤖 Parler à l’assistant";
+
+      if (isRecording) {
+        stopVoiceRecording();
+      }
+
+      appendMsg("bot", "Conversation vocale arrêtée.");
     }
-  } else {
-    conversationMode = false;
-    voiceTrigger.textContent = "🤖 Parler à l’assistant";
+  });
 
-    if (isRecording) {
-      stopVoiceRecording();
-    }
-
-    appendMsg("bot", "Conversation vocale arrêtée.");
-  }
-});
-  
   sendBtn.addEventListener("click", sendMessage);
-  input.addEventListener("keydown", (e)=>{
+  input.addEventListener("keydown", (e) => {
     if (e.key === "Enter"){
       e.preventDefault();
       sendMessage();
     }
   });
-
-  // message d'accueil (optionnel)
-  // appendMsg("bot", "Salut 👋 Dis-moi ton budget et ton usage, je te recommande un PC.");
 })();
 
 // ===============================
@@ -516,6 +520,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
 
