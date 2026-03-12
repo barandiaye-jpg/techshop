@@ -40,24 +40,26 @@
   </div>
 
   <!-- Hero -->
-  <header class="hero">
-    <div class="container hero__inner">
-      <div class="hero__left">
-        <h1>Trouvez l’ordinateur idéal, en toute confiance</h1>
-        <p>
-          Comparez facilement les modèles selon vos besoins (études, travail, jeux, création).
-          Prototype vitrine + module d’assistant d’achat.
-        </p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#assistant">🤖 Parler à l’assistant</a>
-          <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
-        </div>
-        <div class="hero__badges">
-          <span class="badge">Livraison rapide</span>
-          <span class="badge">Prix compétitifs</span>
-          <span class="badge">Conseils personnalisés</span>
-        </div>
+<header class="hero">
+  <div class="container hero__inner">
+    <div class="hero__left">
+      <h1>Trouvez l’ordinateur idéal, en toute confiance</h1>
+      <p>
+        Comparez facilement les modèles selon vos besoins (études, travail, jeux, création).
+        Prototype vitrine + module d’assistant d’achat.
+      </p>
+      <div class="hero__actions">
+        <button id="voiceAssistantBtn" class="btn btn--primary" type="button">🤖 Parler à l’assistant</button>
+        <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
       </div>
+      <div class="hero__badges">
+        <span class="badge">Livraison rapide</span>
+        <span class="badge">Prix compétitifs</span>
+        <span class="badge">Conseils personnalisés</span>
+      </div>
+    </div>
+  </div>
+</header>
 
 
 
@@ -141,9 +143,8 @@
 
         <!-- Option: intégration iframe (si streamlit tourne) -->
         <div class="iframeWrap">
-          <div class="muted tiny">Intégration iframe (si Streamlit est lancé)</div>
-          <iframe src="http://localhost:8501/?embed=1" title="Assistant IA"></iframe>
-        </div>
+           <div class="muted tiny">Utilisez le bouton flottant 💬 ou le bouton “Parler à l’assistant”.</div>
+           </div>
       </div>
 
       <div class="assistant__card">
@@ -214,3 +215,4 @@
 
 </body>
 </html>
+
