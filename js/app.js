@@ -323,14 +323,84 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
   let audioChunks = [];
   let isRecording = false;
 
+  let streamRef = null;
+  let audioContext = null;
+  let analyser = null;
+  let sourceNode = null;
+  let silenceStartedAt = null;
+  let animationFrameId = null;
+
+  const SILENCE_THRESHOLD = 8;      // sensibilité silence (à ajuster si besoin)
+  const SILENCE_DURATION_MS = 1500; // arrêt auto après 1,5 sec de silence
+
+  function cleanupAudioMonitoring(){
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+
+    if (sourceNode) {
+      try { sourceNode.disconnect(); } catch(e) {}
+      sourceNode = null;
+    }
+
+    if (analyser) {
+      try { analyser.disconnect(); } catch(e) {}
+      analyser = null;
+    }
+
+    if (audioContext) {
+      try { audioContext.close(); } catch(e) {}
+      audioContext = null;
+    }
+
+    silenceStartedAt = null;
+  }
+
+  function stopStreamTracks(){
+    if (streamRef) {
+      streamRef.getTracks().forEach(track => track.stop());
+      streamRef = null;
+    }
+  }
+
+  function monitorSilence(){
+    if (!isRecording || !analyser) return;
+
+    const data = new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(data);
+
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+      sum += Math.abs(data[i] - 128);
+    }
+    const averageVolume = sum / data.length;
+
+    if (averageVolume < SILENCE_THRESHOLD) {
+      if (!silenceStartedAt) {
+        silenceStartedAt = Date.now();
+      } else {
+        const silenceTime = Date.now() - silenceStartedAt;
+        if (silenceTime >= SILENCE_DURATION_MS) {
+          stopVoiceRecording();
+          return;
+        }
+      }
+    } else {
+      silenceStartedAt = null;
+    }
+
+    animationFrameId = requestAnimationFrame(monitorSilence);
+  }
+
   async function startVoiceRecording(){
     try{
       openChat();
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder = new MediaRecorder(streamRef);
 
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -341,19 +411,29 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
 
-        // stop micro tracks
-        stream.getTracks().forEach(track => track.stop());
+        cleanupAudioMonitoring();
+        stopStreamTracks();
 
         isRecording = false;
 
         await sendVoiceMessage(audioBlob);
       };
 
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+
+      sourceNode = audioContext.createMediaStreamSource(streamRef);
+      sourceNode.connect(analyser);
+
       mediaRecorder.start();
       isRecording = true;
+      silenceStartedAt = null;
 
-      appendMsg("bot", "🎙️ J’écoute... Cliquez encore pour arrêter.");
+      appendMsg("bot", "🎙️ J’écoute... Je m’arrêterai automatiquement quand vous aurez fini.");
       scrollToBottom();
+
+      monitorSilence();
 
     } catch (err){
       console.error(err);
@@ -373,8 +453,6 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
   voiceTrigger?.addEventListener("click", async () => {
   if (!isRecording) {
     await startVoiceRecording();
-  } else {
-    stopVoiceRecording();
   }
 });
   
@@ -414,5 +492,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
