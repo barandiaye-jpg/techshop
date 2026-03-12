@@ -242,7 +242,7 @@ function renderMiniMarkdown(text) {
     const typingBubble = messages.lastElementChild;
 
     sendBtn.disabled = true;
-
+      isProcessingVoice = true;
     try{
       const formData = new FormData();
       formData.append("audio", audioBlob, "voice.webm");
@@ -314,15 +314,25 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
       console.error(e);
       scrollToBottom();
     } finally {
-      sendBtn.disabled = false;
-      input.focus();
-    }
+  sendBtn.disabled = false;
+  input.focus();
+  isProcessingVoice = false;
+
+  if (conversationMode) {
+    setTimeout(() => {
+      if (!isRecording && !isProcessingVoice && conversationMode) {
+        startVoiceRecording();
+      }
+    }, 500);
+  }
+}
   }
 
     let mediaRecorder = null;
   let audioChunks = [];
   let isRecording = false;
-
+  let conversationMode = false;
+let isProcessingVoice = false;
   let streamRef = null;
   let audioContext = null;
   let analyser = null;
@@ -450,9 +460,23 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
-  voiceTrigger?.addEventListener("click", async () => {
-  if (!isRecording) {
-    await startVoiceRecording();
+ voiceTrigger?.addEventListener("click", async () => {
+  if (!conversationMode) {
+    conversationMode = true;
+    voiceTrigger.textContent = "🛑 Arrêter la conversation";
+
+    if (!isRecording && !isProcessingVoice) {
+      await startVoiceRecording();
+    }
+  } else {
+    conversationMode = false;
+    voiceTrigger.textContent = "🤖 Parler à l’assistant";
+
+    if (isRecording) {
+      stopVoiceRecording();
+    }
+
+    appendMsg("bot", "Conversation vocale arrêtée.");
   }
 });
   
@@ -492,6 +516,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
 
