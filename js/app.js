@@ -208,6 +208,7 @@ function renderMiniMarkdown(text) {
   const messages = $("chatMessages");
   const input = $("chatInput");
   const sendBtn = $("chatSend");
+  const voiceTrigger = $("voiceAssistantBtn");
 
   if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn) return;
 
@@ -309,7 +310,7 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
 
       scrollToBottom();
     } catch (e){
-      typingBubble.textContent = "Erreur: backend inaccessible. Vérifie FastAPI + CORS sur http://127.0.0.1:8000.";
+      typingBubble.textContent = "Erreur: backend inaccessible. Vérifie le service Render du backend.";
       console.error(e);
       scrollToBottom();
     } finally {
@@ -369,6 +370,14 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
+  voiceTrigger?.addEventListener("click", async () => {
+  if (!isRecording) {
+    await startVoiceRecording();
+  } else {
+    stopVoiceRecording();
+  }
+});
+  
   sendBtn.addEventListener("click", sendMessage);
   input.addEventListener("keydown", (e)=>{
     if (e.key === "Enter"){
@@ -405,4 +414,5 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
