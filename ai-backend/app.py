@@ -1,8 +1,9 @@
 import os
+import json
 from typing import List, Optional, Dict, Any
 from dotenv import load_dotenv
 
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -15,10 +16,14 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = FastAPI(title="TechStore AI Backend (LLM+RAG)")
 
-# ✅ CORS: autorise Bolt + Streamlit à appeler l’API
+# ✅ Garde un seul bloc CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # en prod, tu mets tes vrais domaines
+    allow_origins=[
+        "https://techshop-rmo8.onrender.com",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,10 +46,15 @@ Rules:
 
 class ChatRequest(BaseModel):
     message: str
-    history: Optional[List[Dict[str, str]]] = None  # [{"role":"user","content":"..."}, ...]
+    history: Optional[List[Dict[str, str]]] = None
     k: int = 5
 
 class ChatResponse(BaseModel):
+    answer: str
+    sources: List[Dict[str, Any]]
+
+class VoiceChatResponse(BaseModel):
+    transcript: str
     answer: str
     sources: List[Dict[str, Any]]
 
@@ -56,15 +66,33 @@ def build_context(hits):
         )
     return "\n\n---\n\n".join(blocks)
 
+def transcribe_audio_file(upload: UploadFile) -> str:
+    try:
+        upload.file.seek(0)
+
+        transcription = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=(upload.filename or "audio.webm", upload.file, upload.content_type or "audio/webm")
+        )
+
+        text = transcription.text.strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="Transcription vide.")
+
+        return text
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur transcription audio: {str(e)}")
+
 @app.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
     hits = rag.search(req.message, k=req.k)
     context = build_context(hits)
 
-    # On garde un mini-historique si fourni
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if req.history:
-        # limite simple pour éviter un prompt trop long
         messages.extend(req.history[-8:])
 
     messages.append({
@@ -93,26 +121,68 @@ def chat(req: ChatRequest):
 
     return ChatResponse(answer=answer, sources=sources)
 
+@app.post("/voice-chat", response_model=VoiceChatResponse)
+def voice_chat(
+    audio: UploadFile = File(...),
+    history: Optional[str] = Form(None),
+    k: int = Form(5)
+):
+    # 1) transcription audio -> texte
+    transcript = transcribe_audio_file(audio)
+
+    # 2) historique optionnel
+    parsed_history = []
+    if history:
+        try:
+            parsed_history = json.loads(history)
+            if not isinstance(parsed_history, list):
+                parsed_history = []
+        except Exception:
+            parsed_history = []
+
+    # 3) recherche RAG
+    hits = rag.search(transcript, k=k)
+    context = build_context(hits)
+
+    # 4) construction du prompt
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    if parsed_history:
+        messages.extend(parsed_history[-8:])
+
+    messages.append({
+        "role": "user",
+        "content": f"User question:\n{transcript}\n\nContext:\n{context}"
+    })
+
+    # 5) appel LLM
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=messages,
+        temperature=0.2
+    )
+
+    answer = completion.choices[0].message.content
+
+    # 6) sources
+    sources = []
+    for doc, score in hits:
+        meta = doc.meta
+        sources.append({
+            "id": doc.doc_id,
+            "title": doc.title,
+            "score": round(score, 4),
+            "price": meta.get("price"),
+            "category": meta.get("category"),
+        })
+
+    return VoiceChatResponse(
+        transcript=transcript,
+        answer=answer,
+        sources=sources
+    )
+
 @app.get("/health")
 def health():
     return {"status": "ok", "docs_indexed": len(docs)}
 
-
-
-
-
-
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://techshop-rmo8.onrender.com",  # ton site statique
-        "http://localhost:5500",               # optionnel (tests locaux)
-        "http://127.0.0.1:5500"                # optionnel (tests locaux)
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
