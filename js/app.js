@@ -199,7 +199,8 @@ function renderMiniMarkdown(text) {
 // CHATBOT (widget)
 // ===============================
 (function initChatbot(){
-  const API_URL = "https://techshop-api-gt69.onrender.com/chat";
+  const API_URL = "https://techshop-ai-backend.onrender.com/chat";
+  const VOICE_API_URL = "https://techshop-ai-backend.onrender.com/voice-chat";
 
   const fab = $("chatFab");
   const widget = $("chatWidget");
@@ -235,6 +236,51 @@ function renderMiniMarkdown(text) {
     scrollToBottom();
   }
 
+    async function sendVoiceMessage(audioBlob){
+    appendMsg("bot", "🎤 Transcription en cours...");
+    const typingBubble = messages.lastElementChild;
+
+    sendBtn.disabled = true;
+
+    try{
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "voice.webm");
+      formData.append("k", "5");
+
+      const res = await fetch(VOICE_API_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      const transcript = (data && data.transcript) ? data.transcript : "";
+      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
+
+      if (transcript) {
+        const allMsgs = messages.querySelectorAll(".msg.bot");
+        if (allMsgs.length > 0 && allMsgs[allMsgs.length - 1] === typingBubble) {
+          typingBubble.remove();
+        }
+        appendMsg("user", `🎤 ${transcript}`);
+        appendMsg("bot", answer);
+        messages.lastElementChild.innerHTML = renderMiniMarkdown(answer);
+      } else {
+        typingBubble.innerHTML = renderMiniMarkdown(answer);
+      }
+
+      scrollToBottom();
+    } catch (e){
+      typingBubble.textContent = "Erreur: backend vocal inaccessible.";
+      console.error(e);
+      scrollToBottom();
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+  
   async function sendMessage(){
     const text = input.value.trim();
     if (!text) return;
@@ -272,6 +318,54 @@ typingBubble.innerHTML = renderMiniMarkdown(answer);
     }
   }
 
+    let mediaRecorder = null;
+  let audioChunks = [];
+  let isRecording = false;
+
+  async function startVoiceRecording(){
+    try{
+      openChat();
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      audioChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+
+        // stop micro tracks
+        stream.getTracks().forEach(track => track.stop());
+
+        isRecording = false;
+
+        await sendVoiceMessage(audioBlob);
+      };
+
+      mediaRecorder.start();
+      isRecording = true;
+
+      appendMsg("bot", "🎙️ J’écoute... Cliquez encore pour arrêter.");
+      scrollToBottom();
+
+    } catch (err){
+      console.error(err);
+      appendMsg("bot", "Impossible d’accéder au micro.");
+    }
+  }
+
+  function stopVoiceRecording(){
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+    }
+  }
+  
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
@@ -311,3 +405,4 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
