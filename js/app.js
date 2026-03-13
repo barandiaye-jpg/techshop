@@ -226,9 +226,9 @@ function renderMiniMarkdown(text){
   const messages = $("chatMessages");
   const input = $("chatInput");
   const sendBtn = $("chatSend");
-  const voiceTrigger = $("voiceAssistantBtn");
+  const chatMic = $("chatMic");
 
-  if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn) return;
+  if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn || !chatMic) return;
 
   let mediaRecorder = null;
   let audioChunks = [];
@@ -250,6 +250,16 @@ function renderMiniMarkdown(text){
   const SILENCE_DURATION_MS = 3200;
   const MIN_RECORDING_MS = 1800;
   const MAX_WAIT_FOR_SPEECH_MS = 6000;
+
+  function updateMicButton(){
+    if (conversationMode) {
+      chatMic.textContent = "⏹";
+      chatMic.title = "Arrêter la conversation";
+    } else {
+      chatMic.textContent = "🎤";
+      chatMic.title = "Parler au chatbot";
+    }
+  }
 
   function openChat(){
     widget.classList.add("chatWidget--open");
@@ -438,6 +448,8 @@ function renderMiniMarkdown(text){
     } catch (err){
       console.error(err);
       appendMsg("bot", "Impossible d’accéder au micro.");
+      conversationMode = false;
+      updateMicButton();
     }
   }
 
@@ -521,6 +533,8 @@ function renderMiniMarkdown(text){
             startVoiceRecording();
           }
         }, 600);
+      } else {
+        updateMicButton();
       }
     }
   }
@@ -564,17 +578,19 @@ function renderMiniMarkdown(text){
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
-  voiceTrigger?.addEventListener("click", async () => {
+  chatMic.addEventListener("click", async () => {
+    openChat();
+
     if (!conversationMode) {
       conversationMode = true;
-      voiceTrigger.textContent = "🛑 Arrêter la conversation";
+      updateMicButton();
 
       if (!isRecording && !isProcessingVoice) {
         await startVoiceRecording();
       }
     } else {
       conversationMode = false;
-      voiceTrigger.textContent = "🤖 Parler à l’assistant";
+      updateMicButton();
 
       if (isRecording) {
         stopVoiceRecording();
@@ -591,8 +607,10 @@ function renderMiniMarkdown(text){
       sendMessage();
     }
   });
-})();
 
+  updateMicButton();
+})();
+ 
 // ===============================
 // DOM Ready
 // ===============================
@@ -617,3 +635,28 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+// ===============================
+// DOM Ready
+// ===============================
+window.addEventListener("DOMContentLoaded", ()=>{
+  $("q")?.addEventListener("input", (e)=>{ state.q = e.target.value; render(); });
+  $("maxPrice")?.addEventListener("input", (e)=>{
+    state.maxPrice = parseInt(e.target.value,10);
+    const out = $("maxPriceOut");
+    if (out) out.textContent = state.maxPrice;
+    render();
+  });
+  $("ramMin")?.addEventListener("change", (e)=>{ state.ramMin=parseInt(e.target.value,10); render(); });
+  $("osWin")?.addEventListener("change", (e)=>{ state.osWin=e.target.checked; render(); });
+  $("osMac")?.addEventListener("change", (e)=>{ state.osMac=e.target.checked; render(); });
+  $("sortBy")?.addEventListener("change", (e)=>{ state.sortBy=e.target.value; render(); });
+
+  $("cartBtn")?.addEventListener("click", openDrawer);
+  $("closeDrawer")?.addEventListener("click", closeDrawer);
+  $("drawer")?.addEventListener("click", (e)=>{ if (e.target.id==="drawer") closeDrawer(); });
+  $("clearCart")?.addEventListener("click", ()=>{ state.cart={}; syncCartUI(); });
+
+  render();
+  syncCartUI();
+});
+
