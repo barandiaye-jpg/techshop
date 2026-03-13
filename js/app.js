@@ -251,15 +251,26 @@ function renderMiniMarkdown(text){
   const MIN_RECORDING_MS = 1800;
   const MAX_WAIT_FOR_SPEECH_MS = 6000;
 
-  function updateMicButton(){
-    if (conversationMode) {
-      chatMic.textContent = "⏹";
-      chatMic.title = "Arrêter la conversation";
-    } else {
-      chatMic.textContent = "🎤";
-      chatMic.title = "Parler au chatbot";
-    }
+function updateMicButton(){
+  if (conversationMode) {
+    chatMic.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+      </svg>
+    `;
+    chatMic.title = "Arrêter la conversation";
+  } else {
+    chatMic.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 14C13.657 14 15 12.657 15 11V5C15 3.343 13.657 2 12 2C10.343 2 9 3.343 9 5V11C9 12.657 10.343 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 11C19 15 16 18 12 18C8 18 5 15 5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M9 22H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    `;
+    chatMic.title = "Parler au chatbot";
   }
+}
 
   function openChat(){
     widget.classList.add("chatWidget--open");
@@ -659,4 +670,5 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
