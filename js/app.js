@@ -212,7 +212,7 @@ function renderMiniMarkdown(text) {
 
   if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn) return;
 
-  let mediaRecorder = null;
+    let mediaRecorder = null;
   let audioChunks = [];
   let isRecording = false;
   let conversationMode = false;
@@ -224,34 +224,14 @@ function renderMiniMarkdown(text) {
   let sourceNode = null;
   let silenceStartedAt = null;
   let animationFrameId = null;
+  let speechStarted = false;
+  let recordingStartedAt = null;
 
-  const SILENCE_THRESHOLD = 12;
-  const SILENCE_DURATION_MS = 2500;
-
-  function openChat(){
-    widget.classList.add("chatWidget--open");
-    widget.setAttribute("aria-hidden", "false");
-    setTimeout(() => input.focus(), 50);
-  }
-
-  function closeChat(){
-    widget.classList.remove("chatWidget--open");
-    widget.setAttribute("aria-hidden", "true");
-  }
-
-  function scrollToBottom(){
-    const body = widget.querySelector(".chatWidget__body");
-    if (!body) return;
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function appendMsg(role, text){
-    const div = document.createElement("div");
-    div.className = `msg ${role}`;
-    div.textContent = text;
-    messages.appendChild(div);
-    scrollToBottom();
-  }
+  const SPEECH_THRESHOLD = 18;       // niveau minimum pour considérer qu'on parle
+  const SILENCE_THRESHOLD = 10;      // seuil sous lequel on considère qu'il y a silence
+  const SILENCE_DURATION_MS = 3200;  // silence requis après la parole
+  const MIN_RECORDING_MS = 1800;     // évite de couper trop tôt
+  const MAX_WAIT_FOR_SPEECH_MS = 6000; // si aucune parole détectée, on abandonne
 
   function cleanupAudioMonitoring(){
     if (animationFrameId) {
@@ -275,6 +255,8 @@ function renderMiniMarkdown(text) {
     }
 
     silenceStartedAt = null;
+    speechStarted = false;
+    recordingStartedAt = null;
   }
 
   function stopStreamTracks(){
@@ -284,8 +266,8 @@ function renderMiniMarkdown(text) {
     }
   }
 
-  function monitorSilence(){
-    if (!isRecording || !analyser) return;
+  function getAverageVolume(){
+    if (!analyser) return 0;
 
     const data = new Uint8Array(analyser.fftSize);
     analyser.getByteTimeDomainData(data);
@@ -294,15 +276,46 @@ function renderMiniMarkdown(text) {
     for (let i = 0; i < data.length; i++) {
       sum += Math.abs(data[i] - 128);
     }
-    const averageVolume = sum / data.length;
+    return sum / data.length;
+  }
+
+  function monitorSilence(){
+    if (!isRecording || !analyser) return;
+
+    const averageVolume = getAverageVolume();
+    const now = Date.now();
+    const recordingAge = recordingStartedAt ? (now - recordingStartedAt) : 0;
+
+    // 1) Tant qu'on n'a pas détecté de vraie parole, on attend
+    if (!speechStarted) {
+      if (averageVolume >= SPEECH_THRESHOLD) {
+        speechStarted = true;
+        silenceStartedAt = null;
+      } else {
+        // si personne ne parle pendant trop longtemps, on annule proprement
+        if (recordingAge >= MAX_WAIT_FOR_SPEECH_MS) {
+          stopVoiceRecording(true); // true = annulation silencieuse
+          return;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(monitorSilence);
+      return;
+    }
+
+    // 2) Une fois que la parole a commencé, on attend un vrai silence de fin
+    if (recordingAge < MIN_RECORDING_MS) {
+      animationFrameId = requestAnimationFrame(monitorSilence);
+      return;
+    }
 
     if (averageVolume < SILENCE_THRESHOLD) {
       if (!silenceStartedAt) {
-        silenceStartedAt = Date.now();
+        silenceStartedAt = now;
       } else {
-        const silenceTime = Date.now() - silenceStartedAt;
+        const silenceTime = now - silenceStartedAt;
         if (silenceTime >= SILENCE_DURATION_MS) {
-          stopVoiceRecording();
+          stopVoiceRecording(false); // false = on envoie pour transcription
           return;
         }
       }
@@ -320,6 +333,10 @@ function renderMiniMarkdown(text) {
       streamRef = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       audioChunks = [];
+      speechStarted = false;
+      silenceStartedAt = null;
+      recordingStartedAt = Date.now();
+
       mediaRecorder = new MediaRecorder(streamRef);
 
       mediaRecorder.ondataavailable = (event) => {
@@ -336,11 +353,30 @@ function renderMiniMarkdown(text) {
 
         isRecording = false;
 
-        // éviter d’envoyer un blob vide
-      if (!audioBlob || audioBlob.size < 12000) {
-  appendMsg("bot", "Je n’ai pas bien entendu. Réessaie en parlant un peu plus clairement.");
-  return;
-}
+        // si aucune vraie parole n'a été détectée, on ne transcrit pas
+        if (!speechStarted) {
+          if (conversationMode) {
+            setTimeout(() => {
+              if (!isRecording && !isProcessingVoice && conversationMode) {
+                startVoiceRecording();
+              }
+            }, 500);
+          }
+          return;
+        }
+
+        // évite d’envoyer un blob trop petit
+        if (!audioBlob || audioBlob.size < 15000) {
+          appendMsg("bot", "Je n’ai pas bien entendu. Peux-tu répéter ?");
+          if (conversationMode) {
+            setTimeout(() => {
+              if (!isRecording && !isProcessingVoice && conversationMode) {
+                startVoiceRecording();
+              }
+            }, 700);
+          }
+          return;
+        }
 
         await sendVoiceMessage(audioBlob);
       };
@@ -354,9 +390,8 @@ function renderMiniMarkdown(text) {
 
       mediaRecorder.start();
       isRecording = true;
-      silenceStartedAt = null;
 
-      appendMsg("bot", "🎙️ J’écoute... Je m’arrêterai automatiquement quand vous aurez fini.");
+      appendMsg("bot", "🎙️ J’écoute... Parlez normalement, je couperai quand vous aurez vraiment fini.");
       scrollToBottom();
 
       monitorSilence();
@@ -367,10 +402,15 @@ function renderMiniMarkdown(text) {
     }
   }
 
-  function stopVoiceRecording(){
-    if (mediaRecorder && isRecording) {
-      mediaRecorder.stop();
+  function stopVoiceRecording(cancelOnly = false){
+    if (!mediaRecorder || !isRecording) return;
+
+    if (cancelOnly) {
+      audioChunks = [];
+      speechStarted = false;
     }
+
+    mediaRecorder.stop();
   }
 
   async function sendVoiceMessage(audioBlob){
@@ -551,6 +591,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
 
