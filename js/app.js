@@ -225,8 +225,8 @@ function renderMiniMarkdown(text) {
   let silenceStartedAt = null;
   let animationFrameId = null;
 
-  const SILENCE_THRESHOLD = 8;
-  const SILENCE_DURATION_MS = 2000;
+  const SILENCE_THRESHOLD = 12;
+  const SILENCE_DURATION_MS = 2500;
 
   function openChat(){
     widget.classList.add("chatWidget--open");
@@ -337,9 +337,10 @@ function renderMiniMarkdown(text) {
         isRecording = false;
 
         // éviter d’envoyer un blob vide
-        if (!audioBlob || audioBlob.size === 0) {
-          return;
-        }
+      if (!audioBlob || audioBlob.size < 12000) {
+  appendMsg("bot", "Je n’ai pas bien entendu. Réessaie en parlant un peu plus clairement.");
+  return;
+}
 
         await sendVoiceMessage(audioBlob);
       };
@@ -394,6 +395,36 @@ function renderMiniMarkdown(text) {
 
       const transcript = (data && data.transcript) ? data.transcript : "";
       const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
+      const cleanedTranscript = transcript.trim().toLowerCase();
+
+const ignoredTranscripts = [
+  "thank you",
+  "thanks",
+  "ok",
+  "okay",
+  "oui",
+  "hum",
+  "hmm"
+];
+
+if (
+  !cleanedTranscript ||
+  cleanedTranscript.length < 3 ||
+  ignoredTranscripts.includes(cleanedTranscript)
+) {
+  if (typingBubble) {
+    typingBubble.textContent = "Je n’ai pas bien compris. Peux-tu répéter ?";
+  }
+
+  if (conversationMode) {
+    setTimeout(() => {
+      if (!isRecording && !isProcessingVoice && conversationMode) {
+        startVoiceRecording();
+      }
+    }, 600);
+  }
+  return;
+}
 
       if (transcript) {
         const allMsgs = messages.querySelectorAll(".msg.bot");
@@ -520,6 +551,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
 
