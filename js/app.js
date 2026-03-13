@@ -1,7 +1,9 @@
 // ===============================
-// TechShop - app.js (PROPRE)
+// TechShop - app.js (COMPLET)
 // - Catalogue + Panier
-// - Chat widget (professionnel)
+// - Chat widget texte
+// - Chat vocal avec Whisper backend
+// - Conversation continue
 // ===============================
 
 const PRODUCTS = [
@@ -21,7 +23,7 @@ const state = {
   osWin: true,
   osMac: true,
   sortBy: "reco",
-  cart: {}, // id -> qty
+  cart: {},
 };
 
 function money(x){
@@ -37,7 +39,7 @@ function filteredProducts(){
     if (!state.osMac && p.os === "macOS") return false;
 
     if (q){
-      const hay = (p.name+" "+p.brand+" "+p.cpu+" "+p.gpu+" "+p.os+" "+p.tags.join(" ")).toLowerCase();
+      const hay = (p.name + " " + p.brand + " " + p.cpu + " " + p.gpu + " " + p.os + " " + p.tags.join(" ")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -58,10 +60,17 @@ function scoreReco(p){
 function sortProducts(arr){
   const a = [...arr];
   switch(state.sortBy){
-    case "priceAsc":  a.sort((x,y)=>x.price-y.price); break;
-    case "priceDesc": a.sort((x,y)=>y.price-x.price); break;
-    case "rating":    a.sort((x,y)=>y.rating-x.rating); break;
-    default:          a.sort((x,y)=>scoreReco(y)-scoreReco(x));
+    case "priceAsc":
+      a.sort((x,y) => x.price - y.price);
+      break;
+    case "priceDesc":
+      a.sort((x,y) => y.price - x.price);
+      break;
+    case "rating":
+      a.sort((x,y) => y.rating - x.rating);
+      break;
+    default:
+      a.sort((x,y) => scoreReco(y) - scoreReco(x));
   }
   return a;
 }
@@ -96,8 +105,9 @@ function render(){
 }
 
 function openDetails(id){
-  const p = PRODUCTS.find(x=>x.id===id);
+  const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
+
   alert(
 `📌 ${p.name}
 
@@ -118,12 +128,12 @@ function addToCart(id){
 }
 
 function cartCount(){
-  return Object.values(state.cart).reduce((a,b)=>a+b, 0);
+  return Object.values(state.cart).reduce((a,b) => a + b, 0);
 }
 
 function cartTotal(){
-  return Object.entries(state.cart).reduce((sum,[id,qty])=>{
-    const p = PRODUCTS.find(x=>x.id===id);
+  return Object.entries(state.cart).reduce((sum,[id,qty]) => {
+    const p = PRODUCTS.find(x => x.id === id);
     if (!p) return sum;
     return sum + p.price * qty;
   }, 0);
@@ -138,9 +148,10 @@ function syncCartUI(){
   if (totalEl) totalEl.textContent = money(cartTotal());
   if (!wrap) return;
 
-  const rows = Object.entries(state.cart).map(([id,qty])=>{
-    const p = PRODUCTS.find(x=>x.id===id);
+  const rows = Object.entries(state.cart).map(([id,qty]) => {
+    const p = PRODUCTS.find(x => x.id === id);
     if (!p) return "";
+
     return `
       <div style="display:flex;justify-content:space-between;gap:10px;border:1px solid #eef2f7;border-radius:14px;padding:10px">
         <div>
@@ -159,19 +170,33 @@ function syncCartUI(){
   wrap.innerHTML = rows.length ? rows.join("") : `<div class="muted">Panier vide.</div>`;
 }
 
-function incQty(id){ state.cart[id]=(state.cart[id]||0)+1; syncCartUI(); }
+function incQty(id){
+  state.cart[id] = (state.cart[id] || 0) + 1;
+  syncCartUI();
+}
+
 function decQty(id){
   if (!state.cart[id]) return;
   state.cart[id] -= 1;
   if (state.cart[id] <= 0) delete state.cart[id];
   syncCartUI();
 }
-function removeItem(id){ delete state.cart[id]; syncCartUI(); }
 
-function openDrawer(){ $("drawer")?.classList.add("drawer--open"); syncCartUI(); }
-function closeDrawer(){ $("drawer")?.classList.remove("drawer--open"); }
+function removeItem(id){
+  delete state.cart[id];
+  syncCartUI();
+}
 
-function escapeHTML(str) {
+function openDrawer(){
+  $("drawer")?.classList.add("drawer--open");
+  syncCartUI();
+}
+
+function closeDrawer(){
+  $("drawer")?.classList.remove("drawer--open");
+}
+
+function escapeHTML(str){
   return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -180,20 +205,13 @@ function escapeHTML(str) {
     .replace(/'/g, "&#039;");
 }
 
-// Petit "markdown" minimal : **gras**, *italique*, retours ligne
-function renderMiniMarkdown(text) {
+function renderMiniMarkdown(text){
   let s = escapeHTML(text);
-
-  // **bold**
   s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  // *italic*
   s = s.replace(/\*(.+?)\*/g, "<em>$1</em>");
-  // sauts de ligne
   s = s.replace(/\n/g, "<br>");
-
   return s;
 }
-
 
 // ===============================
 // CHATBOT (widget)
@@ -212,7 +230,7 @@ function renderMiniMarkdown(text) {
 
   if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn) return;
 
-    let mediaRecorder = null;
+  let mediaRecorder = null;
   let audioChunks = [];
   let isRecording = false;
   let conversationMode = false;
@@ -227,11 +245,36 @@ function renderMiniMarkdown(text) {
   let speechStarted = false;
   let recordingStartedAt = null;
 
-  const SPEECH_THRESHOLD = 18;       // niveau minimum pour considérer qu'on parle
-  const SILENCE_THRESHOLD = 10;      // seuil sous lequel on considère qu'il y a silence
-  const SILENCE_DURATION_MS = 3200;  // silence requis après la parole
-  const MIN_RECORDING_MS = 1800;     // évite de couper trop tôt
-  const MAX_WAIT_FOR_SPEECH_MS = 6000; // si aucune parole détectée, on abandonne
+  const SPEECH_THRESHOLD = 18;
+  const SILENCE_THRESHOLD = 10;
+  const SILENCE_DURATION_MS = 3200;
+  const MIN_RECORDING_MS = 1800;
+  const MAX_WAIT_FOR_SPEECH_MS = 6000;
+
+  function openChat(){
+    widget.classList.add("chatWidget--open");
+    widget.setAttribute("aria-hidden", "false");
+    setTimeout(() => input.focus(), 50);
+  }
+
+  function closeChat(){
+    widget.classList.remove("chatWidget--open");
+    widget.setAttribute("aria-hidden", "true");
+  }
+
+  function scrollToBottom(){
+    const body = widget.querySelector(".chatWidget__body");
+    if (!body) return;
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function appendMsg(role, text){
+    const div = document.createElement("div");
+    div.className = `msg ${role}`;
+    div.textContent = text;
+    messages.appendChild(div);
+    scrollToBottom();
+  }
 
   function cleanupAudioMonitoring(){
     if (animationFrameId) {
@@ -286,15 +329,13 @@ function renderMiniMarkdown(text) {
     const now = Date.now();
     const recordingAge = recordingStartedAt ? (now - recordingStartedAt) : 0;
 
-    // 1) Tant qu'on n'a pas détecté de vraie parole, on attend
     if (!speechStarted) {
       if (averageVolume >= SPEECH_THRESHOLD) {
         speechStarted = true;
         silenceStartedAt = null;
       } else {
-        // si personne ne parle pendant trop longtemps, on annule proprement
         if (recordingAge >= MAX_WAIT_FOR_SPEECH_MS) {
-          stopVoiceRecording(true); // true = annulation silencieuse
+          stopVoiceRecording(true);
           return;
         }
       }
@@ -303,7 +344,6 @@ function renderMiniMarkdown(text) {
       return;
     }
 
-    // 2) Une fois que la parole a commencé, on attend un vrai silence de fin
     if (recordingAge < MIN_RECORDING_MS) {
       animationFrameId = requestAnimationFrame(monitorSilence);
       return;
@@ -315,7 +355,7 @@ function renderMiniMarkdown(text) {
       } else {
         const silenceTime = now - silenceStartedAt;
         if (silenceTime >= SILENCE_DURATION_MS) {
-          stopVoiceRecording(false); // false = on envoie pour transcription
+          stopVoiceRecording(false);
           return;
         }
       }
@@ -346,6 +386,7 @@ function renderMiniMarkdown(text) {
       };
 
       mediaRecorder.onstop = async () => {
+        const hadSpeech = speechStarted;
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
 
         cleanupAudioMonitoring();
@@ -353,8 +394,7 @@ function renderMiniMarkdown(text) {
 
         isRecording = false;
 
-        // si aucune vraie parole n'a été détectée, on ne transcrit pas
-        if (!speechStarted) {
+        if (!hadSpeech) {
           if (conversationMode) {
             setTimeout(() => {
               if (!isRecording && !isProcessingVoice && conversationMode) {
@@ -365,7 +405,6 @@ function renderMiniMarkdown(text) {
           return;
         }
 
-        // évite d’envoyer un blob trop petit
         if (!audioBlob || audioBlob.size < 15000) {
           appendMsg("bot", "Je n’ai pas bien entendu. Peux-tu répéter ?");
           if (conversationMode) {
@@ -437,40 +476,27 @@ function renderMiniMarkdown(text) {
       const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
       const cleanedTranscript = transcript.trim().toLowerCase();
 
-const ignoredTranscripts = [
-  "thank you",
-  "thanks",
-  "ok",
-  "okay",
-  "oui",
-  "hum",
-  "hmm"
-];
+      const ignoredTranscripts = [
+        "thank you",
+        "thanks",
+        "ok",
+        "okay",
+        "oui",
+        "hum",
+        "hmm"
+      ];
 
-if (
-  !cleanedTranscript ||
-  cleanedTranscript.length < 3 ||
-  ignoredTranscripts.includes(cleanedTranscript)
-) {
-  if (typingBubble) {
-    typingBubble.textContent = "Je n’ai pas bien compris. Peux-tu répéter ?";
-  }
-
-  if (conversationMode) {
-    setTimeout(() => {
-      if (!isRecording && !isProcessingVoice && conversationMode) {
-        startVoiceRecording();
+      if (
+        !cleanedTranscript ||
+        cleanedTranscript.length < 3 ||
+        ignoredTranscripts.includes(cleanedTranscript)
+      ) {
+        typingBubble.textContent = "Je n’ai pas bien compris. Peux-tu répéter ?";
+        return;
       }
-    }, 600);
-  }
-  return;
-}
 
       if (transcript) {
-        const allMsgs = messages.querySelectorAll(".msg.bot");
-        if (allMsgs.length > 0 && allMsgs[allMsgs.length - 1] === typingBubble) {
-          typingBubble.remove();
-        }
+        if (typingBubble) typingBubble.remove();
 
         appendMsg("user", `🎤 ${transcript}`);
         appendMsg("bot", answer);
@@ -591,11 +617,3 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
-
-
-
-
-
-
-
-
