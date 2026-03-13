@@ -48,10 +48,9 @@
         Comparez facilement les modèles selon vos besoins (études, travail, jeux, création).
         Prototype vitrine + module d’assistant d’achat.
       </p>
-      <div class="hero__actions">
-        <button id="voiceAssistantBtn" class="btn btn--primary" type="button">🤖 Parler à l’assistant</button>
-        <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
-      </div>
+     <div class="hero__actions">
+  <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
+</div>
       <div class="hero__badges">
         <span class="badge">Livraison rapide</span>
         <span class="badge">Prix compétitifs</span>
@@ -189,10 +188,11 @@
     <div id="chatMessages"></div>
   </div>
 
-  <div class="chatWidget__composer">
-    <input class="chatWidget__input" id="chatInput" type="text" placeholder="Écris ta question…" />
-    <button class="chatWidget__send" id="chatSend">Envoyer</button>
-  </div>
+<div class="chatWidget__composer">
+  <button class="chatWidget__mic" id="chatMic" type="button" title="Parler au chatbot">🎤</button>
+  <input class="chatWidget__input" id="chatInput" type="text" placeholder="Écris ta question…" />
+  <button class="chatWidget__send" id="chatSend">Envoyer</button>
+</div>
 </div>
 
 <!-- IMPORTANT : ton app.js doit être chargé après le HTML -->
@@ -201,5 +201,6 @@
 
 </body>
 </html>
+
 
 
