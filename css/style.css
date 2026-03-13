@@ -162,19 +162,26 @@ iframe{width:100%; height:380px; border:1px solid #1f2a44; border-radius:14px; b
    ========================================================= */
 
 .chatFab{
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  background: #1d4ed8;
-  color: #fff;
-  box-shadow: 0 14px 30px rgba(0,0,0,.20);
-  z-index: 9999;
+position:fixed;
+bottom:24px;
+right:24px;
+width:56px;
+height:56px;
+border-radius:50%;
+background:linear-gradient(135deg,#2563eb,#4f46e5);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+transition:all 0.2s ease;
+}
+
+.chatFab:hover{
+transform:scale(1.05);
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
 }
 
 .chatWidget{
@@ -323,5 +330,6 @@ background: linear-gradient(90deg,#4f46e5,#06b6d4);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
+
 
 
