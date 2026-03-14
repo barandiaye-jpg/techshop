@@ -245,11 +245,11 @@ function renderMiniMarkdown(text){
   let speechStarted = false;
   let recordingStartedAt = null;
 
-  const SPEECH_THRESHOLD = 18;
-  const SILENCE_THRESHOLD = 10;
-  const SILENCE_DURATION_MS = 3200;
-  const MIN_RECORDING_MS = 1800;
-  const MAX_WAIT_FOR_SPEECH_MS = 6000;
+  const SPEECH_THRESHOLD = 8;
+  const SILENCE_THRESHOLD = 6;
+  const SILENCE_DURATION_MS = 1800;
+  const MIN_RECORDING_MS = 2500;
+  const MAX_WAIT_FOR_SPEECH_MS = 8000;
 
 function updateMicButton(){
   if (conversationMode) {
@@ -670,5 +670,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
   render();
   syncCartUI();
 });
+
 
 
