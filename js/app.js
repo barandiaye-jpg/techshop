@@ -37,7 +37,6 @@ function filteredProducts(){
     if (p.ram < state.ramMin) return false;
     if (!state.osWin && p.os === "Windows") return false;
     if (!state.osMac && p.os === "macOS") return false;
-
     if (q){
       const hay = (p.name + " " + p.brand + " " + p.cpu + " " + p.gpu + " " + p.os + " " + p.tags.join(" ")).toLowerCase();
       if (!hay.includes(q)) return false;
@@ -60,17 +59,10 @@ function scoreReco(p){
 function sortProducts(arr){
   const a = [...arr];
   switch(state.sortBy){
-    case "priceAsc":
-      a.sort((x,y) => x.price - y.price);
-      break;
-    case "priceDesc":
-      a.sort((x,y) => y.price - x.price);
-      break;
-    case "rating":
-      a.sort((x,y) => y.rating - x.rating);
-      break;
-    default:
-      a.sort((x,y) => scoreReco(y) - scoreReco(x));
+    case "priceAsc":  a.sort((x,y) => x.price - y.price); break;
+    case "priceDesc": a.sort((x,y) => y.price - x.price); break;
+    case "rating":    a.sort((x,y) => y.rating - x.rating); break;
+    default:          a.sort((x,y) => scoreReco(y) - scoreReco(x));
   }
   return a;
 }
@@ -78,9 +70,7 @@ function sortProducts(arr){
 function render(){
   const grid = $("grid");
   if (!grid) return;
-
   const items = sortProducts(filteredProducts());
-
   grid.innerHTML = items.map(p => `
     <div class="card">
       <img src="${p.image}" alt="${p.name}" class="card__img">
@@ -88,14 +78,11 @@ function render(){
         <div></div>
         <div class="muted tiny">${p.os}</div>
       </div>
-
       <div class="card__title">${p.name}</div>
-
       <div class="priceRow">
         <div class="price">${money(p.price)}</div>
         ${p.oldPrice ? `<div class="old">${money(p.oldPrice)}</div>` : ``}
       </div>
-
       <div class="card__actions">
         <button class="btn btn--ghost" onclick="openDetails('${p.id}')">Détails</button>
         <button class="btn btn--primary" onclick="addToCart('${p.id}')">Ajouter</button>
@@ -107,19 +94,7 @@ function render(){
 function openDetails(id){
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
-
-  alert(
-`📌 ${p.name}
-
-CPU: ${p.cpu}
-RAM: ${p.ram} Go
-SSD: ${p.ssd} Go
-GPU: ${p.gpu}
-OS: ${p.os}
-
-Note: ${p.rating} (${p.reviews} avis)
-Prix: ${money(p.price)}`
-  );
+  alert(`📌 ${p.name}\n\nCPU: ${p.cpu}\nRAM: ${p.ram} Go\nSSD: ${p.ssd} Go\nGPU: ${p.gpu}\nOS: ${p.os}\n\nNote: ${p.rating} (${p.reviews} avis)\nPrix: ${money(p.price)}`);
 }
 
 function addToCart(id){
@@ -142,16 +117,13 @@ function cartTotal(){
 function syncCartUI(){
   const countEl = $("cartCount");
   const totalEl = $("cartTotal");
-  const wrap = $("cartItems");
-
+  const wrap    = $("cartItems");
   if (countEl) countEl.textContent = cartCount();
   if (totalEl) totalEl.textContent = money(cartTotal());
   if (!wrap) return;
-
   const rows = Object.entries(state.cart).map(([id,qty]) => {
     const p = PRODUCTS.find(x => x.id === id);
     if (!p) return "";
-
     return `
       <div style="display:flex;justify-content:space-between;gap:10px;border:1px solid #eef2f7;border-radius:14px;padding:10px">
         <div>
@@ -166,43 +138,24 @@ function syncCartUI(){
       </div>
     `;
   }).filter(Boolean);
-
   wrap.innerHTML = rows.length ? rows.join("") : `<div class="muted">Panier vide.</div>`;
 }
 
-function incQty(id){
-  state.cart[id] = (state.cart[id] || 0) + 1;
-  syncCartUI();
-}
-
+function incQty(id){ state.cart[id] = (state.cart[id] || 0) + 1; syncCartUI(); }
 function decQty(id){
   if (!state.cart[id]) return;
   state.cart[id] -= 1;
   if (state.cart[id] <= 0) delete state.cart[id];
   syncCartUI();
 }
-
-function removeItem(id){
-  delete state.cart[id];
-  syncCartUI();
-}
-
-function openDrawer(){
-  $("drawer")?.classList.add("drawer--open");
-  syncCartUI();
-}
-
-function closeDrawer(){
-  $("drawer")?.classList.remove("drawer--open");
-}
+function removeItem(id){ delete state.cart[id]; syncCartUI(); }
+function openDrawer(){  $("drawer")?.classList.add("drawer--open"); syncCartUI(); }
+function closeDrawer(){ $("drawer")?.classList.remove("drawer--open"); }
 
 function escapeHTML(str){
   return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
 function renderMiniMarkdown(text){
@@ -217,76 +170,91 @@ function renderMiniMarkdown(text){
 // CHATBOT (widget)
 // ===============================
 (function initChatbot(){
-  const API_URL = "https://techshop-ai-backend.onrender.com/chat";
+  const API_URL       = "https://techshop-ai-backend.onrender.com/chat";
   const VOICE_API_URL = "https://techshop-ai-backend.onrender.com/voice-chat";
 
-  const fab = $("chatFab");
-  const widget = $("chatWidget");
+  const fab      = $("chatFab");
+  const widget   = $("chatWidget");
   const closeBtn = $("chatClose");
   const messages = $("chatMessages");
-  const input = $("chatInput");
-  const sendBtn = $("chatSend");
-  const chatMic = $("chatMic");
+  const input    = $("chatInput");
+  const sendBtn  = $("chatSend");
+  const chatMic  = $("chatMic");
 
   if (!fab || !widget || !closeBtn || !messages || !input || !sendBtn || !chatMic) return;
 
-  let mediaRecorder = null;
-  let audioChunks = [];
-  let isRecording = false;
+  let mediaRecorder    = null;
+  let audioChunks      = [];
+  let isRecording      = false;
   let conversationMode = false;
   let isProcessingVoice = false;
 
-  let streamRef = null;
-  let audioContext = null;
-  let analyser = null;
-  let sourceNode = null;
-  let silenceStartedAt = null;
-  let animationFrameId = null;
-  let speechStarted = false;
+  let streamRef         = null;
+  let audioContext      = null;
+  let analyser          = null;
+  let sourceNode        = null;
+  let silenceStartedAt  = null;
+  let animationFrameId  = null;
+  let speechStarted     = false;
   let recordingStartedAt = null;
+  let waitFeedbackInterval = null;
 
-  const SPEECH_THRESHOLD = 8;
-  const SILENCE_THRESHOLD = 6;
-  const SILENCE_DURATION_MS = 1800;
-  const MIN_RECORDING_MS = 2500;
-  const MAX_WAIT_FOR_SPEECH_MS = 8000;
+  // ── Seuils calibrés pour la voix française ──
+  const SPEECH_THRESHOLD      = 8;     // volume min pour détecter la parole
+  const SILENCE_THRESHOLD     = 6;     // volume sous lequel = silence
+  const SILENCE_DURATION_MS   = 1800;  // durée silence avant arrêt
+  const MIN_RECORDING_MS      = 2500;  // durée min d'enregistrement
+  const MAX_WAIT_FOR_SPEECH_MS = 8000; // max attente avant abandon
+  const MIN_BLOB_SIZE         = 5000;  // taille min du blob audio (octets)
+  const RESTART_DELAY         = 1200;  // délai entre deux sessions vocales
 
-function updateMicButton(){
-  if (conversationMode) {
-    chatMic.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-      </svg>
-    `;
-    chatMic.title = "Arrêter la conversation";
-  } else {
-    chatMic.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 14C13.657 14 15 12.657 15 11V5C15 3.343 13.657 2 12 2C10.343 2 9 3.343 9 5V11C9 12.657 10.343 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M19 11C19 15 16 18 12 18C8 18 5 15 5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M12 18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M9 22H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    `;
-    chatMic.title = "Parler au chatbot";
+  // ── Détection dynamique du format audio supporté ──
+  function getSupportedMimeType(){
+    const types = [
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/mp4",
+      "audio/ogg;codecs=opus",
+    ];
+    for (const t of types){
+      if (MediaRecorder.isTypeSupported(t)) return t;
+    }
+    return "";
   }
-}
+
+  function updateMicButton(){
+    if (conversationMode){
+      chatMic.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+        </svg>`;
+      chatMic.title = "Arrêter la conversation";
+    } else {
+      chatMic.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 14C13.657 14 15 12.657 15 11V5C15 3.343 13.657 2 12 2C10.343 2 9 3.343 9 5V11C9 12.657 10.343 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 11C19 15 16 18 12 18C8 18 5 15 5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9 22H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>`;
+      chatMic.title = "Parler au chatbot";
+    }
+  }
 
   function openChat(){
     widget.classList.add("chatWidget--open");
-    widget.setAttribute("aria-hidden", "false");
+    widget.setAttribute("aria-hidden","false");
     setTimeout(() => input.focus(), 50);
   }
 
   function closeChat(){
     widget.classList.remove("chatWidget--open");
-    widget.setAttribute("aria-hidden", "true");
+    widget.setAttribute("aria-hidden","true");
   }
 
   function scrollToBottom(){
     const body = widget.querySelector(".chatWidget__body");
-    if (!body) return;
-    body.scrollTop = body.scrollHeight;
+    if (body) body.scrollTop = body.scrollHeight;
   }
 
   function appendMsg(role, text){
@@ -295,90 +263,100 @@ function updateMicButton(){
     div.textContent = text;
     messages.appendChild(div);
     scrollToBottom();
+    return div;
+  }
+
+  // ── Feedback animé "En attente..." ──
+  function startWaitFeedback(){
+    const lastMsg = messages.lastElementChild;
+    if (!lastMsg) return;
+    let dots = 0;
+    waitFeedbackInterval = setInterval(() => {
+      if (speechStarted || !isRecording){
+        clearInterval(waitFeedbackInterval);
+        waitFeedbackInterval = null;
+        return;
+      }
+      dots = (dots + 1) % 4;
+      const current = messages.lastElementChild;
+      if (current && current.classList.contains("bot")){
+        current.textContent = "🎙️ En attente" + ".".repeat(dots);
+      }
+    }, 500);
+  }
+
+  function stopWaitFeedback(){
+    if (waitFeedbackInterval){
+      clearInterval(waitFeedbackInterval);
+      waitFeedbackInterval = null;
+    }
   }
 
   function cleanupAudioMonitoring(){
-    if (animationFrameId) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
-    }
-
-    if (sourceNode) {
-      try { sourceNode.disconnect(); } catch(e) {}
-      sourceNode = null;
-    }
-
-    if (analyser) {
-      try { analyser.disconnect(); } catch(e) {}
-      analyser = null;
-    }
-
-    if (audioContext) {
-      try { audioContext.close(); } catch(e) {}
-      audioContext = null;
-    }
-
-    silenceStartedAt = null;
-    speechStarted = false;
+    stopWaitFeedback();
+    if (animationFrameId){ cancelAnimationFrame(animationFrameId); animationFrameId = null; }
+    if (sourceNode){ try { sourceNode.disconnect(); } catch(e){} sourceNode = null; }
+    if (analyser){   try { analyser.disconnect();   } catch(e){} analyser = null; }
+    if (audioContext){ try { audioContext.close();  } catch(e){} audioContext = null; }
+    silenceStartedAt  = null;
+    speechStarted     = false;
     recordingStartedAt = null;
   }
 
   function stopStreamTracks(){
-    if (streamRef) {
-      streamRef.getTracks().forEach(track => track.stop());
-      streamRef = null;
-    }
+    if (streamRef){ streamRef.getTracks().forEach(t => t.stop()); streamRef = null; }
   }
 
+  // ── Analyse volume sur les fréquences vocales uniquement (80Hz-3000Hz) ──
   function getAverageVolume(){
-    if (!analyser) return 0;
-
-    const data = new Uint8Array(analyser.fftSize);
-    analyser.getByteTimeDomainData(data);
-
-    let sum = 0;
-    for (let i = 0; i < data.length; i++) {
-      sum += Math.abs(data[i] - 128);
+    if (!analyser || !audioContext) return 0;
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    const binSize = audioContext.sampleRate / analyser.fftSize;
+    const lowBin  = Math.floor(80   / binSize);
+    const highBin = Math.floor(3000 / binSize);
+    let sum = 0, count = 0;
+    for (let i = lowBin; i <= highBin && i < data.length; i++){
+      sum += data[i];
+      count++;
     }
-    return sum / data.length;
+    return count > 0 ? sum / count : 0;
   }
 
   function monitorSilence(){
     if (!isRecording || !analyser) return;
-
-    const averageVolume = getAverageVolume();
+    const vol = getAverageVolume();
     const now = Date.now();
-    const recordingAge = recordingStartedAt ? (now - recordingStartedAt) : 0;
+    const age = recordingStartedAt ? (now - recordingStartedAt) : 0;
 
-    if (!speechStarted) {
-      if (averageVolume >= SPEECH_THRESHOLD) {
+    if (!speechStarted){
+      if (vol >= SPEECH_THRESHOLD){
         speechStarted = true;
         silenceStartedAt = null;
-      } else {
-        if (recordingAge >= MAX_WAIT_FOR_SPEECH_MS) {
-          stopVoiceRecording(true);
-          return;
+        stopWaitFeedback(); // stop le feedback d'attente
+        // met à jour le message d'écoute
+        const last = messages.lastElementChild;
+        if (last && last.classList.contains("bot")){
+          last.textContent = "🎙️ J'écoute... Parlez normalement.";
         }
+      } else if (age >= MAX_WAIT_FOR_SPEECH_MS){
+        stopVoiceRecording(true);
+        return;
       }
-
       animationFrameId = requestAnimationFrame(monitorSilence);
       return;
     }
 
-    if (recordingAge < MIN_RECORDING_MS) {
+    if (age < MIN_RECORDING_MS){
       animationFrameId = requestAnimationFrame(monitorSilence);
       return;
     }
 
-    if (averageVolume < SILENCE_THRESHOLD) {
-      if (!silenceStartedAt) {
-        silenceStartedAt = now;
-      } else {
-        const silenceTime = now - silenceStartedAt;
-        if (silenceTime >= SILENCE_DURATION_MS) {
-          stopVoiceRecording(false);
-          return;
-        }
+    if (vol < SILENCE_THRESHOLD){
+      if (!silenceStartedAt) silenceStartedAt = now;
+      else if ((now - silenceStartedAt) >= SILENCE_DURATION_MS){
+        stopVoiceRecording(false);
+        return;
       }
     } else {
       silenceStartedAt = null;
@@ -388,77 +366,76 @@ function updateMicButton(){
   }
 
   async function startVoiceRecording(){
-    try{
+    try {
       openChat();
-
       streamRef = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      audioChunks = [];
-      speechStarted = false;
+      audioChunks      = [];
+      speechStarted    = false;
       silenceStartedAt = null;
       recordingStartedAt = Date.now();
 
-      mediaRecorder = new MediaRecorder(streamRef);
+      // Détection dynamique du format
+      const mimeType = getSupportedMimeType();
+      mediaRecorder = mimeType
+        ? new MediaRecorder(streamRef, { mimeType })
+        : new MediaRecorder(streamRef);
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunks.push(event.data);
-        }
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunks.push(e.data);
       };
 
       mediaRecorder.onstop = async () => {
         const hadSpeech = speechStarted;
-        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        const usedMime  = mediaRecorder.mimeType || "audio/webm";
+        const audioBlob = new Blob(audioChunks, { type: usedMime });
 
         cleanupAudioMonitoring();
         stopStreamTracks();
-
         isRecording = false;
 
-        if (!hadSpeech) {
-          if (conversationMode) {
+        // Pas de parole détectée
+        if (!hadSpeech){
+          if (conversationMode){
             setTimeout(() => {
-              if (!isRecording && !isProcessingVoice && conversationMode) {
-                startVoiceRecording();
-              }
-            }, 500);
+              if (!isRecording && !isProcessingVoice && conversationMode) startVoiceRecording();
+            }, RESTART_DELAY);
           }
           return;
         }
 
-        if (!audioBlob || audioBlob.size < 15000) {
-          appendMsg("bot", "Je n’ai pas bien entendu. Peux-tu répéter ?");
-          if (conversationMode) {
+        // Blob trop petit = audio vide ou bruit
+        if (audioBlob.size < MIN_BLOB_SIZE){
+          appendMsg("bot", "Je n'ai pas bien entendu. Peux-tu répéter ?");
+          if (conversationMode){
             setTimeout(() => {
-              if (!isRecording && !isProcessingVoice && conversationMode) {
-                startVoiceRecording();
-              }
-            }, 700);
+              if (!isRecording && !isProcessingVoice && conversationMode) startVoiceRecording();
+            }, RESTART_DELAY);
           }
           return;
         }
 
-        await sendVoiceMessage(audioBlob);
+        await sendVoiceMessage(audioBlob, usedMime);
       };
 
+      // Analyser calibré pour la voix
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
       analyser = audioContext.createAnalyser();
-      analyser.fftSize = 2048;
-
+      analyser.fftSize = 512; // plus précis pour la voix que 2048
       sourceNode = audioContext.createMediaStreamSource(streamRef);
       sourceNode.connect(analyser);
 
-      mediaRecorder.start();
+      mediaRecorder.start(100); // collecte des chunks toutes les 100ms
       isRecording = true;
 
-      appendMsg("bot", "🎙️ J’écoute... Parlez normalement, je couperai quand vous aurez vraiment fini.");
+      appendMsg("bot", "🎙️ En attente...");
       scrollToBottom();
-
+      startWaitFeedback();
       monitorSilence();
 
-    } catch (err){
+    } catch(err){
       console.error(err);
-      appendMsg("bot", "Impossible d’accéder au micro.");
+      appendMsg("bot", "Impossible d'accéder au micro. Vérifie les permissions.");
       conversationMode = false;
       updateMicButton();
     }
@@ -466,84 +443,64 @@ function updateMicButton(){
 
   function stopVoiceRecording(cancelOnly = false){
     if (!mediaRecorder || !isRecording) return;
-
-    if (cancelOnly) {
-      audioChunks = [];
+    if (cancelOnly){
+      audioChunks   = [];
       speechStarted = false;
     }
-
     mediaRecorder.stop();
   }
 
-  async function sendVoiceMessage(audioBlob){
-    appendMsg("bot", "🎤 Transcription en cours...");
+  async function sendVoiceMessage(audioBlob, mimeType){
+    appendMsg("bot", "⏳ Transcription en cours...");
     const typingBubble = messages.lastElementChild;
-
-    sendBtn.disabled = true;
+    sendBtn.disabled  = true;
     isProcessingVoice = true;
 
-    try{
+    try {
+      // Extension correcte selon le mimeType réel
+      const ext = mimeType.includes("mp4") ? "mp4"
+                : mimeType.includes("ogg") ? "ogg"
+                : "webm";
+
       const formData = new FormData();
-      formData.append("audio", audioBlob, "voice.webm");
+      formData.append("audio", audioBlob, `voice.${ext}`);
       formData.append("k", "5");
 
-      const res = await fetch(VOICE_API_URL, {
-        method: "POST",
-        body: formData,
-      });
-
+      const res = await fetch(VOICE_API_URL, { method:"POST", body:formData });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      const transcript = (data && data.transcript) ? data.transcript : "";
-      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
-      const cleanedTranscript = transcript.trim().toLowerCase();
+      const transcript     = (data && data.transcript) ? data.transcript.trim() : "";
+      const answer         = (data && data.answer)     ? data.answer : "Je n'ai pas de réponse pour le moment.";
+      const lowerTranscript = transcript.toLowerCase();
 
-      const ignoredTranscripts = [
-        "thank you",
-        "thanks",
-        "ok",
-        "okay",
-        "oui",
-        "hum",
-        "hmm"
-      ];
-
-      if (
-        !cleanedTranscript ||
-        cleanedTranscript.length < 3 ||
-        ignoredTranscripts.includes(cleanedTranscript)
-      ) {
-        typingBubble.textContent = "Je n’ai pas bien compris. Peux-tu répéter ?";
+      // Transcriptions trop courtes ou parasites → ignorer
+      const ignoredTranscripts = ["thank you","thanks","ok","okay","oui","hum","hmm","merci","ah","euh"];
+      if (!transcript || transcript.length < 3 || ignoredTranscripts.includes(lowerTranscript)){
+        typingBubble.textContent = "Je n'ai pas bien compris. Peux-tu répéter ?";
         return;
       }
 
-      if (transcript) {
-        if (typingBubble) typingBubble.remove();
-
-        appendMsg("user", `🎤 ${transcript}`);
-        appendMsg("bot", answer);
-        messages.lastElementChild.innerHTML = renderMiniMarkdown(answer);
-      } else {
-        typingBubble.innerHTML = renderMiniMarkdown(answer);
-      }
-
+      // Affichage de la transcription + réponse
+      typingBubble.remove();
+      appendMsg("user", `🎤 ${transcript}`);
+      const botMsg = appendMsg("bot", answer);
+      botMsg.innerHTML = renderMiniMarkdown(answer);
       scrollToBottom();
-    } catch (e){
-      typingBubble.textContent = "Erreur: backend vocal inaccessible.";
+
+    } catch(e){
+      typingBubble.textContent = "Erreur : backend vocal inaccessible.";
       console.error(e);
       scrollToBottom();
     } finally {
-      sendBtn.disabled = false;
-      input.focus();
+      sendBtn.disabled  = false;
       isProcessingVoice = false;
+      input.focus();
 
-      if (conversationMode) {
+      if (conversationMode){
         setTimeout(() => {
-          if (!isRecording && !isProcessingVoice && conversationMode) {
-            startVoiceRecording();
-          }
-        }, 600);
+          if (!isRecording && !isProcessingVoice && conversationMode) startVoiceRecording();
+        }, RESTART_DELAY);
       } else {
         updateMicButton();
       }
@@ -553,31 +510,24 @@ function updateMicButton(){
   async function sendMessage(){
     const text = input.value.trim();
     if (!text) return;
-
     appendMsg("user", text);
     input.value = "";
-
     appendMsg("bot", "…");
     const typingBubble = messages.lastElementChild;
-
     sendBtn.disabled = true;
-
-    try{
+    try {
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type":"application/json" },
         body: JSON.stringify({ message: text }),
       });
-
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-
-      const answer = (data && data.answer) ? data.answer : "Je n’ai pas de réponse pour le moment.";
+      const answer = (data && data.answer) ? data.answer : "Je n'ai pas de réponse pour le moment.";
       typingBubble.innerHTML = renderMiniMarkdown(answer);
-
       scrollToBottom();
-    } catch (e){
-      typingBubble.textContent = "Erreur: backend inaccessible. Vérifie le service Render du backend.";
+    } catch(e){
+      typingBubble.textContent = "Erreur : backend inaccessible. Vérifie le service Render du backend.";
       console.error(e);
       scrollToBottom();
     } finally {
@@ -586,90 +536,53 @@ function updateMicButton(){
     }
   }
 
+  // ── Événements ──
   fab.addEventListener("click", openChat);
   closeBtn.addEventListener("click", closeChat);
 
   chatMic.addEventListener("click", async () => {
     openChat();
-
-    if (!conversationMode) {
+    if (!conversationMode){
       conversationMode = true;
       updateMicButton();
-
-      if (!isRecording && !isProcessingVoice) {
-        await startVoiceRecording();
-      }
+      if (!isRecording && !isProcessingVoice) await startVoiceRecording();
     } else {
       conversationMode = false;
       updateMicButton();
-
-      if (isRecording) {
-        stopVoiceRecording();
-      }
-
+      if (isRecording) stopVoiceRecording();
       appendMsg("bot", "Conversation vocale arrêtée.");
     }
   });
 
   sendBtn.addEventListener("click", sendMessage);
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter"){
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter"){ e.preventDefault(); sendMessage(); }
   });
 
   updateMicButton();
 })();
- 
+
 // ===============================
 // DOM Ready
 // ===============================
-window.addEventListener("DOMContentLoaded", ()=>{
-  $("q")?.addEventListener("input", (e)=>{ state.q = e.target.value; render(); });
-  $("maxPrice")?.addEventListener("input", (e)=>{
-    state.maxPrice = parseInt(e.target.value,10);
+window.addEventListener("DOMContentLoaded", () => {
+  $("q")?.addEventListener("input",  (e) => { state.q = e.target.value; render(); });
+  $("maxPrice")?.addEventListener("input", (e) => {
+    state.maxPrice = parseInt(e.target.value, 10);
     const out = $("maxPriceOut");
     if (out) out.textContent = state.maxPrice;
     render();
   });
-  $("ramMin")?.addEventListener("change", (e)=>{ state.ramMin=parseInt(e.target.value,10); render(); });
-  $("osWin")?.addEventListener("change", (e)=>{ state.osWin=e.target.checked; render(); });
-  $("osMac")?.addEventListener("change", (e)=>{ state.osMac=e.target.checked; render(); });
-  $("sortBy")?.addEventListener("change", (e)=>{ state.sortBy=e.target.value; render(); });
+  $("ramMin")?.addEventListener("change", (e) => { state.ramMin = parseInt(e.target.value, 10); render(); });
+  $("osWin")?.addEventListener("change",  (e) => { state.osWin = e.target.checked; render(); });
+  $("osMac")?.addEventListener("change",  (e) => { state.osMac = e.target.checked; render(); });
+  $("sortBy")?.addEventListener("change", (e) => { state.sortBy = e.target.value; render(); });
 
-  $("cartBtn")?.addEventListener("click", openDrawer);
+  $("cartBtn")?.addEventListener("click",     openDrawer);
   $("closeDrawer")?.addEventListener("click", closeDrawer);
-  $("drawer")?.addEventListener("click", (e)=>{ if (e.target.id==="drawer") closeDrawer(); });
-  $("clearCart")?.addEventListener("click", ()=>{ state.cart={}; syncCartUI(); });
+  $("drawer")?.addEventListener("click", (e) => { if (e.target.id === "drawer") closeDrawer(); });
+  $("clearCart")?.addEventListener("click",   () => { state.cart = {}; syncCartUI(); });
 
   render();
   syncCartUI();
 });
-// ===============================
-// DOM Ready
-// ===============================
-window.addEventListener("DOMContentLoaded", ()=>{
-  $("q")?.addEventListener("input", (e)=>{ state.q = e.target.value; render(); });
-  $("maxPrice")?.addEventListener("input", (e)=>{
-    state.maxPrice = parseInt(e.target.value,10);
-    const out = $("maxPriceOut");
-    if (out) out.textContent = state.maxPrice;
-    render();
-  });
-  $("ramMin")?.addEventListener("change", (e)=>{ state.ramMin=parseInt(e.target.value,10); render(); });
-  $("osWin")?.addEventListener("change", (e)=>{ state.osWin=e.target.checked; render(); });
-  $("osMac")?.addEventListener("change", (e)=>{ state.osMac=e.target.checked; render(); });
-  $("sortBy")?.addEventListener("change", (e)=>{ state.sortBy=e.target.value; render(); });
-
-  $("cartBtn")?.addEventListener("click", openDrawer);
-  $("closeDrawer")?.addEventListener("click", closeDrawer);
-  $("drawer")?.addEventListener("click", (e)=>{ if (e.target.id==="drawer") closeDrawer(); });
-  $("clearCart")?.addEventListener("click", ()=>{ state.cart={}; syncCartUI(); });
-
-  render();
-  syncCartUI();
-});
-
-
-
