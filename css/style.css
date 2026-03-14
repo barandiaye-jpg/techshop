@@ -262,7 +262,7 @@ body{
 .tiny{font-size:12px}
 
 /* ── Grille produits ── */
-.grid{display:grid; grid-template-columns: repeat(2, 1fr); gap:18px}
+.grid{display:grid; grid-template-columns: repeat(2, 1fr); gap:18px; align-items: stretch;}
 .card{
   background:#fff; border:1px solid #e5e7eb; border-radius:18px; padding:14px;
   box-shadow:0 4px 16px rgba(0,0,0,.06);
