@@ -4,6 +4,7 @@
 // - Chat widget texte
 // - Chat vocal avec Whisper backend
 // - Conversation continue + auto-stop silence
+// - TTS Web Speech API (réponse vocale)
 // ===============================
 
 const PRODUCTS = [
@@ -147,6 +148,65 @@ function renderMiniMarkdown(text){
 }
 
 // ===============================
+// TTS — Web Speech API
+// ===============================
+const tts = {
+  enabled: true,       // actif par défaut en mode vocal, inactif en mode texte
+  voice: null,         // voix française choisie
+
+  // Charge les voix dès qu'elles sont disponibles
+  init(){
+    if (!window.speechSynthesis) return;
+    const pick = () => {
+      const voices = window.speechSynthesis.getVoices();
+      // Priorité : voix locale française → voix française distante → rien
+      this.voice =
+        voices.find(v => v.lang.startsWith("fr") && v.localService) ||
+        voices.find(v => v.lang.startsWith("fr")) ||
+        null;
+    };
+    pick();
+    window.speechSynthesis.onvoiceschanged = pick;
+  },
+
+  // Nettoie le texte avant lecture (retire emojis, markdown, urls)
+  clean(text){
+    return text
+      .replace(/[\u{1F300}-\u{1FAFF}]/gu, "")   // emojis
+      .replace(/\*\*(.+?)\*\*/g, "$1")            // **gras**
+      .replace(/\*(.+?)\*/g, "$1")               // *italique*
+      .replace(/https?:\/\/\S+/g, "")            // urls
+      .replace(/\s+/g, " ")
+      .trim();
+  },
+
+  speak(text, onEnd){
+    if (!window.speechSynthesis || !this.enabled) {
+      if (onEnd) onEnd();
+      return;
+    }
+    window.speechSynthesis.cancel(); // stoppe toute lecture en cours
+    const cleaned = this.clean(text);
+    if (!cleaned) { if (onEnd) onEnd(); return; }
+
+    const utt = new SpeechSynthesisUtterance(cleaned);
+    utt.lang  = "fr-FR";
+    utt.rate  = 1.08;   // légèrement plus rapide = plus naturel
+    utt.pitch = 1.0;
+    if (this.voice) utt.voice = this.voice;
+    if (onEnd) utt.onend = onEnd;
+    utt.onerror = () => { if (onEnd) onEnd(); };
+    window.speechSynthesis.speak(utt);
+  },
+
+  stop(){
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+};
+
+tts.init();
+
+// ===============================
 // CHATBOT
 // ===============================
 (function initChatbot(){
@@ -176,32 +236,19 @@ function renderMiniMarkdown(text){
   let silenceStart      = null;
   let recordStart       = null;
   let waitTimer         = null;
-  let stopped           = false; // garde-fou unique stop
+  let stopped           = false;
 
-  // ── Seuils — simples et robustes ──
-  // On utilise TimeDomain (RMS) : fonctionne sur TOUS les navigateurs
-  const THRESH_SPEECH  = 0.01;  // RMS minimum pour "c'est de la parole"
-  const THRESH_SILENCE = 0.008; // RMS sous lequel = silence
-  const SILENCE_MS     = 1800;  // silence continu avant envoi
-  const MIN_RECORD_MS  = 800;   // durée mini avant de surveiller le silence
-  const MAX_WAIT_MS    = 9000;  // abandon si pas de parole après 9s
-  const RESTART_MS     = 1200;  // délai entre sessions
+  const THRESH_SPEECH  = 0.01;
+  const THRESH_SILENCE = 0.008;
+  const SILENCE_MS     = 1800;
+  const MIN_RECORD_MS  = 800;
+  const MAX_WAIT_MS    = 9000;
+  const RESTART_MS     = 1200;
 
   function getSupportedMimeType(){
     const types=["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg;codecs=opus"];
     for(const t of types){ if(MediaRecorder.isTypeSupported(t)) return t; }
     return "";
-  }
-
-  // ── Calcul RMS (Root Mean Square) sur signal temporel ──
-  // Plus fiable que FrequencyData pour la détection voix cross-browser
-  function getRMS(){
-    if (!analyser) return 0;
-    const buf = new Float32Array(analyser.fftSize);
-    analyser.getFloatTimeDomainData(buf);
-    let sum = 0;
-    for(let i=0;i<buf.length;i++) sum += buf[i]*buf[i];
-    return Math.sqrt(sum / buf.length);
   }
 
   function updateMicButton(){
@@ -214,20 +261,22 @@ function renderMiniMarkdown(text){
     }
   }
 
- function openChat(){
-  widget.classList.add("chatWidget--open");
-  widget.setAttribute("aria-hidden","false");
-  setTimeout(()=>input.focus(),50);
-
-  // Message de bienvenue — affiché une seule fois
-  if(messages.children.length === 0){
-    appendMsg("bot","👋 Bonjour ! Je suis l'assistant AURA. Dis-moi ton budget et ton usage (études, jeux, travail, création) et je te recommande le meilleur ordinateur. Tu peux écrire ou cliquer sur 🎤 pour parler !");
+  function openChat(){
+    widget.classList.add("chatWidget--open");
+    widget.setAttribute("aria-hidden","false");
+    setTimeout(()=>input.focus(),50);
+    // Message de bienvenue — une seule fois
+    if(messages.children.length === 0){
+      appendMsg("bot","👋 Bonjour ! Je suis l'assistant TechShop. Dis-moi ton budget et ton usage (études, jeux, travail, création) et je te recommande le meilleur ordinateur. Tu peux écrire ou cliquer sur 🎤 pour parler !");
+    }
   }
-}
+
   function closeChat(){
+    tts.stop(); // stoppe la voix si le chat est fermé
     widget.classList.remove("chatWidget--open");
     widget.setAttribute("aria-hidden","true");
   }
+
   function scrollToBottom(){
     const body=widget.querySelector(".chatWidget__body");
     if(body) body.scrollTop=body.scrollHeight;
@@ -267,49 +316,44 @@ function renderMiniMarkdown(text){
     speechStarted=false; silenceStart=null; recordStart=null; stopped=false;
   }
 
-  // ── Boucle de monitoring — utilise RMS ──
+  function getRMS(){
+    if (!analyser) return 0;
+    const buf = new Float32Array(analyser.fftSize);
+    analyser.getFloatTimeDomainData(buf);
+    let sum = 0;
+    for(let i=0;i<buf.length;i++) sum+=buf[i]*buf[i];
+    return Math.sqrt(sum/buf.length);
+  }
+
   function monitor(){
-    if(!isRecording||!analyser){ return; }
+    if(!isRecording||!analyser) return;
+    const rms=getRMS();
+    const now=Date.now();
+    const age=now-(recordStart||now);
 
-    const rms = getRMS();
-    const now = Date.now();
-    const age = now - (recordStart||now);
-
-    // DEBUG — à retirer après validation
-    // console.log("RMS:", rms.toFixed(4), "speech:", speechStarted, "age:", age);
-
-    // Phase 1 : attente de la parole
     if(!speechStarted){
-      if(rms >= THRESH_SPEECH){
-        speechStarted=true;
-        silenceStart=null;
+      if(rms>=THRESH_SPEECH){
+        speechStarted=true; silenceStart=null;
         stopWaitAnim();
         const m=lastBotMsg(); if(m) m.textContent="🎙️ Je t'écoute...";
-      } else if(age >= MAX_WAIT_MS){
-        doStop(true); return;
-      }
+      } else if(age>=MAX_WAIT_MS){ doStop(true); return; }
       rafId=requestAnimationFrame(monitor); return;
     }
 
-    // Phase 2 : durée mini d'enregistrement
-    if(age < MIN_RECORD_MS){
-      rafId=requestAnimationFrame(monitor); return;
-    }
+    if(age<MIN_RECORD_MS){ rafId=requestAnimationFrame(monitor); return; }
 
-    // Phase 3 : surveillance silence
-    if(rms < THRESH_SILENCE){
+    if(rms<THRESH_SILENCE){
       if(!silenceStart) silenceStart=now;
       const dur=now-silenceStart;
       const rem=((SILENCE_MS-dur)/1000).toFixed(1);
       const m=lastBotMsg();
-      if(m && dur > 300) m.textContent=`🔇 Envoi dans ${rem}s...`;
-      if(dur >= SILENCE_MS){ doStop(false); return; }
+      if(m&&dur>300) m.textContent=`🔇 Envoi dans ${rem}s...`;
+      if(dur>=SILENCE_MS){ doStop(false); return; }
     } else {
       silenceStart=null;
       const m=lastBotMsg();
-      if(m && m.textContent.startsWith("🔇")) m.textContent="🎙️ Je t'écoute...";
+      if(m&&m.textContent.startsWith("🔇")) m.textContent="🎙️ Je t'écoute...";
     }
-
     rafId=requestAnimationFrame(monitor);
   }
 
@@ -318,26 +362,22 @@ function renderMiniMarkdown(text){
     stopped=true;
     if(!mediaRecorder||!isRecording) return;
     if(cancel){ audioChunks=[]; speechStarted=false; }
-    // requestData force la collecte du dernier chunk
     try{ mediaRecorder.requestData(); }catch(e){}
-    setTimeout(()=>{ try{ mediaRecorder.stop(); }catch(e){} }, 200);
+    setTimeout(()=>{ try{ mediaRecorder.stop(); }catch(e){} },200);
   }
 
   async function startVoiceRecording(){
     if(isRecording||isProcessingVoice) return;
-
     try{
       openChat();
-      // PAS de sampleRate forcé — le navigateur choisit le meilleur
-      streamRef = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true }
+      streamRef=await navigator.mediaDevices.getUserMedia({
+        audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true }
       });
-
       audioChunks=[]; speechStarted=false; silenceStart=null;
       stopped=false; recordStart=Date.now();
 
-      const mime = getSupportedMimeType();
-      mediaRecorder = mime ? new MediaRecorder(streamRef,{mimeType:mime}) : new MediaRecorder(streamRef);
+      const mime=getSupportedMimeType();
+      mediaRecorder=mime ? new MediaRecorder(streamRef,{mimeType:mime}) : new MediaRecorder(streamRef);
 
       mediaRecorder.ondataavailable=(e)=>{
         if(e.data&&e.data.size>0) audioChunks.push(e.data);
@@ -350,34 +390,30 @@ function renderMiniMarkdown(text){
         const blob=new Blob(audioChunks,{type:usedMime});
         cleanupAudio();
 
-        console.log("STOP — hadSpeech:", hadSpeech, "blob size:", blob.size, "mime:", usedMime);
-
         if(!hadSpeech){
           if(conversationMode) setTimeout(()=>{ if(!isRecording&&!isProcessingVoice&&conversationMode) startVoiceRecording(); },RESTART_MS);
           return;
         }
-        if(blob.size < 3000){
+        if(blob.size<3000){
           appendMsg("bot","Je n'ai pas bien entendu, peux-tu répéter ?");
           if(conversationMode) setTimeout(()=>{ if(!isRecording&&!isProcessingVoice&&conversationMode) startVoiceRecording(); },RESTART_MS);
           return;
         }
-        await sendVoiceMessage(blob, usedMime);
+        await sendVoiceMessage(blob,usedMime);
       };
 
-      // AudioContext — fftSize 2048 + Float32 TimeDomain = meilleure précision RMS
       audioContext=new (window.AudioContext||window.webkitAudioContext)();
       analyser=audioContext.createAnalyser();
       analyser.fftSize=2048;
       sourceNode=audioContext.createMediaStreamSource(streamRef);
       sourceNode.connect(analyser);
 
-      mediaRecorder.start(250); // chunk toutes les 250ms
+      mediaRecorder.start(250);
       isRecording=true;
 
       const waitMsg=appendMsg("bot","🎙️ En attente...");
       startWaitAnim(waitMsg);
-      // Petit délai pour que l'AudioContext soit stable avant de monitorer
-      setTimeout(()=>{ if(isRecording) monitor(); }, 300);
+      setTimeout(()=>{ if(isRecording) monitor(); },300);
 
     }catch(err){
       console.error("Micro erreur:",err);
@@ -416,9 +452,19 @@ function renderMiniMarkdown(text){
 
       bubble.remove();
       appendMsg("user",`🎤 ${transcript}`);
-      const bot=appendMsg("bot",answer);
-      bot.innerHTML=renderMiniMarkdown(answer);
+      const botMsg=appendMsg("bot","🔊 ...");
+      botMsg.innerHTML=renderMiniMarkdown(answer);
       scrollToBottom();
+
+      // ── TTS : lecture de la réponse, puis relance écoute ──
+      tts.enabled=true;
+      tts.speak(answer, ()=>{
+        // Relance l'écoute APRÈS que la voix a fini de parler
+        if(conversationMode && !isRecording && !isProcessingVoice){
+          setTimeout(()=>startVoiceRecording(), 400);
+        }
+      });
+      return; // on sort ici — la relance est gérée par le callback TTS
 
     }catch(e){
       clearTimeout(timer);
@@ -428,16 +474,17 @@ function renderMiniMarkdown(text){
       console.error(e); scrollToBottom();
     }finally{
       sendBtn.disabled=false; isProcessingVoice=false; input.focus();
-      if(conversationMode){
+      // Si pas de TTS (erreur), relance quand même
+      if(conversationMode && !window.speechSynthesis){
         setTimeout(()=>{ if(!isRecording&&!isProcessingVoice&&conversationMode) startVoiceRecording(); },RESTART_MS);
-      } else {
-        updateMicButton();
       }
     }
   }
 
+  // Chat texte — TTS désactivé (on ne lit pas les réponses texte)
   async function sendMessage(){
     const text=input.value.trim(); if(!text) return;
+    tts.stop(); // stoppe la voix si l'utilisateur tape
     appendMsg("user",text); input.value="";
     appendMsg("bot","…");
     const bubble=messages.lastElementChild;
@@ -448,6 +495,7 @@ function renderMiniMarkdown(text){
       const data=await res.json();
       bubble.innerHTML=renderMiniMarkdown(data?.answer||"Pas de réponse.");
       scrollToBottom();
+      // Pas de TTS pour les messages texte
     }catch(e){
       bubble.textContent="Erreur : backend inaccessible.";
       console.error(e);
@@ -462,10 +510,12 @@ function renderMiniMarkdown(text){
   chatMic.addEventListener("click",async()=>{
     openChat();
     if(!conversationMode){
+      tts.stop();
       conversationMode=true; updateMicButton();
       if(!isRecording&&!isProcessingVoice) await startVoiceRecording();
     } else {
       conversationMode=false; updateMicButton();
+      tts.stop();
       if(isRecording) doStop(false);
       cleanupAudio(); isRecording=false;
       appendMsg("bot","Conversation vocale arrêtée. Tu peux continuer par écrit.");
@@ -498,4 +548,3 @@ window.addEventListener("DOMContentLoaded",()=>{
   $("clearCart")?.addEventListener("click",()=>{ state.cart={}; syncCartUI(); });
   render(); syncCartUI();
 });
-
