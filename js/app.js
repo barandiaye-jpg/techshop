@@ -214,11 +214,16 @@ function renderMiniMarkdown(text){
     }
   }
 
-  function openChat(){
-    widget.classList.add("chatWidget--open");
-    widget.setAttribute("aria-hidden","false");
-    setTimeout(()=>input.focus(),50);
+ function openChat(){
+  widget.classList.add("chatWidget--open");
+  widget.setAttribute("aria-hidden","false");
+  setTimeout(()=>input.focus(),50);
+
+  // Message de bienvenue — affiché une seule fois
+  if(messages.children.length === 0){
+    appendMsg("bot","👋 Bonjour ! Je suis l'assistant AURA. Dis-moi ton budget et ton usage (études, jeux, travail, création) et je te recommande le meilleur ordinateur. Tu peux écrire ou cliquer sur 🎤 pour parler !");
   }
+}
   function closeChat(){
     widget.classList.remove("chatWidget--open");
     widget.setAttribute("aria-hidden","true");
@@ -493,3 +498,4 @@ window.addEventListener("DOMContentLoaded",()=>{
   $("clearCart")?.addEventListener("click",()=>{ state.cart={}; syncCartUI(); });
   render(); syncCartUI();
 });
+
