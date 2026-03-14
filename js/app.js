@@ -279,7 +279,7 @@ tts.init();
     setTimeout(()=>input.focus(),50);
     // Message de bienvenue — une seule fois
     if(messages.children.length === 0){
-      appendMsg("bot","👋 Bonjour ! Je suis l'assistant TechShop. Dis-moi ton budget et ton usage (études, jeux, travail, création) et je te recommande le meilleur ordinateur. Tu peux écrire ou cliquer sur 🎤 pour parler !");
+      appendMsg("bot","👋 Bonjour ! Je suis l'assistant AURA. Dis-moi ton budget et ton usage (études, jeux, travail, création) et je te recommande le meilleur ordinateur. Tu peux écrire ou cliquer sur 🎤 pour parler !");
     }
   }
 
@@ -560,4 +560,5 @@ window.addEventListener("DOMContentLoaded",()=>{
   $("clearCart")?.addEventListener("click",()=>{ state.cart={}; syncCartUI(); });
   render(); syncCartUI();
 });
+
 
