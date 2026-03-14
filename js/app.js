@@ -155,19 +155,22 @@ const tts = {
   voice: null,         // voix française choisie
 
   // Charge les voix dès qu'elles sont disponibles
-  init(){
-    if (!window.speechSynthesis) return;
-    const pick = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Priorité : voix locale française → voix française distante → rien
-      this.voice =
-        voices.find(v => v.lang.startsWith("fr") && v.localService) ||
-        voices.find(v => v.lang.startsWith("fr")) ||
-        null;
-    };
-    pick();
-    window.speechSynthesis.onvoiceschanged = pick;
-  },
+init(){
+  if (!window.speechSynthesis) return;
+  const pick = () => {
+    const voices = window.speechSynthesis.getVoices();
+    // Ordre de priorité : voix locale fr-FR → locale fr → distante fr-FR → distante fr
+    this.voice =
+      voices.find(v => v.lang === "fr-FR" && v.localService) ||
+      voices.find(v => v.lang.startsWith("fr") && v.localService) ||
+      voices.find(v => v.lang === "fr-FR") ||
+      voices.find(v => v.lang.startsWith("fr")) ||
+      null;
+    console.log("Voix TTS choisie :", this.voice?.name, this.voice?.lang);
+  };
+  pick();
+  window.speechSynthesis.onvoiceschanged = pick;
+},
 
   // Nettoie le texte avant lecture (retire emojis, markdown, urls)
   clean(text){
@@ -180,24 +183,33 @@ const tts = {
       .trim();
   },
 
-  speak(text, onEnd){
-    if (!window.speechSynthesis || !this.enabled) {
-      if (onEnd) onEnd();
-      return;
-    }
-    window.speechSynthesis.cancel(); // stoppe toute lecture en cours
-    const cleaned = this.clean(text);
-    if (!cleaned) { if (onEnd) onEnd(); return; }
+speak(text, onEnd){
+  if (!window.speechSynthesis || !this.enabled) {
+    if (onEnd) onEnd(); return;
+  }
+  window.speechSynthesis.cancel();
+  const cleaned = this.clean(text);
+  if (!cleaned) { if (onEnd) onEnd(); return; }
 
-    const utt = new SpeechSynthesisUtterance(cleaned);
-    utt.lang  = "fr-FR";
-    utt.rate  = 1.08;   // légèrement plus rapide = plus naturel
-    utt.pitch = 1.0;
-    if (this.voice) utt.voice = this.voice;
-    if (onEnd) utt.onend = onEnd;
-    utt.onerror = () => { if (onEnd) onEnd(); };
-    window.speechSynthesis.speak(utt);
-  },
+  const utt = new SpeechSynthesisUtterance(cleaned);
+  utt.lang  = "fr-FR";   // force le français
+  utt.rate  = 1.08;
+  utt.pitch = 1.0;
+
+  // Force la voix française même si le navigateur résiste
+  const voices = window.speechSynthesis.getVoices();
+  const frVoice =
+    voices.find(v => v.lang === "fr-FR" && v.localService) ||
+    voices.find(v => v.lang.startsWith("fr") && v.localService) ||
+    voices.find(v => v.lang === "fr-FR") ||
+    voices.find(v => v.lang.startsWith("fr"));
+  if (frVoice) utt.voice = frVoice;
+
+  if (onEnd) utt.onend = onEnd;
+  utt.onerror = () => { if (onEnd) onEnd(); };
+  window.speechSynthesis.speak(utt);
+},
+
 
   stop(){
     if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -548,3 +560,4 @@ window.addEventListener("DOMContentLoaded",()=>{
   $("clearCart")?.addEventListener("click",()=>{ state.cart={}; syncCartUI(); });
   render(); syncCartUI();
 });
+
