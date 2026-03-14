@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="AURA — Trouvez l'ordinateur idéal selon votre budget et vos besoins. Conseils personnalisés par notre assistant IA." />
   <title>AURA — Ordinateurs</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -40,32 +41,51 @@
   </div>
 
   <!-- Hero -->
-<header class="hero">
-  <div class="container hero__inner">
-    <div class="hero__left">
-      <h1>Trouvez l’ordinateur idéal, en toute confiance</h1>
-      <p>
-        Comparez facilement les modèles selon vos besoins (études, travail, jeux, création).
-        Prototype vitrine + module d’assistant d’achat.
-      </p>
-     <div class="hero__actions">
-  <a class="btn btn--ghost" href="#catalogue">Voir les ordinateurs</a>
-</div>
-      <div class="hero__badges">
-        <span class="badge">Livraison rapide</span>
-        <span class="badge">Prix compétitifs</span>
-        <span class="badge">Conseils personnalisés</span>
+  <header class="hero">
+    <div class="container hero__inner">
+
+      <!-- Colonne gauche : texte -->
+      <div class="hero__left">
+        <div class="hero__tag">✨ Propulsé par l'IA</div>
+        <h1>Trouvez l'ordinateur idéal, en toute confiance</h1>
+        <p>
+          Comparez facilement les modèles selon vos besoins — études, travail, jeux, création.
+          Notre assistant IA vous guide vers le meilleur choix en quelques secondes.
+        </p>
+        <div class="hero__actions">
+          <button class="btn btn--white" onclick="document.getElementById('chatFab').click()">
+            🎤 Parler à l'assistant
+          </button>
+          <a class="btn btn--ghost-white" href="#catalogue">Voir les ordinateurs</a>
+        </div>
+        <div class="hero__badges">
+          <span class="badge">🚚 Livraison rapide</span>
+          <span class="badge">💰 Prix compétitifs</span>
+          <span class="badge">🤖 Conseils IA personnalisés</span>
+        </div>
       </div>
+
+      <!-- Colonne droite : carte produit vedette -->
+      <div class="hero__right">
+        <div class="hero__card">
+          <div class="hero__card-tag">⭐ Coup de cœur</div>
+          <img src="assets/gaming.jpg" alt="Ordinateur Gaming" class="hero__card-img" />
+          <div class="hero__card-body">
+            <div class="hero__card-name">Gaming 16 — Ryzen 7 / RTX 4070</div>
+            <div class="hero__card-specs">
+              <span>32 Go RAM</span>
+              <span>1 To SSD</span>
+              <span>Windows</span>
+            </div>
+            <div class="hero__card-price">
+              <span class="hero__card-amount">1 699 $</span>
+              <button class="btn btn--primary hero__card-btn" onclick="addToCart('LAP-003')">Ajouter au panier</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-</header>
-
-
-
-
-
-
-
   </header>
 
   <!-- Main layout -->
@@ -109,7 +129,7 @@
       </div>
 
       <div class="note">
-        Astuce: utilise aussi la recherche en haut ou l’assistant IA.
+        💡 Astuce : utilise aussi la recherche en haut ou l'assistant IA.
       </div>
     </aside>
 
@@ -117,9 +137,8 @@
     <section class="products">
       <div class="sectionHead">
         <h2>Ordinateurs portables</h2>
-        <p class="muted">Catalogue </p>
+        <p class="muted">Catalogue</p>
       </div>
-
       <div class="grid" id="grid"></div>
     </section>
   </main>
@@ -128,28 +147,38 @@
   <section class="assistant" id="assistant">
     <div class="container assistant__inner">
       <div class="assistant__text">
-        <h2>Assistant d’achat </h2>
-        <p class="muted">
-          Ici tu peux.
-        </p>
+        <h2>Assistant d'achat IA</h2>
+        <p class="muted">Posez vos questions en texte ou par la voix — AURA vous guide.</p>
         <ul>
-          <li>Pose des questions: usage, budget, portabilité, autonomie.</li>
-          <li>Explique les compromis (prix vs performance).</li>
-          <li>Recommande 3 options.</li>
+          <li>Décrivez votre usage : études, jeux, travail, création</li>
+          <li>Indiquez votre budget et vos priorités</li>
+          <li>Recevez 2 recommandations personnalisées et justifiées</li>
         </ul>
-
-      
-
-        <!-- Option: intégration iframe (si streamlit tourne) -->
-        <div class="iframeWrap">
-           <div class="muted tiny">Utilisez le bouton flottant 💬 ou le bouton “Parler à l’assistant”.</div>
-           </div>
+        <div class="assistant__cta">
+          <button class="btn btn--white" onclick="document.getElementById('chatFab').click()">
+            💬 Lancer l'assistant
+          </button>
+        </div>
       </div>
 
-
-
-
-      
+      <div class="assistant__kpis">
+        <div class="kpi">
+          <div class="kpi__v">2</div>
+          <div class="kpi__l">Recommandations ciblées</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__v">4</div>
+          <div class="kpi__l">Usages couverts</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__v">🎤</div>
+          <div class="kpi__l">Vocal disponible</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__v">IA</div>
+          <div class="kpi__l">Powered by GPT</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -169,49 +198,37 @@
     </div>
   </div>
 
-  
-  
-  
-  
-  
-<!-- Bouton flottant chatbot -->
-<button class="chatFab" id="chatFab" title="Assistant IA">💬</button>
+  <!-- Bouton flottant chatbot -->
+  <button class="chatFab" id="chatFab" title="Assistant IA AURA">💬</button>
 
-<!-- Widget chatbot -->
-<div class="chatWidget" id="chatWidget" aria-hidden="true">
-  <div class="chatWidget__header">
-    <div><strong>Assistant IA</strong></div>
-    <button class="chatWidget__close" id="chatClose" aria-label="Fermer">✕</button>
+  <!-- Widget chatbot -->
+  <div class="chatWidget" id="chatWidget" aria-hidden="true">
+    <div class="chatWidget__header">
+      <div>
+        <strong>Assistant AURA</strong>
+        <div class="chatWidget__status">🟢 En ligne</div>
+      </div>
+      <button class="chatWidget__close" id="chatClose" aria-label="Fermer">✕</button>
+    </div>
+
+    <div class="chatWidget__body">
+      <div id="chatMessages"></div>
+    </div>
+
+    <div class="chatWidget__composer">
+      <button class="chatWidget__mic" id="chatMic" type="button" title="Parler à l'assistant">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 14C13.6569 14 15 12.6569 15 11V5C15 3.34315 13.6569 2 12 2C10.3431 2 9 3.34315 9 5V11C9 12.6569 10.3431 14 12 14Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M19 11C19 15 16 18 12 18C8 18 5 15 5 11" stroke="currentColor" stroke-width="2"/>
+          <line x1="12" y1="18" x2="12" y2="22" stroke="currentColor" stroke-width="2"/>
+          <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <input class="chatWidget__input" id="chatInput" type="text" placeholder="Écris ta question…" />
+      <button class="chatWidget__send" id="chatSend">Envoyer</button>
+    </div>
   </div>
 
-  <div class="chatWidget__body">
-    <div id="chatMessages"></div>
-  </div>
-
-<div class="chatWidget__composer">
-  <button class="chatWidget__mic" id="chatMic" type="button" title="Parler au chatbot">
-
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-<path d="M12 14C13.6569 14 15 12.6569 15 11V5C15 3.34315 13.6569 2 12 2C10.3431 2 9 3.34315 9 5V11C9 12.6569 10.3431 14 12 14Z" stroke="currentColor" stroke-width="2"/>
-<path d="M19 11C19 15 16 18 12 18C8 18 5 15 5 11" stroke="currentColor" stroke-width="2"/>
-<line x1="12" y1="18" x2="12" y2="22" stroke="currentColor" stroke-width="2"/>
-<line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="2"/>
-</svg>
-
-</button>
-  <input class="chatWidget__input" id="chatInput" type="text" placeholder="Écris ta question…" />
-  <button class="chatWidget__send" id="chatSend">Envoyer</button>
-</div>
-</div>
-
-<!-- IMPORTANT : ton app.js doit être chargé après le HTML -->
-<script src="js/app.js" defer></script>
-
-
+  <script src="js/app.js" defer></script>
 </body>
 </html>
-
-
-
-
-
