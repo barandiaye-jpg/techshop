@@ -193,5 +193,44 @@
     "os": "Windows",
     "use_cases": ["development", "multitasking"],
     "description": "Idéal pour développeurs et data analysts."
-  }
+  },
+  {
+  "id": "p016",
+  "name": "ProStation Ryzen 9",
+  "category": "Desktop",
+  "price": 3499,
+  "cpu": "AMD Ryzen 9 7950X",
+  "ram": "64GB DDR5",
+  "storage": "2TB NVMe SSD",
+  "gpu": "RTX 4080",
+  "os": "Windows",
+  "use_cases": ["gaming", "creation", "development", "streaming"],
+  "description": "Station de travail ultime pour les professionnels exigeants."
+},
+{
+  "id": "p017",
+  "name": "MacBook Pro M3 Max",
+  "category": "Laptop",
+  "price": 4299,
+  "cpu": "Apple M3 Max",
+  "ram": "36GB",
+  "storage": "1TB SSD",
+  "gpu": "Integrated",
+  "os": "macOS",
+  "use_cases": ["creation", "development", "video"],
+  "description": "Le MacBook Pro le plus puissant pour la création professionnelle."
+},
+{
+  "id": "p018",
+  "name": "WorkStation Ultra i9",
+  "category": "Desktop",
+  "price": 5999,
+  "cpu": "Intel Core i9-14900K",
+  "ram": "128GB DDR5",
+  "storage": "4TB NVMe SSD",
+  "gpu": "RTX 4090",
+  "os": "Windows",
+  "use_cases": ["development", "creation", "gaming", "AI"],
+  "description": "Workstation professionnelle pour les tâches les plus exigeantes."
+}
 ]
