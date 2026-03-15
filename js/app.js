@@ -471,13 +471,21 @@ tts.init();
 
       // ── TTS : lecture de la réponse, puis relance écoute ──
       tts.enabled=true;
-      tts.speak(answer, ()=>{
-        // Relance l'écoute APRÈS que la voix a fini de parler
-        if(conversationMode && !isRecording && !isProcessingVoice){
-          setTimeout(()=>startVoiceRecording(), 400);
-        }
-      });
-      return; // on sort ici — la relance est gérée par le callback TTS
+     tts.speak(answer, ()=>{
+  if(conversationMode){
+    // Attendre que isProcessingVoice soit bien false avant de relancer
+    const tryRestart = () => {
+      if(!isRecording && !isProcessingVoice && conversationMode){
+        setTimeout(()=>startVoiceRecording(), 400);
+      } else if(conversationMode){
+        // Réessayer dans 300ms si pas encore prêt
+        setTimeout(tryRestart, 300);
+      }
+    };
+    tryRestart();
+  }
+});
+return;
 
     }catch(e){
       clearTimeout(timer);
@@ -572,7 +580,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 // ── KEEP-ALIVE — ping toutes les 10 min ──
 (function keepAlive(){
   const BACKEND = "https://techshop-ai-backend.onrender.com/health";
-  const INTERVAL = 10 * 60 * 1000; // 10 minutes
+  const INTERVAL = 10 * 60 * 1000;
 
   async function ping(){
     try{
@@ -583,8 +591,9 @@ window.addEventListener("DOMContentLoaded",()=>{
     }
   }
 
-  // Premier ping au chargement de la page
-  ping();
-  // Puis toutes les 10 minutes
-  setInterval(ping, INTERVAL);
+  // ← Attendre 30s avant le premier ping pour ne pas interférer
+  setTimeout(()=>{
+    ping();
+    setInterval(ping, INTERVAL);
+  }, 30000);
 })();
