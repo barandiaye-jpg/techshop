@@ -357,7 +357,8 @@ tts.init();
     if(rms<THRESH_SILENCE){
       if(!silenceStart) silenceStart=now;
       const dur=now-silenceStart;
-      const rem=((SILENCE_MS-dur)/1000).toFixed(1);
+      const remaining = Math.max(0, SILENCE_MS - dur);  // ← ligne 1 modifiée
+      const rem = (remaining/1000).toFixed(1);           // ← ligne 2 ajoutée
       const m=lastBotMsg();
       if(m&&dur>300) m.textContent=`🔇 Envoi dans ${rem}s...`;
       if(dur>=SILENCE_MS){ doStop(false); return; }
@@ -439,7 +440,7 @@ tts.init();
     sendBtn.disabled=true; isProcessingVoice=true;
 
     const ctrl=new AbortController();
-    const timer=setTimeout(()=>ctrl.abort(),20000);
+    const timer=setTimeout(()=>ctrl.abort(),60000);
 
     try{
       const ext=mimeType.includes("mp4")?"mp4":mimeType.includes("ogg")?"ogg":"webm";
@@ -562,3 +563,28 @@ window.addEventListener("DOMContentLoaded",()=>{
 });
 
 
+
+
+
+
+
+
+// ── KEEP-ALIVE — ping toutes les 10 min ──
+(function keepAlive(){
+  const BACKEND = "https://techshop-ai-backend.onrender.com/health";
+  const INTERVAL = 10 * 60 * 1000; // 10 minutes
+
+  async function ping(){
+    try{
+      await fetch(BACKEND, { method:"GET" });
+      console.log("Keep-alive ping OK");
+    }catch(e){
+      console.log("Keep-alive ping failed:", e.message);
+    }
+  }
+
+  // Premier ping au chargement de la page
+  ping();
+  // Puis toutes les 10 minutes
+  setInterval(ping, INTERVAL);
+})();
