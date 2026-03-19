@@ -250,9 +250,17 @@ def run_rag_pipeline(
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if history:
         messages.extend(history[-8:])
+
+    # Injecter le budget détecté directement dans le prompt utilisateur
+    budget_reminder = ""
+    if budget["max"] is not None:
+        budget_reminder = f"\n\n⚠️ STRICT BUDGET CONSTRAINT: The user's maximum budget is {budget['max']} $. You MUST NOT recommend any product whose price exceeds {budget['max']} $. This rule is absolute — no exceptions, even for promotions."
+    elif budget["min"] is not None:
+        budget_reminder = f"\n\n⚠️ STRICT BUDGET CONSTRAINT: The user wants products above {budget['min']} $. You MUST NOT recommend any product cheaper than {budget['min']} $."
+
     messages.append({
         "role": "user",
-        "content": f"User question:\n{message}\n\nContext:\n{context}",
+        "content": f"User question:\n{message}\n\nContext:\n{context}{budget_reminder}",
     })
 
     # 5. LLM
