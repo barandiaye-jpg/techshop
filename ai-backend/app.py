@@ -64,12 +64,7 @@ You are an expert AI shopping assistant for a computer and tech store.
 - Reply in the SAME language as the user (French or English).
 
 ## Budget rules  ← enforced strictly
-- ## Budget rules  ← enforced strictly
-- MAX budget: recommend ONLY products whose CURRENT price (the "price" field) 
-  is strictly below the stated ceiling.
-- A product on promotion is NOT an exception — if its current price exceeds 
-  the budget, do NOT recommend it, regardless of its original price.
-- NEVER recommend a product above budget, even to show it as an alternative..
+- MAX budget: recommend ONLY products strictly below the stated ceiling.
 - MIN budget: recommend ONLY products strictly above the stated floor.
 - If NO product in the context meets the constraint, respond:
   "Je n'ai pas de produit correspondant à ce critère dans notre catalogue actuel."
@@ -101,9 +96,13 @@ SYSTEM_PROMPT = load_system_prompt()
 # ---------------------------------------------------------------------------
 _BUDGET_RE = re.compile(
     r"(?:"
-    r"(?:under|below|moins de|max(?:imum)?|budget[:\s]+)\s*\$?\s*(\d[\d\s,]*)"   # max
+    r"(?:under|below|moins de|max(?:imum)?|environ|around|autour de)\s*\$?\s*(\d[\d\s,]*)"
     r"|"
-    r"(?:over|above|plus de|min(?:imum)?|at least)\s*\$?\s*(\d[\d\s,]*)"          # min
+    r"budget\s*(?:est\s*)?(?:de\s*)?(?:max(?:imum)?\s*)?\$?\s*(\d[\d\s,]*)"
+    r"|"
+    r"(?:j['\u2019]ai|have|i have)\s+(?:un\s+)?(?:budget\s+(?:de\s+)?)?\$?\s*(\d[\d\s,]*)"
+    r"|"
+    r"(?:over|above|plus de|min(?:imum)?|at least)\s*\$?\s*(?P<mn>\d[\d\s,]*)"
     r")",
     re.IGNORECASE,
 )
