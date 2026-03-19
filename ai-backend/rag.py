@@ -149,10 +149,19 @@ def _build_weighted_text(p: Dict) -> str:
 
 
 def _build_plain_text(p: Dict) -> str:
+    old_price = p.get("oldPrice") or p.get("old_price")
+    saving = int(old_price - p.get("price", 0)) if old_price and old_price > p.get("price", 0) else 0
+    discount = f"On sale, save {saving}$, was {old_price}$" if saving else ""
+    promo_flag    = "Yes — currently on promotion" if p.get("deal") or old_price else "No"
+    featured_flag = "Yes — staff pick, highly recommended" if p.get("featured") else "No"
     return (
         f"Name: {p.get('name','')}\n"
         f"Category: {p.get('category','')}\n"
         f"Price: {p.get('price','')}\n"
+        f"Original price: {old_price or 'N/A'}\n"
+        f"Discount: {discount}\n"
+        f"On promotion: {promo_flag}\n"
+        f"Featured / coup de coeur: {featured_flag}\n"
         f"CPU: {p.get('cpu','')}\n"
         f"RAM: {p.get('ram','')}\n"
         f"Storage: {p.get('storage','')}\n"
