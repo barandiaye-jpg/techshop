@@ -196,20 +196,28 @@ def transcribe_audio_file(upload: UploadFile) -> str:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription error: {e}")
 
-def extract_budget_from_history(message, history):
-    # Cherche d'abord dans le message actuel
-    budget = extract_budget(message)
-    if budget["max"] or budget["min"]:
-        return budget          # trouvé ici, on s'arrête
 
-    # Sinon remonte l'historique du plus récent au plus ancien
+def extract_budget_from_history(
+    message: str,
+    history: Optional[List[Dict[str, str]]] = None,
+) -> Dict[str, Optional[float]]:
+    """
+    Cherche un budget dans le message courant d'abord,
+    puis remonte l'historique si rien n'est trouvé.
+    """
+    budget = extract_budget(message)
+    if budget["max"] is not None or budget["min"] is not None:
+        return budget
+
     if history:
         for turn in reversed(history):
-            budget = extract_budget(turn.get("content", ""))
-            if budget["max"] or budget["min"]:
-                return budget  # trouvé dans un ancien message
+            content = turn.get("content", "")
+            budget = extract_budget(content)
+            if budget["max"] is not None or budget["min"] is not None:
+                return budget
 
     return {"max": None, "min": None}
+
 
 def run_rag_pipeline(
     message: str,
@@ -222,9 +230,8 @@ def run_rag_pipeline(
     # 1. Retrieve
     hits = rag.search(message, k=k)
 
-    # 2. Server-side budget guard
+    # 2. Server-side budget guard — cherche aussi dans l'historique
     budget = extract_budget_from_history(message, history)
-# regarde le message courant, puis l'historique si besoin
     hits = filter_by_budget(hits, budget)
 
     # 3. Build context
