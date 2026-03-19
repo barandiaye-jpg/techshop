@@ -72,7 +72,7 @@ class HybridRAG:
     Falls back gracefully if a query has zero similarity across all docs.
     """
  
-    MIN_SCORE = 0.05          # below this → doc is irrelevant
+    MIN_SCORE = 0.01          # below this → doc is irrelevant
     TFIDF_WEIGHT = 0.4
     BM25_WEIGHT = 0.6
  
