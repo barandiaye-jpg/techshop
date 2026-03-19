@@ -4,15 +4,15 @@ import json
 import logging
 import time
 from typing import List, Optional, Dict, Any
-
+ 
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-
+ 
 from openai import OpenAI
 from rag import HybridRAG, load_products_as_docs
-
+ 
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -21,12 +21,12 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 logger = logging.getLogger(__name__)
-
+ 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+ 
 app = FastAPI(title="TechStore AI Backend", version="2.0.0")
-
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -38,7 +38,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+ 
 # ---------------------------------------------------------------------------
 # RAG initialisation
 # ---------------------------------------------------------------------------
@@ -46,15 +46,15 @@ PRODUCTS_PATH = os.getenv("PRODUCTS_PATH", "data/products.json")
 docs = load_products_as_docs(PRODUCTS_PATH)
 rag = HybridRAG(docs)
 logger.info(f"RAG initialised — {len(docs)} products indexed.")
-
+ 
 # ---------------------------------------------------------------------------
 # System prompt  (load from file if present, fallback to inline)
 # ---------------------------------------------------------------------------
 _PROMPT_PATH = "prompts/system_prompt.txt"
-
+ 
 _DEFAULT_SYSTEM_PROMPT = """
 You are an expert AI shopping assistant for a computer and tech store.
-
+ 
 ## Core rules
 - Base ALL product facts (price, specs) ONLY on the provided context. Never invent.
 - If the context is empty or insufficient, say so clearly and offer to help differently.
@@ -62,24 +62,24 @@ You are an expert AI shopping assistant for a computer and tech store.
 - Always display prices with the $ symbol (e.g. 999 $). Never use € or EUR.
 - Be concise, warm, and practical — like a knowledgeable friend, not a salesperson.
 - Reply in the SAME language as the user (French or English).
-
+ 
 ## Budget rules  ← enforced strictly
 - MAX budget: recommend ONLY products strictly below the stated ceiling.
 - MIN budget: recommend ONLY products strictly above the stated floor.
 - If NO product in the context meets the constraint, respond:
   "Je n'ai pas de produit correspondant à ce critère dans notre catalogue actuel."
   / "I don't have a product matching that criterion in our current catalogue."
-
+ 
 ## Promotions
 - If a product has "On promotion: Yes" in its context, mention the discount and original price — it's a strong selling point.
 - If a product is "Featured / coup de coeur: Yes", highlight it as a staff pick when recommending it.
-
+ 
 ## Format
 - Use short bullet points for specs.
 - Mention promo price and savings if applicable (e.g. "currently on sale: 1299 $ instead of 1499 $, save 200 $").
 - End with one follow-up question to refine the recommendation.
 """.strip()
-
+ 
 def load_system_prompt() -> str:
     if os.path.exists(_PROMPT_PATH):
         with open(_PROMPT_PATH, "r", encoding="utf-8") as f:
@@ -88,9 +88,9 @@ def load_system_prompt() -> str:
                 logger.info(f"System prompt loaded from {_PROMPT_PATH}")
                 return content
     return _DEFAULT_SYSTEM_PROMPT
-
+ 
 SYSTEM_PROMPT = load_system_prompt()
-
+ 
 # ---------------------------------------------------------------------------
 # Budget guard — server-side extraction + filtering
 # ---------------------------------------------------------------------------
@@ -106,12 +106,12 @@ _BUDGET_RE = re.compile(
     r")",
     re.IGNORECASE,
 )
-
-
+ 
+ 
 def _parse_price(raw: str) -> float:
     return float(raw.replace(",", "").replace(" ", ""))
-
-
+ 
+ 
 def extract_budget(text: str) -> Dict[str, Optional[float]]:
     """Return {'max': float|None, 'min': float|None}."""
     result: Dict[str, Optional[float]] = {"max": None, "min": None}
@@ -121,8 +121,8 @@ def extract_budget(text: str) -> Dict[str, Optional[float]]:
         if m.group(2):
             result["min"] = _parse_price(m.group(2))
     return result
-
-
+ 
+ 
 def filter_by_budget(
     hits: List[tuple],
     budget: Dict[str, Optional[float]],
@@ -130,7 +130,7 @@ def filter_by_budget(
     """Remove docs that violate the detected budget constraint."""
     if budget["max"] is None and budget["min"] is None:
         return hits
-
+ 
     filtered = []
     for doc, score in hits:
         price_raw = doc.meta.get("price")
@@ -139,15 +139,15 @@ def filter_by_budget(
         except (ValueError, TypeError):
             filtered.append((doc, score))   # keep if price unknown
             continue
-
+ 
         if budget["max"] is not None and price > budget["max"]:
             continue
         if budget["min"] is not None and price < budget["min"]:
             continue
         filtered.append((doc, score))
-
+ 
     return filtered
-
+ 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -160,8 +160,8 @@ def build_context(hits: List[tuple]) -> str:
             f"[{doc.doc_id}] {doc.title} (relevance={score:.3f})\n{doc.text}"
         )
     return "\n\n---\n\n".join(blocks)
-
-
+ 
+ 
 def hits_to_sources(hits: List[tuple]) -> List[Dict[str, Any]]:
     return [
         {
@@ -173,8 +173,8 @@ def hits_to_sources(hits: List[tuple]) -> List[Dict[str, Any]]:
         }
         for doc, score in hits
     ]
-
-
+ 
+ 
 def call_llm(messages: List[Dict], temperature: float = 0.2) -> str:
     completion = client.chat.completions.create(
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
@@ -183,8 +183,8 @@ def call_llm(messages: List[Dict], temperature: float = 0.2) -> str:
         max_tokens=600,
     )
     return completion.choices[0].message.content
-
-
+ 
+ 
 def transcribe_audio_file(upload: UploadFile) -> str:
     try:
         upload.file.seek(0)
@@ -204,8 +204,8 @@ def transcribe_audio_file(upload: UploadFile) -> str:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription error: {e}")
-
-
+ 
+ 
 def extract_budget_from_history(
     message: str,
     history: Optional[List[Dict[str, str]]] = None,
@@ -217,17 +217,17 @@ def extract_budget_from_history(
     budget = extract_budget(message)
     if budget["max"] is not None or budget["min"] is not None:
         return budget
-
+ 
     if history:
         for turn in reversed(history):
             content = turn.get("content", "")
             budget = extract_budget(content)
             if budget["max"] is not None or budget["min"] is not None:
                 return budget
-
+ 
     return {"max": None, "min": None}
-
-
+ 
+ 
 def run_rag_pipeline(
     message: str,
     history: Optional[List[Dict[str, str]]],
@@ -235,46 +235,46 @@ def run_rag_pipeline(
 ) -> tuple:
     """Shared logic for /chat and /voice-chat."""
     t0 = time.perf_counter()
-
+ 
     # 1. Retrieve
     hits = rag.search(message, k=k)
-
+ 
     # 2. Server-side budget guard — cherche aussi dans l'historique
     budget = extract_budget_from_history(message, history)
     hits = filter_by_budget(hits, budget)
-
+ 
     # 3. Build context
     context = build_context(hits)
-
+ 
     # 4. Build messages
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if history:
         messages.extend(history[-8:])
-
+ 
     # Injecter le budget détecté directement dans le prompt utilisateur
     budget_reminder = ""
     if budget["max"] is not None:
         budget_reminder = f"\n\n⚠️ STRICT BUDGET CONSTRAINT: The user's maximum budget is {budget['max']} $. You MUST NOT recommend any product whose price exceeds {budget['max']} $. This rule is absolute — no exceptions, even for promotions."
     elif budget["min"] is not None:
         budget_reminder = f"\n\n⚠️ STRICT BUDGET CONSTRAINT: The user wants products above {budget['min']} $. You MUST NOT recommend any product cheaper than {budget['min']} $."
-
+ 
     messages.append({
         "role": "user",
         "content": f"User question:\n{message}\n\nContext:\n{context}{budget_reminder}",
     })
-
+ 
     # 5. LLM
     answer = call_llm(messages)
-
+ 
     elapsed = time.perf_counter() - t0
     logger.info(
         f"Pipeline | query={message[:60]!r} | hits={len(hits)} "
         f"| budget={budget} | time={elapsed:.2f}s"
     )
-
+ 
     return answer, hits
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # Models
 # ---------------------------------------------------------------------------
@@ -282,16 +282,16 @@ class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=2000)
     history: Optional[List[Dict[str, str]]] = None
     k: int = Field(default=5, ge=1, le=15)
-
+ 
 class ChatResponse(BaseModel):
     answer: str
     sources: List[Dict[str, Any]]
-
+ 
 class VoiceChatResponse(BaseModel):
     transcript: str
     answer: str
     sources: List[Dict[str, Any]]
-
+ 
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
@@ -299,8 +299,8 @@ class VoiceChatResponse(BaseModel):
 def chat(req: ChatRequest):
     answer, hits = run_rag_pipeline(req.message, req.history, req.k)
     return ChatResponse(answer=answer, sources=hits_to_sources(hits))
-
-
+ 
+ 
 @app.post("/voice-chat", response_model=VoiceChatResponse)
 def voice_chat(
     audio: UploadFile = File(...),
@@ -308,7 +308,7 @@ def voice_chat(
     k: int = Form(5),
 ):
     transcript = transcribe_audio_file(audio)
-
+ 
     parsed_history = []
     if history:
         try:
@@ -317,15 +317,15 @@ def voice_chat(
                 parsed_history = []
         except Exception:
             parsed_history = []
-
+ 
     answer, hits = run_rag_pipeline(transcript, parsed_history, k)
     return VoiceChatResponse(
         transcript=transcript,
         answer=answer,
         sources=hits_to_sources(hits),
     )
-
-
+ 
+ 
 @app.get("/health")
 def health():
     return {
@@ -334,3 +334,4 @@ def health():
         "model": os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         "rag": "HybridRAG (TF-IDF + BM25)",
     }
+ 
