@@ -6,8 +6,8 @@ from typing import List, Dict, Tuple, Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-
-
+ 
+ 
 @dataclass
 class Doc:
     doc_id: str
@@ -16,11 +16,11 @@ class Doc:
     text_weighted: str # boosted text for better recall
     meta: Dict
     tags: List[str] = field(default_factory=list)
-
-
+ 
+ 
 class BM25:
     """Lightweight BM25 implementation — better than TF-IDF for short queries."""
-
+ 
     def __init__(self, corpus: List[List[str]], k1: float = 1.5, b: float = 0.75):
         self.k1 = k1
         self.b = b
@@ -30,21 +30,21 @@ class BM25:
         self.df: Dict[str, int] = {}
         self.idf: Dict[str, float] = {}
         self._build_index()
-
+ 
     def _build_index(self):
         for doc in self.corpus:
             for term in set(doc):
                 self.df[term] = self.df.get(term, 0) + 1
         for term, freq in self.df.items():
             self.idf[term] = math.log((self.N - freq + 0.5) / (freq + 0.5) + 1)
-
+ 
     def score(self, query_terms: List[str], doc_idx: int) -> float:
         doc = self.corpus[doc_idx]
         dl = len(doc)
         tf_map: Dict[str, int] = {}
         for t in doc:
             tf_map[t] = tf_map.get(t, 0) + 1
-
+ 
         score = 0.0
         for term in query_terms:
             if term not in self.idf:
@@ -54,31 +54,31 @@ class BM25:
             denominator = tf + self.k1 * (1 - self.b + self.b * dl / self.avgdl)
             score += self.idf[term] * numerator / denominator
         return score
-
+ 
     def search(self, query: str, k: int = 5) -> List[Tuple[int, float]]:
         terms = query.lower().split()
         scores = [(i, self.score(terms, i)) for i in range(self.N)]
         scores.sort(key=lambda x: x[1], reverse=True)
         return scores[:k]
-
-
+ 
+ 
 def _tokenize(text: str) -> List[str]:
     return re.findall(r"\w+", text.lower())
-
-
+ 
+ 
 class HybridRAG:
     """
     Hybrid retriever: TF-IDF cosine + BM25, merged with Reciprocal Rank Fusion.
     Falls back gracefully if a query has zero similarity across all docs.
     """
-
+ 
     MIN_SCORE = 0.05          # below this → doc is irrelevant
     TFIDF_WEIGHT = 0.4
     BM25_WEIGHT = 0.6
-
+ 
     def __init__(self, docs: List[Doc]):
         self.docs = docs
-
+ 
         # TF-IDF on weighted text (field-boosted)
         self.vectorizer = TfidfVectorizer(
             stop_words=None,           # keep FR + EN words
@@ -89,27 +89,27 @@ class HybridRAG:
         self.tfidf_matrix = self.vectorizer.fit_transform(
             [d.text_weighted for d in docs]
         )
-
+ 
         # BM25 on full text
         corpus_tokens = [_tokenize(d.text) for d in docs]
         self.bm25 = BM25(corpus_tokens)
-
+ 
     # ------------------------------------------------------------------
     def search(self, query: str, k: int = 5) -> List[Tuple[Doc, float]]:
         # --- TF-IDF ---
         qv = self.vectorizer.transform([query])
         tfidf_sims = cosine_similarity(qv, self.tfidf_matrix).flatten()
-
+ 
         # --- BM25 ---
         bm25_raw = self.bm25.search(query, k=len(self.docs))
         bm25_scores = np.zeros(len(self.docs))
         max_bm25 = max((s for _, s in bm25_raw), default=1.0) or 1.0
         for idx, score in bm25_raw:
             bm25_scores[idx] = score / max_bm25   # normalize 0-1
-
+ 
         # --- Fusion ---
         combined = self.TFIDF_WEIGHT * tfidf_sims + self.BM25_WEIGHT * bm25_scores
-
+ 
         # --- Filter + rank ---
         ranked = sorted(enumerate(combined), key=lambda x: x[1], reverse=True)
         results = []
@@ -117,10 +117,10 @@ class HybridRAG:
             if score < self.MIN_SCORE:
                 break
             results.append((self.docs[idx], float(score)))
-
+ 
         return results
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # Field-boosted text builder
 # ---------------------------------------------------------------------------
@@ -136,8 +136,8 @@ FIELD_WEIGHTS = {
     "display":     1,
     "price":       1,
 }
-
-
+ 
+ 
 def _build_weighted_text(p: Dict) -> str:
     """Repeat high-signal fields to boost TF-IDF weight."""
     parts = []
@@ -146,8 +146,8 @@ def _build_weighted_text(p: Dict) -> str:
         if value:
             parts.extend([value] * weight)
     return " ".join(parts)
-
-
+ 
+ 
 def _build_plain_text(p: Dict) -> str:
     old_price = p.get("oldPrice") or p.get("old_price")
     saving = int(old_price - p.get("price", 0)) if old_price and old_price > p.get("price", 0) else 0
@@ -170,12 +170,12 @@ def _build_plain_text(p: Dict) -> str:
         f"Description: {p.get('description','')}\n"
         f"Use cases: {p.get('use_cases','')}\n"
     )
-
-
+ 
+ 
 def load_products_as_docs(path: str) -> List[Doc]:
     with open(path, "r", encoding="utf-8") as f:
         products = json.load(f)
-
+ 
     docs = []
     for p in products:
         use_cases_raw = p.get("use_cases", "")
@@ -183,10 +183,10 @@ def load_products_as_docs(path: str) -> List[Doc]:
             tags = [t.strip().lower() for t in use_cases_raw if t]
         else:
             tags = [t.strip().lower() for t in use_cases_raw.split(",")] if use_cases_raw else []
-
+ 
         # Normalise use_cases en string dans le produit avant d'indexer
         p_norm = {**p, "use_cases": ", ".join(tags)}
-
+ 
         docs.append(Doc(
             doc_id=str(p.get("id", p.get("name", "unknown"))),
             title=p.get("name", "Unknown product"),
@@ -196,7 +196,8 @@ def load_products_as_docs(path: str) -> List[Doc]:
             tags=tags,
         ))
     return docs
-
-
+ 
+ 
 # Keep old name as alias so app.py import doesn't break
 TfidfRAG = HybridRAG
+ 
