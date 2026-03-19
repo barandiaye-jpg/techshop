@@ -74,7 +74,7 @@
     "storage": "1TB SSD",
     "gpu": "RTX 4060",
     "os": "Windows",
-    "use_cases": ["creation", "video", "design"],
+    "use_cases": ["creation", "video", "design" , "gaming"],
     "description": "Machine puissante pour création de contenu et montage vidéo."
   },
   {
@@ -232,5 +232,31 @@
   "os": "Windows",
   "use_cases": ["development", "creation", "gaming", "AI"],
   "description": "Workstation professionnelle pour les tâches les plus exigeantes."
-}
+},
+  {
+    "id": "p019",
+    "name": "Gaming 15 Ryzen 5 RTX 4060",
+    "category": "Laptop",
+    "price": 1349,
+    "cpu": "AMD Ryzen 5 7535HS",
+    "ram": "16GB",
+    "storage": "512GB SSD",
+    "gpu": "RTX 4060",
+    "os": "Windows",
+    "use_cases": ["gaming", "performance", "streaming"],
+    "description": "Laptop gaming accessible avec RTX 4060, idéal pour les jeux AAA et le streaming en 1080p."
+  },
+  {
+    "id": "p020",
+    "name": "MacBook Pro M3 14\"",
+    "category": "Laptop",
+    "price": 1799,
+    "cpu": "Apple M3",
+    "ram": "8GB",
+    "storage": "512GB SSD",
+    "gpu": "Integrated",
+    "os": "macOS",
+    "use_cases": ["creation", "development", "productivity", "video"],
+    "description": "MacBook Pro d'entrée de gamme avec puce M3, parfait pour les créateurs et développeurs qui veulent la puissance Apple sans le prix du Pro Max."
+  }
 ]
