@@ -169,14 +169,20 @@ def load_products_as_docs(path: str) -> List[Doc]:
 
     docs = []
     for p in products:
-        use_cases = p.get("use_cases", "")
-        tags = [t.strip().lower() for t in use_cases.split(",")] if use_cases else []
+        use_cases_raw = p.get("use_cases", "")
+        if isinstance(use_cases_raw, list):
+            tags = [t.strip().lower() for t in use_cases_raw if t]
+        else:
+            tags = [t.strip().lower() for t in use_cases_raw.split(",")] if use_cases_raw else []
+
+        # Normalise use_cases en string dans le produit avant d'indexer
+        p_norm = {**p, "use_cases": ", ".join(tags)}
 
         docs.append(Doc(
             doc_id=str(p.get("id", p.get("name", "unknown"))),
             title=p.get("name", "Unknown product"),
-            text=_build_plain_text(p),
-            text_weighted=_build_weighted_text(p),
+            text=_build_plain_text(p_norm),
+            text_weighted=_build_weighted_text(p_norm),
             meta=p,
             tags=tags,
         ))
