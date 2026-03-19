@@ -236,12 +236,16 @@ def run_rag_pipeline(
     """Shared logic for /chat and /voice-chat."""
     t0 = time.perf_counter()
  
-    # 1. Retrieve
-    hits = rag.search(message, k=k)
- 
-    # 2. Server-side budget guard — cherche aussi dans l'historique
+    # 1. Retrieve — si budget détecté, chercher plus large sans seuil MIN_SCORE
     budget = extract_budget_from_history(message, history)
-    hits = filter_by_budget(hits, budget)
+    if budget["max"] is not None or budget["min"] is not None:
+        # On veut tous les produits pour filtrer par budget ensuite
+        all_hits = rag.search(message, k=len(rag.docs))
+        hits = filter_by_budget(all_hits, budget)
+        # Si après filtre budget on a moins de k résultats c'est normal
+        hits = hits[:k]
+    else:
+        hits = rag.search(message, k=k)
  
     # 3. Build context
     context = build_context(hits)
@@ -334,4 +338,3 @@ def health():
         "model": os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         "rag": "HybridRAG (TF-IDF + BM25)",
     }
- 
