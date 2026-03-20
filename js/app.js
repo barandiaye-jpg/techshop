@@ -100,7 +100,7 @@ function render(){
         ${p.oldPrice ? `<div class="old">${money(p.oldPrice)}</div>` : ``}
       </div>
       <div class="card__actions">
-        <button class="btn btn--ghost" onclick="openDetails('${p.id}')">Détails</button>
+        <button class="btn btn--ghost" onclick="openDetailsWithReco('${p.id}')">Détails</button>
         <button class="btn btn--primary" onclick="addToCart('${p.id}')">Ajouter</button>
       </div>
     </div>
