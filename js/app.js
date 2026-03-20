@@ -8,11 +8,26 @@
 // ===============================
  
 const PRODUCTS = [
-  {id:"LAP-001", name:"Ultrabook 14 — i5 / 16Go / 512Go", brand:"Nova",  price:999,  oldPrice:1199, cpu:"Intel i5", ram:16, ssd:512,  gpu:"Intégrée", os:"Windows", rating:4.6, reviews:312, tags:["Études","Travail","Portable","Autonomie"], deal:true,  stock:18, image:"assets/ultrabook.jpg"},
-  {id:"LAP-002", name:"Creator 15 — i7 / 32Go / 1To / RTX 4060", brand:"Astra", price:1499, oldPrice:1699, cpu:"Intel i7", ram:32, ssd:1024, gpu:"RTX 4060", os:"Windows", rating:4.7, reviews:221, tags:["Création","Montage","Performance"], deal:true,  stock:7,  image:"assets/creator.jpg"},
-  {id:"LAP-003", name:"Gaming 16 — Ryzen 7 / 32Go / 1To / RTX 4070", brand:"Orion", price:1699, oldPrice:null, cpu:"Ryzen 7", ram:32, ssd:1024, gpu:"RTX 4070", os:"Windows", rating:4.5, reviews:540, tags:["Jeux","Performance"], deal:false, stock:4,  image:"assets/gaming.jpg"},
-  {id:"LAP-004", name:"Budget 15 — i3 / 8Go / 256Go", brand:"Nova",  price:749,  oldPrice:799,  cpu:"Intel i3", ram:8,  ssd:256,  gpu:"Intégrée", os:"Windows", rating:4.2, reviews:980, tags:["Budget","Bureautique"], deal:true,  stock:25, image:"assets/budget.jpg"},
-  {id:"LAP-005", name:"Mac-style 13 — M-chip / 16Go / 512Go", brand:"Pear",  price:1599, oldPrice:null, cpu:"M-chip",  ram:16, ssd:512,  gpu:"Intégrée", os:"macOS",   rating:4.8, reviews:410, tags:["Études","Portable","Autonomie"], deal:false, stock:9,  image:"assets/mac.jpg"},
+  {id:"p001", name:"CreatorBook Studio", brand:"Nova", price:1899.99, oldPrice:2099, cpu:"AMD Ryzen 9 7940HS", ram:32, ssd:1024, gpu:"AMD Radeon 780M", os:"Windows", rating:4.6, reviews:210, tags:["Création","Design","Productivité"], deal:false, stock:10, image:"assets/creator.jpg"},
+  {id:"p002", name:"GameMaster Xtreme", brand:"Orion", price:2799.99, oldPrice:null, cpu:"AMD Ryzen 9 7950X", ram:64, ssd:2048, gpu:"RTX 4080", os:"Windows", rating:4.8, reviews:95, tags:["Jeux","Streaming"], deal:false, stock:3, image:"assets/gaming.jpg"},
+  {id:"p003", name:"Ultrabook Pro 14 i5", brand:"Nova", price:999, oldPrice:1199, cpu:"Intel Core i5-1335U", ram:16, ssd:512, gpu:"Intel Iris Xe", os:"Windows", rating:4.6, reviews:312, tags:["Études","Travail","Portable"], deal:true, stock:18, image:"assets/ultrabook.jpg"},
+  {id:"p004", name:"Business 15 i5", brand:"Nova", price:1099, oldPrice:null, cpu:"Intel Core i5-12450H", ram:16, ssd:1024, gpu:"Intel UHD", os:"Windows", rating:4.4, reviews:180, tags:["Travail","Bureau","Multitâche"], deal:false, stock:12, image:"assets/ultrabook.jpg"},
+  {id:"p005", name:"SlimBook 14 i5", brand:"Nova", price:949, oldPrice:null, cpu:"Intel Core i5-1235U", ram:16, ssd:512, gpu:"Intel Iris Xe", os:"Windows", rating:4.3, reviews:140, tags:["Études","Voyage"], deal:false, stock:20, image:"assets/ultrabook.jpg"},
+  {id:"p006", name:"Creator 15 i7", brand:"Astra", price:1499, oldPrice:1699, cpu:"Intel Core i7-12700H", ram:32, ssd:1024, gpu:"RTX 4060", os:"Windows", rating:4.7, reviews:221, tags:["Création","Montage","Gaming"], deal:true, stock:7, image:"assets/creator.jpg"},
+  {id:"p007", name:"Performance 14 i7", brand:"Nova", price:1399, oldPrice:null, cpu:"Intel Core i7-1360P", ram:16, ssd:1024, gpu:"Intel Iris Xe", os:"Windows", rating:4.5, reviews:160, tags:["Travail","Productivité"], deal:false, stock:9, image:"assets/ultrabook.jpg"},
+  {id:"p008", name:"Gaming 16 i7 RTX 4070", brand:"Orion", price:1799, oldPrice:null, cpu:"Intel Core i7-13700H", ram:32, ssd:1024, gpu:"RTX 4070", os:"Windows", rating:4.5, reviews:540, tags:["Jeux","Performance"], deal:false, stock:4, image:"assets/gaming.jpg"},
+  {id:"p009", name:"Gaming Ryzen 7", brand:"Orion", price:1599, oldPrice:1799, cpu:"AMD Ryzen 7 7840HS", ram:16, ssd:1024, gpu:"RTX 4060", os:"Windows", rating:4.6, reviews:310, tags:["Jeux","Performance"], deal:true, stock:6, image:"assets/gaming.jpg"},
+  {id:"p010", name:"MacBook Air M2", brand:"Pear", price:1499, oldPrice:null, cpu:"Apple M2", ram:16, ssd:512, gpu:"Apple M2 GPU", os:"macOS", rating:4.8, reviews:410, tags:["Études","Portable","Autonomie"], deal:false, stock:9, image:"assets/mac.jpg"},
+  {id:"p011", name:"MacBook Pro M3", brand:"Pear", price:2199, oldPrice:null, cpu:"Apple M3", ram:18, ssd:1024, gpu:"Apple M3 GPU", os:"macOS", rating:4.9, reviews:280, tags:["Création","Développement"], deal:false, stock:5, image:"assets/mac.jpg"},
+  {id:"p012", name:"Student 15 i5", brand:"Nova", price:899, oldPrice:999, cpu:"Intel Core i5-1135G7", ram:16, ssd:512, gpu:"Intel Iris Xe", os:"Windows", rating:4.2, reviews:980, tags:["Études","Budget"], deal:true, stock:25, image:"assets/ultrabook.jpg"},
+  {id:"p013", name:"Everyday Ryzen 5", brand:"Nova", price:799, oldPrice:899, cpu:"AMD Ryzen 5 5500U", ram:16, ssd:512, gpu:"AMD Radeon Vega 7", os:"Windows", rating:4.3, reviews:750, tags:["Bureau","Budget"], deal:true, stock:30, image:"assets/ultrabook.jpg"},
+  {id:"p014", name:"WorkMate 14 i5 Evo", brand:"Nova", price:1199, oldPrice:null, cpu:"Intel Core i5-1340P", ram:16, ssd:1024, gpu:"Intel Iris Xe", os:"Windows", rating:4.4, reviews:200, tags:["Travail","Autonomie"], deal:false, stock:14, image:"assets/ultrabook.jpg"},
+  {id:"p015", name:"Developer Ryzen 7", brand:"Nova", price:1399, oldPrice:null, cpu:"AMD Ryzen 7 7730U", ram:32, ssd:1024, gpu:"AMD Radeon 780M", os:"Windows", rating:4.6, reviews:190, tags:["Développement","Multitâche"], deal:false, stock:8, image:"assets/ultrabook.jpg"},
+  {id:"p016", name:"ProStation Ryzen 9", brand:"Orion", price:3499, oldPrice:null, cpu:"AMD Ryzen 9 7950X", ram:64, ssd:2048, gpu:"RTX 4080", os:"Windows", rating:4.8, reviews:75, tags:["Jeux","Création","Développement"], deal:false, stock:2, image:"assets/gaming.jpg"},
+  {id:"p017", name:"MacBook Pro M3 Max", brand:"Pear", price:4299, oldPrice:null, cpu:"Apple M3 Max", ram:36, ssd:1024, gpu:"Apple M3 Max GPU", os:"macOS", rating:4.9, reviews:120, tags:["Création","Développement","Vidéo"], deal:false, stock:3, image:"assets/mac.jpg"},
+  {id:"p018", name:"WorkStation Ultra i9", brand:"Nova", price:5999, oldPrice:null, cpu:"Intel Core i9-14900K", ram:128, ssd:4096, gpu:"RTX 4090", os:"Windows", rating:4.9, reviews:45, tags:["Développement","Création","IA"], deal:false, stock:2, image:"assets/gaming.jpg"},
+  {id:"p019", name:"Gaming 15 Ryzen 5 RTX 4060", brand:"Orion", price:1349, oldPrice:1499, cpu:"AMD Ryzen 5 7535HS", ram:16, ssd:512, gpu:"RTX 4060", os:"Windows", rating:4.5, reviews:280, tags:["Jeux","Performance","Streaming"], deal:true, stock:11, image:"assets/gaming.jpg"},
+  {id:"p020", name:"MacBook Pro M3 14"", brand:"Pear", price:1799, oldPrice:1999, cpu:"Apple M3", ram:8, ssd:512, gpu:"Apple M3 GPU 10 cores", os:"macOS", rating:4.8, reviews:165, tags:["Création","Développement","Productivité"], deal:true, stock:6, image:"assets/mac.jpg"},
 ];
  
 const $ = (id) => document.getElementById(id);
@@ -607,3 +622,4 @@ window.addEventListener("DOMContentLoaded",()=>{
     setInterval(ping, INTERVAL);
   }, 30000);
 })();
+ 
