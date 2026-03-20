@@ -27,7 +27,7 @@ const PRODUCTS = [
   {id:"p017", name:"MacBook Pro M3 Max", brand:"Pear", price:4299, oldPrice:null, cpu:"Apple M3 Max", ram:36, ssd:1024, gpu:"Apple M3 Max GPU", os:"macOS", rating:4.9, reviews:120, tags:["Création","Développement","Vidéo"], deal:false, stock:3, image:"assets/mac.jpg"},
   {id:"p018", name:"WorkStation Ultra i9", brand:"Nova", price:5999, oldPrice:null, cpu:"Intel Core i9-14900K", ram:128, ssd:4096, gpu:"RTX 4090", os:"Windows", rating:4.9, reviews:45, tags:["Développement","Création","IA"], deal:false, stock:2, image:"assets/gaming.jpg"},
   {id:"p019", name:"Gaming 15 Ryzen 5 RTX 4060", brand:"Orion", price:1349, oldPrice:1499, cpu:"AMD Ryzen 5 7535HS", ram:16, ssd:512, gpu:"RTX 4060", os:"Windows", rating:4.5, reviews:280, tags:["Jeux","Performance","Streaming"], deal:true, stock:11, image:"assets/gaming.jpg"},
-  {id:"p020", name:"MacBook Pro M3 14"", brand:"Pear", price:1799, oldPrice:1999, cpu:"Apple M3", ram:8, ssd:512, gpu:"Apple M3 GPU 10 cores", os:"macOS", rating:4.8, reviews:165, tags:["Création","Développement","Productivité"], deal:true, stock:6, image:"assets/mac.jpg"},
+  {id:"p020", name:"MacBook Pro M3 14", brand:"Pear", price:1799, oldPrice:1999, cpu:"Apple M3", ram:8, ssd:512, gpu:"Apple M3 GPU 10 cores", os:"macOS", rating:4.8, reviews:165, tags:["Création","Développement","Productivité"], deal:true, stock:6, image:"assets/mac.jpg"},
 ];
  
 const $ = (id) => document.getElementById(id);
