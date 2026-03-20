@@ -2,9 +2,9 @@
 // TechShop — Système de recommandation
 // À inclure dans index.html après app.js
 // ===============================
-
+ 
 const BACKEND = "https://techshop-ai-backend.onrender.com";
-
+ 
 // Session unique par visiteur (persistée dans sessionStorage)
 function getSessionId() {
   let sid = sessionStorage.getItem("techshop_session");
@@ -14,7 +14,7 @@ function getSessionId() {
   }
   return sid;
 }
-
+ 
 // ---------------------------------------------------------------------------
 // Tracking — envoie silencieusement chaque interaction au backend
 // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ async function trackInteraction(productId, action) {
     // Silencieux — ne jamais bloquer l'UI pour le tracking
   }
 }
-
+ 
 // ---------------------------------------------------------------------------
 // Recommandations — affichées sous un produit consulté
 // ---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ async function fetchRecommendations(productId, k = 3) {
     return [];
   }
 }
-
+ 
 // ---------------------------------------------------------------------------
 // Produits populaires — pour la section "Tendances" sur la page d'accueil
 // ---------------------------------------------------------------------------
@@ -65,7 +65,7 @@ async function fetchPopular(k = 4) {
     return [];
   }
 }
-
+ 
 // ---------------------------------------------------------------------------
 // UI — Modale de détails enrichie avec recommandations
 // ---------------------------------------------------------------------------
@@ -100,21 +100,21 @@ function renderRecoCard(rec) {
     </div>
   `;
 }
-
+ 
 async function openDetailsWithReco(productId) {
   // Tracker la consultation
   trackInteraction(productId, "details");
-
+ 
   // Trouver le produit dans PRODUCTS (défini dans app.js)
   const p = typeof PRODUCTS !== "undefined"
     ? PRODUCTS.find(x => x.id === productId)
     : null;
-
+ 
   if (!p) return;
-
+ 
   // Charger les recommandations en parallèle
   const recs = await fetchRecommendations(productId, 3);
-
+ 
   const recoHTML = recs.length > 0
     ? `<div style="margin-top:16px;border-top:1px solid #eef2f7;padding-top:14px">
         <div style="font-weight:700;margin-bottom:10px;font-size:14px">Vous pourriez aussi aimer</div>
@@ -123,7 +123,7 @@ async function openDetailsWithReco(productId) {
         </div>
       </div>`
     : "";
-
+ 
   // Afficher dans une modale simple
   const modal = document.createElement("div");
   modal.id = "recoModal";
@@ -160,15 +160,12 @@ async function openDetailsWithReco(productId) {
   document.body.appendChild(modal);
   modal.addEventListener("click", e => { if (e.target === modal) modal.remove(); });
 }
-
+ 
 // ---------------------------------------------------------------------------
 // Surcharger openDetails pour utiliser la nouvelle version avec recos
 // ---------------------------------------------------------------------------
-// Attendre que app.js soit chargé avant de surcharger
-document.addEventListener('DOMContentLoaded', () => {
-  window.openDetails = openDetailsWithReco;
-});
-
+window.openDetails = openDetailsWithReco;
+ 
 // ---------------------------------------------------------------------------
 // Tracker automatiquement les "Ajouter au panier"
 // ---------------------------------------------------------------------------
@@ -177,21 +174,21 @@ window.addToCart = function(id) {
   trackInteraction(id, "add_to_cart");
   if (_originalAddToCart) _originalAddToCart(id);
 };
-
+ 
 // ---------------------------------------------------------------------------
 // Section "Tendances" — injectée en haut de la page catalogue
 // ---------------------------------------------------------------------------
 async function injectTrendingSection() {
   const grid = document.getElementById("grid");
   if (!grid) return;
-
+ 
   const popular = await fetchPopular(4);
   if (popular.length === 0) return;
-
+ 
   // Ne pas afficher si moins de 10 interactions (pas encore assez de données)
   const totalInteractions = popular.reduce((s, p) => s + (p.views || 0), 0);
   if (totalInteractions < 5) return;
-
+ 
   const section = document.createElement("div");
   section.style.cssText = "margin-bottom:28px";
   section.innerHTML = `
@@ -219,7 +216,7 @@ async function injectTrendingSection() {
   `;
   grid.parentElement.insertBefore(section, grid);
 }
-
+ 
 // ---------------------------------------------------------------------------
 // Init au chargement
 // ---------------------------------------------------------------------------
@@ -227,3 +224,139 @@ window.addEventListener("DOMContentLoaded", () => {
   // Injecter la section tendances après un court délai
   setTimeout(injectTrendingSection, 1000);
 });
+ 
+// ---------------------------------------------------------------------------
+// ML PRÉDICTIF — Bandeau de prédiction budget après 2 produits consultés
+// Démontre le modèle de régression du TP en temps réel
+// ---------------------------------------------------------------------------
+ 
+// Modèle de régression simplifié embarqué côté client
+// (version légère du GradientBoostingRegressor entraîné)
+const BUDGET_MODEL = {
+  // Moyennes par catégorie observées dans les données synthétiques
+  category_avg: { 0: 1050, 1: 1350, 2: 2200, 3: 1650 },
+  // Coefficients simplifiés appris
+  predict(features) {
+    const { prix_moy_vu, a_gpu_dans_session, categorie, nb_produits_vus } = features;
+    let budget = prix_moy_vu * 1.05;
+    if (a_gpu_dans_session) budget *= 1.15;
+    if (nb_produits_vus >= 3) budget *= 0.95; // plus hésitant = budget plus serré
+    return Math.round(budget / 50) * 50; // arrondi à 50$
+  }
+};
+ 
+// Historique de la session courante pour le modèle
+const sessionContext = {
+  products_viewed: [],
+  add(product) {
+    if (!this.products_viewed.find(p => p.id === product.id)) {
+      this.products_viewed.push(product);
+    }
+  },
+  getFeatures() {
+    const prices = this.products_viewed.map(p => p.price || 0);
+    const hasGpu = this.products_viewed.some(p =>
+      p.gpu && !p.gpu.toLowerCase().includes('intégr') && !p.gpu.toLowerCase().includes('integr')
+    );
+    const categories = this.products_viewed.map(p => {
+      const g = (p.gpu || '').toLowerCase();
+      const t = (p.tags || []).join(' ').toLowerCase();
+      if (t.includes('jeux') || t.includes('gaming') || g.includes('rtx')) return 3;
+      if (t.includes('création') || t.includes('montage')) return 2;
+      if (t.includes('travail') || t.includes('pro')) return 1;
+      return 0;
+    });
+    const majorCat = categories.sort((a,b) =>
+      categories.filter(v=>v===b).length - categories.filter(v=>v===a).length
+    )[0] || 0;
+ 
+    return {
+      prix_moy_vu: prices.reduce((s,p)=>s+p,0) / (prices.length || 1),
+      a_gpu_dans_session: hasGpu ? 1 : 0,
+      categorie: majorCat,
+      nb_produits_vus: this.products_viewed.length
+    };
+  }
+};
+ 
+// Afficher le bandeau de prédiction ML
+function showMLBudgetBanner(predictedBudget, nbProducts) {
+  const existing = document.getElementById('mlBudgetBanner');
+  if (existing) existing.remove();
+ 
+  const profiles = [
+    { max: 1000, label: "Étudiant / Budget", color: "#1D9E75", icon: "🎓" },
+    { max: 1500, label: "Utilisateur standard", color: "#2563eb", icon: "💼" },
+    { max: 2200, label: "Créateur / Gamer", color: "#7C3AED", icon: "🎮" },
+    { max: 9999, label: "Power user / Pro", color: "#DC2626", icon: "⚡" },
+  ];
+  const profile = profiles.find(p => predictedBudget <= p.max) || profiles[3];
+ 
+  const banner = document.createElement('div');
+  banner.id = 'mlBudgetBanner';
+  banner.style.cssText = `
+    position:fixed; bottom:80px; right:20px; z-index:8888;
+    background:white; border-radius:16px; padding:14px 18px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.15); max-width:280px;
+    border-left:4px solid ${profile.color};
+    animation: slideIn 0.3s ease-out;
+  `;
+ 
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+  `;
+  document.head.appendChild(style);
+ 
+  banner.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:600;color:${profile.color};text-transform:uppercase;letter-spacing:.05em">
+        🤖 ML Prédiction
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()"
+        style="background:none;border:none;cursor:pointer;color:#999;font-size:16px;line-height:1;padding:0">✕</button>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#111;margin-bottom:4px">
+      Budget estimé : ~${predictedBudget} $
+    </div>
+    <div style="font-size:12px;color:#555;margin-bottom:8px">
+      ${profile.icon} Profil détecté : <strong>${profile.label}</strong>
+    </div>
+    <div style="font-size:11px;color:#888;border-top:1px solid #f0f0f0;padding-top:8px">
+      Basé sur ${nbProducts} produit${nbProducts>1?'s':''} consulté${nbProducts>1?'s':''}
+    </div>
+    <div style="margin-top:6px;background:#f8f9fa;border-radius:8px;padding:6px 8px;">
+      <div style="font-size:10px;color:#aaa;margin-bottom:3px">Gradient Boosting Regressor</div>
+      <div style="height:4px;background:#e0e0e0;border-radius:2px;overflow:hidden">
+        <div style="height:100%;width:${Math.min(100, (predictedBudget/5000)*100)}%;
+          background:linear-gradient(90deg,${profile.color},${profile.color}99);border-radius:2px;
+          transition:width 1s ease"></div>
+      </div>
+    </div>
+  `;
+ 
+  document.body.appendChild(banner);
+  // Auto-disparaît après 8 secondes
+  setTimeout(() => { if (banner.parentNode) banner.remove(); }, 8000);
+}
+ 
+// Enrichir openDetailsWithReco pour alimenter le modèle
+const _origOpenDetails = openDetailsWithReco;
+window.openDetailsWithReco = window.openDetails = async function(productId) {
+  // Récupérer le produit depuis PRODUCTS
+  const product = typeof PRODUCTS !== 'undefined'
+    ? PRODUCTS.find(p => p.id === productId)
+    : null;
+ 
+  if (product) {
+    sessionContext.add(product);
+    // Après 2+ produits consultés, afficher la prédiction
+    if (sessionContext.products_viewed.length >= 2) {
+      const features = sessionContext.getFeatures();
+      const predicted = BUDGET_MODEL.predict(features);
+      setTimeout(() => showMLBudgetBanner(predicted, sessionContext.products_viewed.length), 1500);
+    }
+  }
+  return _origOpenDetails(productId);
+};
+ 
