@@ -164,7 +164,10 @@ async function openDetailsWithReco(productId) {
 // ---------------------------------------------------------------------------
 // Surcharger openDetails pour utiliser la nouvelle version avec recos
 // ---------------------------------------------------------------------------
-window.openDetails = openDetailsWithReco;
+// Attendre que app.js soit chargé avant de surcharger
+document.addEventListener('DOMContentLoaded', () => {
+  window.openDetails = openDetailsWithReco;
+});
 
 // ---------------------------------------------------------------------------
 // Tracker automatiquement les "Ajouter au panier"
