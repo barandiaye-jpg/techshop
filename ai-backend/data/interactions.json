@@ -1,0 +1,2702 @@
+[
+  {
+    "session_id": "synth_d90e87a9022a",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1771398325.1507607
+  },
+  {
+    "session_id": "synth_d90e87a9022a",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1771398477.1507607
+  },
+  {
+    "session_id": "synth_13833e11e98e",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1771400207.1510181
+  },
+  {
+    "session_id": "synth_13833e11e98e",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1771400373.1510181
+  },
+  {
+    "session_id": "synth_13833e11e98e",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1771400375.1510181
+  },
+  {
+    "session_id": "synth_8827fcb4cfb3",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1771426252.1492772
+  },
+  {
+    "session_id": "synth_8827fcb4cfb3",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1771426417.1492772
+  },
+  {
+    "session_id": "synth_3c424328f91e",
+    "product_id": "p013",
+    "action": "add_to_cart",
+    "timestamp": 1771454339.1507025
+  },
+  {
+    "session_id": "synth_3c424328f91e",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1771454477.1507025
+  },
+  {
+    "session_id": "synth_3c424328f91e",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1771454490.1507025
+  },
+  {
+    "session_id": "synth_3c424328f91e",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1771454499.1507025
+  },
+  {
+    "session_id": "synth_bd746eedd57a",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1771490927.1498032
+  },
+  {
+    "session_id": "synth_bd746eedd57a",
+    "product_id": "p020",
+    "action": "view",
+    "timestamp": 1771491023.1498032
+  },
+  {
+    "session_id": "synth_bd746eedd57a",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1771491195.1498032
+  },
+  {
+    "session_id": "synth_fef2936051e9",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1771493683.1506107
+  },
+  {
+    "session_id": "synth_fef2936051e9",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1771493843.1506107
+  },
+  {
+    "session_id": "synth_31785fe49cdf",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1771497596.1495044
+  },
+  {
+    "session_id": "synth_829e0cde390c",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1771508383.1502852
+  },
+  {
+    "session_id": "synth_829e0cde390c",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1771508463.1502852
+  },
+  {
+    "session_id": "synth_829e0cde390c",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1771508597.1502852
+  },
+  {
+    "session_id": "synth_6b76965443b0",
+    "product_id": "p002",
+    "action": "view",
+    "timestamp": 1771516034.1500552
+  },
+  {
+    "session_id": "synth_6b76965443b0",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1771516144.1500552
+  },
+  {
+    "session_id": "synth_6b76965443b0",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1771516262.1500552
+  },
+  {
+    "session_id": "synth_2549101d9b77",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1771527553.1487532
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1771541952.1509173
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1771541996.1509173
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1771542040.1509173
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1771542168.1509173
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1771542362.1509173
+  },
+  {
+    "session_id": "synth_5332cacaa24c",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1771542532.1509173
+  },
+  {
+    "session_id": "synth_05ecd00359bb",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1771544705.1482666
+  },
+  {
+    "session_id": "synth_05ecd00359bb",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1771544880.1482666
+  },
+  {
+    "session_id": "synth_f81cf2d62cd7",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1771557516.1489801
+  },
+  {
+    "session_id": "synth_f81cf2d62cd7",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1771557651.1489801
+  },
+  {
+    "session_id": "synth_f81cf2d62cd7",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1771557782.1489801
+  },
+  {
+    "session_id": "synth_b8b29b336d44",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1771561053.1487179
+  },
+  {
+    "session_id": "synth_b8b29b336d44",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1771561192.1487179
+  },
+  {
+    "session_id": "synth_b8b29b336d44",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1771561251.1487179
+  },
+  {
+    "session_id": "synth_b8b29b336d44",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1771561293.1487179
+  },
+  {
+    "session_id": "synth_a4cc3e652188",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1771567940.1501195
+  },
+  {
+    "session_id": "synth_5a2fcdc4b77d",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1771570845.1486275
+  },
+  {
+    "session_id": "synth_5a2fcdc4b77d",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771570933.1486275
+  },
+  {
+    "session_id": "synth_5a2fcdc4b77d",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1771570989.1486275
+  },
+  {
+    "session_id": "synth_6659c72f0cb7",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1771582853.1507735
+  },
+  {
+    "session_id": "synth_6659c72f0cb7",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771582963.1507735
+  },
+  {
+    "session_id": "synth_d4c96e9a311c",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1771615270.149419
+  },
+  {
+    "session_id": "synth_d4c96e9a311c",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1771615447.149419
+  },
+  {
+    "session_id": "synth_677ae665e29e",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1771646555.1495652
+  },
+  {
+    "session_id": "synth_677ae665e29e",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1771646708.1495652
+  },
+  {
+    "session_id": "synth_677ae665e29e",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1771646823.1495652
+  },
+  {
+    "session_id": "synth_1321334ff80b",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1771667666.1498923
+  },
+  {
+    "session_id": "synth_1321334ff80b",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1771667784.1498923
+  },
+  {
+    "session_id": "synth_1321334ff80b",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1771667922.1498923
+  },
+  {
+    "session_id": "synth_1321334ff80b",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1771668116.1498923
+  },
+  {
+    "session_id": "synth_c2cc831fa0d2",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771668255.1490998
+  },
+  {
+    "session_id": "synth_c2cc831fa0d2",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1771668301.1490998
+  },
+  {
+    "session_id": "synth_c2cc831fa0d2",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771668429.1490998
+  },
+  {
+    "session_id": "synth_c2cc831fa0d2",
+    "product_id": "p005",
+    "action": "add_to_cart",
+    "timestamp": 1771668501.1490998
+  },
+  {
+    "session_id": "synth_478261e1fe96",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771676077.1492615
+  },
+  {
+    "session_id": "synth_478261e1fe96",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1771676120.1492615
+  },
+  {
+    "session_id": "synth_478261e1fe96",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1771676289.1492615
+  },
+  {
+    "session_id": "synth_f87694930d46",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1771707596.1491992
+  },
+  {
+    "session_id": "synth_f87694930d46",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1771707770.1491992
+  },
+  {
+    "session_id": "synth_1fa59632876f",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1771729859.150423
+  },
+  {
+    "session_id": "synth_1fa59632876f",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1771729944.150423
+  },
+  {
+    "session_id": "synth_513ab61e3d40",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1771734652.1498513
+  },
+  {
+    "session_id": "synth_a0ecb0693e1d",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1771745103.1499066
+  },
+  {
+    "session_id": "synth_a0ecb0693e1d",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1771745179.1499066
+  },
+  {
+    "session_id": "synth_a0ecb0693e1d",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1771745331.1499066
+  },
+  {
+    "session_id": "synth_a0ecb0693e1d",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1771745445.1499066
+  },
+  {
+    "session_id": "synth_543b14643275",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1771775526.1495533
+  },
+  {
+    "session_id": "synth_543b14643275",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1771775630.1495533
+  },
+  {
+    "session_id": "synth_89354a9efee2",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1771787758.1483896
+  },
+  {
+    "session_id": "synth_2757ddbba437",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1771788252.1497617
+  },
+  {
+    "session_id": "synth_2757ddbba437",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1771788336.1497617
+  },
+  {
+    "session_id": "synth_2757ddbba437",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1771788396.1497617
+  },
+  {
+    "session_id": "synth_2757ddbba437",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1771788540.1497617
+  },
+  {
+    "session_id": "synth_a237cc41ef61",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1771815855.1499636
+  },
+  {
+    "session_id": "synth_5698e7da07de",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1771824433.1506882
+  },
+  {
+    "session_id": "synth_982950210874",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1771828739.1483674
+  },
+  {
+    "session_id": "synth_982950210874",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1771828827.1483674
+  },
+  {
+    "session_id": "synth_ef98422d2914",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1771836395.1502488
+  },
+  {
+    "session_id": "synth_ef98422d2914",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1771836486.1502488
+  },
+  {
+    "session_id": "synth_ef98422d2914",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1771836503.1502488
+  },
+  {
+    "session_id": "synth_d764b2f9767b",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1771863967.14982
+  },
+  {
+    "session_id": "synth_d764b2f9767b",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771864002.14982
+  },
+  {
+    "session_id": "synth_d764b2f9767b",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1771864039.14982
+  },
+  {
+    "session_id": "synth_d764b2f9767b",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1771864246.14982
+  },
+  {
+    "session_id": "synth_0e7dbc92da5f",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1771882431.1486123
+  },
+  {
+    "session_id": "synth_66d6e9cb329e",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1771887127.1494083
+  },
+  {
+    "session_id": "synth_1ba00550ac18",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1771895077.1484752
+  },
+  {
+    "session_id": "synth_1ba00550ac18",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1771895165.1484752
+  },
+  {
+    "session_id": "synth_1ba00550ac18",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1771895183.1484752
+  },
+  {
+    "session_id": "synth_1ba00550ac18",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1771895428.1484752
+  },
+  {
+    "session_id": "synth_2eea0b2bdac0",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1771895570.149997
+  },
+  {
+    "session_id": "synth_2eea0b2bdac0",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1771895749.149997
+  },
+  {
+    "session_id": "synth_2eea0b2bdac0",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1771895765.149997
+  },
+  {
+    "session_id": "synth_2eea0b2bdac0",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1771895912.149997
+  },
+  {
+    "session_id": "synth_5caa65d76ce6",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1771897259.1496503
+  },
+  {
+    "session_id": "synth_515a1ce10f09",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1771943020.1485653
+  },
+  {
+    "session_id": "synth_ba2f2544b565",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1771949142.1503894
+  },
+  {
+    "session_id": "synth_ba2f2544b565",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1771949253.1503894
+  },
+  {
+    "session_id": "synth_ba2f2544b565",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1771949290.1503894
+  },
+  {
+    "session_id": "synth_ba2f2544b565",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1771949601.1503894
+  },
+  {
+    "session_id": "synth_aa5b61790698",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1771964673.150095
+  },
+  {
+    "session_id": "synth_5fefab3035eb",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1771966915.150206
+  },
+  {
+    "session_id": "synth_5fefab3035eb",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1771967086.150206
+  },
+  {
+    "session_id": "synth_5fefab3035eb",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1771967135.150206
+  },
+  {
+    "session_id": "synth_5fefab3035eb",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1771967146.150206
+  },
+  {
+    "session_id": "synth_0c037864ac43",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1771977421.1505487
+  },
+  {
+    "session_id": "synth_0c037864ac43",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1771977514.1505487
+  },
+  {
+    "session_id": "synth_0c037864ac43",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1771977589.1505487
+  },
+  {
+    "session_id": "synth_0c037864ac43",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1771977745.1505487
+  },
+  {
+    "session_id": "synth_84a5d65f5552",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1771992794.1484382
+  },
+  {
+    "session_id": "synth_84a5d65f5552",
+    "product_id": "p006",
+    "action": "add_to_cart",
+    "timestamp": 1771992871.1484382
+  },
+  {
+    "session_id": "synth_9fc3508be1fb",
+    "product_id": "p013",
+    "action": "view",
+    "timestamp": 1772016540.14824
+  },
+  {
+    "session_id": "synth_9fc3508be1fb",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1772016711.14824
+  },
+  {
+    "session_id": "synth_545b3d909165",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772021676.1484504
+  },
+  {
+    "session_id": "synth_545b3d909165",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1772021796.1484504
+  },
+  {
+    "session_id": "synth_59820e6f67b8",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772025497.1507497
+  },
+  {
+    "session_id": "synth_2e4d8ed4bef1",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1772050840.1491146
+  },
+  {
+    "session_id": "synth_1140ff3ed09c",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1772059818.1481123
+  },
+  {
+    "session_id": "synth_1140ff3ed09c",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772059893.1481123
+  },
+  {
+    "session_id": "synth_4e89bd0adc05",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1772080135.1500258
+  },
+  {
+    "session_id": "synth_4e89bd0adc05",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1772080215.1500258
+  },
+  {
+    "session_id": "synth_4e89bd0adc05",
+    "product_id": "p013",
+    "action": "view",
+    "timestamp": 1772080407.1500258
+  },
+  {
+    "session_id": "synth_cfe21f2d36e1",
+    "product_id": "p011",
+    "action": "add_to_cart",
+    "timestamp": 1772086187.1502223
+  },
+  {
+    "session_id": "synth_4a37bb9ff290",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1772140163.1504884
+  },
+  {
+    "session_id": "synth_0c1d66711ccf",
+    "product_id": "p013",
+    "action": "view",
+    "timestamp": 1772142230.1508265
+  },
+  {
+    "session_id": "synth_c28636f8b379",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1772195344.149339
+  },
+  {
+    "session_id": "synth_c28636f8b379",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1772195417.149339
+  },
+  {
+    "session_id": "synth_875657aba52d",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1772209350.1496847
+  },
+  {
+    "session_id": "synth_55fc54f96abd",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772229861.150313
+  },
+  {
+    "session_id": "synth_55fc54f96abd",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1772229927.150313
+  },
+  {
+    "session_id": "synth_55fc54f96abd",
+    "product_id": "p013",
+    "action": "add_to_cart",
+    "timestamp": 1772230033.150313
+  },
+  {
+    "session_id": "synth_8a2a59c98cbd",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1772235068.1482036
+  },
+  {
+    "session_id": "synth_5c50c2fe61b1",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772244377.1503384
+  },
+  {
+    "session_id": "synth_5c50c2fe61b1",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772244454.1503384
+  },
+  {
+    "session_id": "synth_3a0f7e60a054",
+    "product_id": "p002",
+    "action": "details",
+    "timestamp": 1772289532.1504474
+  },
+  {
+    "session_id": "synth_3a0f7e60a054",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1772289677.1504474
+  },
+  {
+    "session_id": "synth_adb9ff81c64e",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772320431.1500692
+  },
+  {
+    "session_id": "synth_adb9ff81c64e",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1772320562.1500692
+  },
+  {
+    "session_id": "synth_adb9ff81c64e",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1772320695.1500692
+  },
+  {
+    "session_id": "synth_db58bc043655",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772333952.1481736
+  },
+  {
+    "session_id": "synth_db58bc043655",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1772334064.1481736
+  },
+  {
+    "session_id": "synth_db58bc043655",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1772334190.1481736
+  },
+  {
+    "session_id": "synth_467ebe375c9d",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1772340006.149836
+  },
+  {
+    "session_id": "synth_467ebe375c9d",
+    "product_id": "p014",
+    "action": "add_to_cart",
+    "timestamp": 1772340087.149836
+  },
+  {
+    "session_id": "synth_467ebe375c9d",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1772340088.149836
+  },
+  {
+    "session_id": "synth_467ebe375c9d",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1772340252.149836
+  },
+  {
+    "session_id": "synth_ebe0a49835c1",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1772346934.1507862
+  },
+  {
+    "session_id": "synth_ebe0a49835c1",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1772347007.1507862
+  },
+  {
+    "session_id": "synth_7c5ea6d1f143",
+    "product_id": "p014",
+    "action": "add_to_cart",
+    "timestamp": 1772351786.1491268
+  },
+  {
+    "session_id": "synth_7c5ea6d1f143",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1772351942.1491268
+  },
+  {
+    "session_id": "synth_7c5ea6d1f143",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772351976.1491268
+  },
+  {
+    "session_id": "synth_520aefc94955",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1772355768.1480918
+  },
+  {
+    "session_id": "synth_520aefc94955",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772355858.1480918
+  },
+  {
+    "session_id": "synth_b3a10ea5a9e1",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1772363454.1491873
+  },
+  {
+    "session_id": "synth_426dd3b59482",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772395376.1508358
+  },
+  {
+    "session_id": "synth_453c91d44395",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772397576.149978
+  },
+  {
+    "session_id": "synth_453c91d44395",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1772397747.149978
+  },
+  {
+    "session_id": "synth_453c91d44395",
+    "product_id": "p005",
+    "action": "add_to_cart",
+    "timestamp": 1772397794.149978
+  },
+  {
+    "session_id": "synth_453c91d44395",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772398047.149978
+  },
+  {
+    "session_id": "synth_bf63a221bc42",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772428980.1501756
+  },
+  {
+    "session_id": "synth_bf63a221bc42",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772429144.1501756
+  },
+  {
+    "session_id": "synth_bf63a221bc42",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772429276.1501756
+  },
+  {
+    "session_id": "synth_3e6121e07e8e",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772435765.1487768
+  },
+  {
+    "session_id": "synth_4d23b45e1eb8",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772441044.148583
+  },
+  {
+    "session_id": "synth_4d23b45e1eb8",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1772441143.148583
+  },
+  {
+    "session_id": "synth_9012a3492769",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1772457691.1497488
+  },
+  {
+    "session_id": "synth_9012a3492769",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1772457763.1497488
+  },
+  {
+    "session_id": "synth_9012a3492769",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772457808.1497488
+  },
+  {
+    "session_id": "synth_a61555d97906",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1772460732.1489055
+  },
+  {
+    "session_id": "synth_a61555d97906",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772460871.1489055
+  },
+  {
+    "session_id": "synth_a61555d97906",
+    "product_id": "p016",
+    "action": "add_to_cart",
+    "timestamp": 1772460972.1489055
+  },
+  {
+    "session_id": "synth_a61555d97906",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1772461018.1489055
+  },
+  {
+    "session_id": "synth_48c20a946a85",
+    "product_id": "p002",
+    "action": "details",
+    "timestamp": 1772461964.1495934
+  },
+  {
+    "session_id": "synth_8d5c75833f7d",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1772480181.1490107
+  },
+  {
+    "session_id": "synth_8d5c75833f7d",
+    "product_id": "p020",
+    "action": "view",
+    "timestamp": 1772480276.1490107
+  },
+  {
+    "session_id": "synth_8d5c75833f7d",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1772480431.1490107
+  },
+  {
+    "session_id": "synth_a7e5c918a45d",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772489020.1496744
+  },
+  {
+    "session_id": "synth_017b1b5be40d",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772502597.148922
+  },
+  {
+    "session_id": "synth_c88d8e0b74a6",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1772513333.1502743
+  },
+  {
+    "session_id": "synth_e081ce647a77",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1772518113.1504347
+  },
+  {
+    "session_id": "synth_e081ce647a77",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1772518168.1504347
+  },
+  {
+    "session_id": "synth_064cbf50813d",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772521776.1493967
+  },
+  {
+    "session_id": "synth_064cbf50813d",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1772521832.1493967
+  },
+  {
+    "session_id": "synth_08f8f8b8466e",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772523407.1504989
+  },
+  {
+    "session_id": "synth_42919c736cc2",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1772530662.1506512
+  },
+  {
+    "session_id": "synth_83768bb38366",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772545497.149864
+  },
+  {
+    "session_id": "synth_83768bb38366",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1772545605.149864
+  },
+  {
+    "session_id": "synth_767abcb8aa53",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772559857.148227
+  },
+  {
+    "session_id": "synth_767abcb8aa53",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1772559926.148227
+  },
+  {
+    "session_id": "synth_62b44dafe713",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772576823.1509852
+  },
+  {
+    "session_id": "synth_62b44dafe713",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1772576897.1509852
+  },
+  {
+    "session_id": "synth_62b44dafe713",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772576961.1509852
+  },
+  {
+    "session_id": "synth_62b44dafe713",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772577075.1509852
+  },
+  {
+    "session_id": "synth_62b44dafe713",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772577105.1509852
+  },
+  {
+    "session_id": "synth_a1207136245a",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772581958.1489956
+  },
+  {
+    "session_id": "synth_a1207136245a",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772581995.1489956
+  },
+  {
+    "session_id": "synth_a1207136245a",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772582304.1489956
+  },
+  {
+    "session_id": "synth_c35e819c3862",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772592841.1487381
+  },
+  {
+    "session_id": "synth_c35e819c3862",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772592917.1487381
+  },
+  {
+    "session_id": "synth_728c878152a4",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1772599876.1504097
+  },
+  {
+    "session_id": "synth_728c878152a4",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1772600045.1504097
+  },
+  {
+    "session_id": "synth_efb9f7e90699",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772603772.1494455
+  },
+  {
+    "session_id": "synth_efb9f7e90699",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1772603888.1494455
+  },
+  {
+    "session_id": "synth_efb9f7e90699",
+    "product_id": "p005",
+    "action": "add_to_cart",
+    "timestamp": 1772603914.1494455
+  },
+  {
+    "session_id": "synth_fff057f857c4",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1772609099.148533
+  },
+  {
+    "session_id": "synth_fff057f857c4",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772609131.148533
+  },
+  {
+    "session_id": "synth_b06ba07d3174",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772612628.1484222
+  },
+  {
+    "session_id": "synth_b06ba07d3174",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772612754.1484222
+  },
+  {
+    "session_id": "synth_b06ba07d3174",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772612794.1484222
+  },
+  {
+    "session_id": "synth_b06ba07d3174",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772613168.1484222
+  },
+  {
+    "session_id": "synth_8ab3877b49e3",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1772642197.150737
+  },
+  {
+    "session_id": "synth_8ab3877b49e3",
+    "product_id": "p020",
+    "action": "view",
+    "timestamp": 1772642317.150737
+  },
+  {
+    "session_id": "synth_575b747f6c96",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772674106.1492372
+  },
+  {
+    "session_id": "synth_575b747f6c96",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772674230.1492372
+  },
+  {
+    "session_id": "synth_8cdb4e017105",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1772701572.1508904
+  },
+  {
+    "session_id": "synth_8cdb4e017105",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1772701692.1508904
+  },
+  {
+    "session_id": "synth_c55a49d0bbe3",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1772709913.1480725
+  },
+  {
+    "session_id": "synth_cc3d864c11db",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1772732388.150636
+  },
+  {
+    "session_id": "synth_cc3d864c11db",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1772732487.150636
+  },
+  {
+    "session_id": "synth_cc3d864c11db",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772732542.150636
+  },
+  {
+    "session_id": "synth_cc3d864c11db",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772732568.150636
+  },
+  {
+    "session_id": "synth_b7a50e44a0ab",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1772736212.1488285
+  },
+  {
+    "session_id": "synth_b7a50e44a0ab",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1772736253.1488285
+  },
+  {
+    "session_id": "synth_b7a50e44a0ab",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772736544.1488285
+  },
+  {
+    "session_id": "synth_b7a50e44a0ab",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1772736683.1488285
+  },
+  {
+    "session_id": "synth_1de2e8c6c6e9",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772752006.1505966
+  },
+  {
+    "session_id": "synth_1de2e8c6c6e9",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772752054.1505966
+  },
+  {
+    "session_id": "synth_1de2e8c6c6e9",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772752204.1505966
+  },
+  {
+    "session_id": "synth_a89f2f6d4188",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772758281.1490276
+  },
+  {
+    "session_id": "synth_a89f2f6d4188",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772758382.1490276
+  },
+  {
+    "session_id": "synth_a89f2f6d4188",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1772758575.1490276
+  },
+  {
+    "session_id": "synth_cf19bb6b3e18",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1772764475.1505654
+  },
+  {
+    "session_id": "synth_cf19bb6b3e18",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1772764514.1505654
+  },
+  {
+    "session_id": "synth_cf19bb6b3e18",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1772764711.1505654
+  },
+  {
+    "session_id": "synth_4efb72f4f59c",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772776702.1502366
+  },
+  {
+    "session_id": "synth_aa3a55ef0c7e",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772788453.1510482
+  },
+  {
+    "session_id": "synth_aa3a55ef0c7e",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1772788499.1510482
+  },
+  {
+    "session_id": "synth_1a2f9365b23b",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1772793436.1505797
+  },
+  {
+    "session_id": "synth_1a2f9365b23b",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1772793581.1505797
+  },
+  {
+    "session_id": "synth_1a2f9365b23b",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1772793612.1505797
+  },
+  {
+    "session_id": "synth_9aa40ebae00d",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772800383.1504753
+  },
+  {
+    "session_id": "synth_9aa40ebae00d",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1772800520.1504753
+  },
+  {
+    "session_id": "synth_9aa40ebae00d",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772800535.1504753
+  },
+  {
+    "session_id": "synth_e0dc044f5d6e",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1772812511.1509027
+  },
+  {
+    "session_id": "synth_e0dc044f5d6e",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1772812601.1509027
+  },
+  {
+    "session_id": "synth_e0dc044f5d6e",
+    "product_id": "p020",
+    "action": "view",
+    "timestamp": 1772812637.1509027
+  },
+  {
+    "session_id": "synth_e0dc044f5d6e",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1772812715.1509027
+  },
+  {
+    "session_id": "synth_68738a2067b5",
+    "product_id": "p018",
+    "action": "view",
+    "timestamp": 1772830469.149722
+  },
+  {
+    "session_id": "synth_68738a2067b5",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1772830592.149722
+  },
+  {
+    "session_id": "synth_68738a2067b5",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1772830677.149722
+  },
+  {
+    "session_id": "synth_e7c29af36b8d",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1772850725.1499324
+  },
+  {
+    "session_id": "synth_e7c29af36b8d",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1772850869.1499324
+  },
+  {
+    "session_id": "synth_9d14d8f997b5",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772852279.1493812
+  },
+  {
+    "session_id": "synth_9d14d8f997b5",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1772852428.1493812
+  },
+  {
+    "session_id": "synth_94b9e6c8ee41",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772857367.150623
+  },
+  {
+    "session_id": "synth_94b9e6c8ee41",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1772857535.150623
+  },
+  {
+    "session_id": "synth_8a15d9fa035f",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1772876119.149471
+  },
+  {
+    "session_id": "synth_8a15d9fa035f",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1772876214.149471
+  },
+  {
+    "session_id": "synth_4502018fb83c",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1772877303.1489482
+  },
+  {
+    "session_id": "synth_44061e9be642",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1772882992.1492121
+  },
+  {
+    "session_id": "synth_44061e9be642",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1772883064.1492121
+  },
+  {
+    "session_id": "synth_44061e9be642",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1772883242.1492121
+  },
+  {
+    "session_id": "synth_443acc2bc418",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1772885173.1482973
+  },
+  {
+    "session_id": "synth_7f7b9f05af60",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772891190.1488562
+  },
+  {
+    "session_id": "synth_7f7b9f05af60",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1772891329.1488562
+  },
+  {
+    "session_id": "synth_8980a9009431",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1772900855.1485496
+  },
+  {
+    "session_id": "synth_8980a9009431",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1772901015.1485496
+  },
+  {
+    "session_id": "synth_e0925639f65c",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1772914629.1497767
+  },
+  {
+    "session_id": "synth_e0925639f65c",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772914718.1497767
+  },
+  {
+    "session_id": "synth_1b3488b9fdce",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1772923957.149249
+  },
+  {
+    "session_id": "synth_1d0a98a6ab95",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772931412.1492913
+  },
+  {
+    "session_id": "synth_1d0a98a6ab95",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772931516.1492913
+  },
+  {
+    "session_id": "synth_1d0a98a6ab95",
+    "product_id": "p013",
+    "action": "details",
+    "timestamp": 1772931538.1492913
+  },
+  {
+    "session_id": "synth_a14189a274cf",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1772933969.1498756
+  },
+  {
+    "session_id": "synth_aaf25f53f01a",
+    "product_id": "p005",
+    "action": "add_to_cart",
+    "timestamp": 1772947109.1493125
+  },
+  {
+    "session_id": "synth_aaf25f53f01a",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1772947208.1493125
+  },
+  {
+    "session_id": "synth_bd79dfdffa00",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1772959324.1484032
+  },
+  {
+    "session_id": "synth_bd79dfdffa00",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772959444.1484032
+  },
+  {
+    "session_id": "synth_bd79dfdffa00",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1772959483.1484032
+  },
+  {
+    "session_id": "synth_bd79dfdffa00",
+    "product_id": "p005",
+    "action": "view",
+    "timestamp": 1772959567.1484032
+  },
+  {
+    "session_id": "synth_bd79dfdffa00",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1772959744.1484032
+  },
+  {
+    "session_id": "synth_52c86de0dd43",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1772960802.1484988
+  },
+  {
+    "session_id": "synth_52c86de0dd43",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1772960976.1484988
+  },
+  {
+    "session_id": "synth_82d56230cfb8",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1772964497.1488445
+  },
+  {
+    "session_id": "synth_82d56230cfb8",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1772964555.1488445
+  },
+  {
+    "session_id": "synth_f07840ef59dd",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1772984337.1490874
+  },
+  {
+    "session_id": "synth_d40c2908fd9e",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1773038420.150861
+  },
+  {
+    "session_id": "synth_d40c2908fd9e",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1773038494.150861
+  },
+  {
+    "session_id": "synth_d40c2908fd9e",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1773038702.150861
+  },
+  {
+    "session_id": "synth_d40c2908fd9e",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1773038702.150861
+  },
+  {
+    "session_id": "synth_b07bc5f47d5b",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773053965.1482153
+  },
+  {
+    "session_id": "synth_5a5042313d4f",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1773061286.148307
+  },
+  {
+    "session_id": "synth_ff595cca4295",
+    "product_id": "p013",
+    "action": "view",
+    "timestamp": 1773079086.1496623
+  },
+  {
+    "session_id": "synth_4fcc7fa52111",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773094704.14869
+  },
+  {
+    "session_id": "synth_4fcc7fa52111",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773094871.14869
+  },
+  {
+    "session_id": "synth_5b6317688b66",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1773099226.1494312
+  },
+  {
+    "session_id": "synth_5b6317688b66",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1773099354.1494312
+  },
+  {
+    "session_id": "synth_5b6317688b66",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1773099392.1494312
+  },
+  {
+    "session_id": "synth_df24e5bded4a",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1773125104.149055
+  },
+  {
+    "session_id": "synth_df24e5bded4a",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1773125213.149055
+  },
+  {
+    "session_id": "synth_05b686f669f2",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1773139981.1508157
+  },
+  {
+    "session_id": "synth_c51519c1d410",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1773143332.1490712
+  },
+  {
+    "session_id": "synth_c51519c1d410",
+    "product_id": "p018",
+    "action": "add_to_cart",
+    "timestamp": 1773143457.1490712
+  },
+  {
+    "session_id": "synth_c51519c1d410",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773143508.1490712
+  },
+  {
+    "session_id": "synth_c51519c1d410",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773143554.1490712
+  },
+  {
+    "session_id": "synth_c51519c1d410",
+    "product_id": "p018",
+    "action": "details",
+    "timestamp": 1773143600.1490712
+  },
+  {
+    "session_id": "synth_b74c991f51fa",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1773153133.1497357
+  },
+  {
+    "session_id": "synth_b74c991f51fa",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773153169.1497357
+  },
+  {
+    "session_id": "synth_2aa6580c00fa",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1773163408.1488016
+  },
+  {
+    "session_id": "synth_2aa6580c00fa",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1773163501.1488016
+  },
+  {
+    "session_id": "synth_138956885ee1",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773174205.1489334
+  },
+  {
+    "session_id": "synth_2b79f6067aef",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773180136.14971
+  },
+  {
+    "session_id": "synth_2183973bf339",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1773209363.1509342
+  },
+  {
+    "session_id": "synth_2183973bf339",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773209493.1509342
+  },
+  {
+    "session_id": "synth_385791489500",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1773216794.1486769
+  },
+  {
+    "session_id": "synth_385791489500",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773216896.1486769
+  },
+  {
+    "session_id": "synth_385791489500",
+    "product_id": "p007",
+    "action": "view",
+    "timestamp": 1773216911.1486769
+  },
+  {
+    "session_id": "synth_1c6020bce8db",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773252502.1495273
+  },
+  {
+    "session_id": "synth_1c6020bce8db",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773252539.1495273
+  },
+  {
+    "session_id": "synth_01f108e40e65",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1773295880.1487033
+  },
+  {
+    "session_id": "synth_01f108e40e65",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773296047.1487033
+  },
+  {
+    "session_id": "synth_e056c51d9482",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773303475.1502626
+  },
+  {
+    "session_id": "synth_e056c51d9482",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1773303646.1502626
+  },
+  {
+    "session_id": "synth_19d7003733f9",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773306770.1499443
+  },
+  {
+    "session_id": "synth_19d7003733f9",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773306906.1499443
+  },
+  {
+    "session_id": "synth_1a1268635205",
+    "product_id": "p014",
+    "action": "add_to_cart",
+    "timestamp": 1773342660.151033
+  },
+  {
+    "session_id": "synth_1a1268635205",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773342730.151033
+  },
+  {
+    "session_id": "synth_1a1268635205",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1773343018.151033
+  },
+  {
+    "session_id": "synth_e966f4e4043d",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773372889.1495812
+  },
+  {
+    "session_id": "synth_e966f4e4043d",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773372956.1495812
+  },
+  {
+    "session_id": "synth_0933d68843a3",
+    "product_id": "p001",
+    "action": "details",
+    "timestamp": 1773378377.149353
+  },
+  {
+    "session_id": "synth_0933d68843a3",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1773378497.149353
+  },
+  {
+    "session_id": "synth_0933d68843a3",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1773378533.149353
+  },
+  {
+    "session_id": "synth_0933d68843a3",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1773378893.149353
+  },
+  {
+    "session_id": "synth_200fdb13ab73",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773384812.1503549
+  },
+  {
+    "session_id": "synth_10b22c078f2f",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773389496.1496375
+  },
+  {
+    "session_id": "synth_b0796ed9dfcd",
+    "product_id": "p019",
+    "action": "details",
+    "timestamp": 1773400078.1508474
+  },
+  {
+    "session_id": "synth_b0796ed9dfcd",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1773400170.1508474
+  },
+  {
+    "session_id": "synth_b0796ed9dfcd",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773400232.1508474
+  },
+  {
+    "session_id": "synth_167dd6f09320",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1773429196.1488693
+  },
+  {
+    "session_id": "synth_167dd6f09320",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773429328.1488693
+  },
+  {
+    "session_id": "synth_167dd6f09320",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1773429454.1488693
+  },
+  {
+    "session_id": "synth_644ad211d43d",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1773432004.1490412
+  },
+  {
+    "session_id": "synth_644ad211d43d",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773432087.1490412
+  },
+  {
+    "session_id": "synth_644ad211d43d",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1773432286.1490412
+  },
+  {
+    "session_id": "synth_62cc419bded7",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1773446900.14992
+  },
+  {
+    "session_id": "synth_5715f14c5589",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1773480903.1501062
+  },
+  {
+    "session_id": "synth_5715f14c5589",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773480967.1501062
+  },
+  {
+    "session_id": "synth_5715f14c5589",
+    "product_id": "p018",
+    "action": "view",
+    "timestamp": 1773481033.1501062
+  },
+  {
+    "session_id": "synth_61ef0dad42ac",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773504990.1506746
+  },
+  {
+    "session_id": "synth_61ef0dad42ac",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773505093.1506746
+  },
+  {
+    "session_id": "synth_69b1f609bebb",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1773525631.1494935
+  },
+  {
+    "session_id": "synth_69b1f609bebb",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773525676.1494935
+  },
+  {
+    "session_id": "synth_b7f2d26a255e",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1773542262.150131
+  },
+  {
+    "session_id": "synth_b7f2d26a255e",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773542442.150131
+  },
+  {
+    "session_id": "synth_bd6851054f9b",
+    "product_id": "p018",
+    "action": "view",
+    "timestamp": 1773546602.1486433
+  },
+  {
+    "session_id": "synth_bd6851054f9b",
+    "product_id": "p017",
+    "action": "add_to_cart",
+    "timestamp": 1773546681.1486433
+  },
+  {
+    "session_id": "synth_bd6851054f9b",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773546686.1486433
+  },
+  {
+    "session_id": "synth_bd6851054f9b",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773546875.1486433
+  },
+  {
+    "session_id": "synth_71997653b8a1",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1773547893.1506627
+  },
+  {
+    "session_id": "synth_71997653b8a1",
+    "product_id": "p013",
+    "action": "add_to_cart",
+    "timestamp": 1773548007.1506627
+  },
+  {
+    "session_id": "synth_f9adb24039fb",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1773563057.1502995
+  },
+  {
+    "session_id": "synth_f9adb24039fb",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773563175.1502995
+  },
+  {
+    "session_id": "synth_95e4d6530cb0",
+    "product_id": "p014",
+    "action": "details",
+    "timestamp": 1773569410.1495156
+  },
+  {
+    "session_id": "synth_95e4d6530cb0",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1773569520.1495156
+  },
+  {
+    "session_id": "synth_bbd79c2465e8",
+    "product_id": "p009",
+    "action": "view",
+    "timestamp": 1773601701.1493673
+  },
+  {
+    "session_id": "synth_96d4bd8e8aaa",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1773605498.1488152
+  },
+  {
+    "session_id": "synth_96d4bd8e8aaa",
+    "product_id": "p011",
+    "action": "add_to_cart",
+    "timestamp": 1773605610.1488152
+  },
+  {
+    "session_id": "synth_ed394dd5e0e6",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1773628359.1508017
+  },
+  {
+    "session_id": "synth_ed394dd5e0e6",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773628415.1508017
+  },
+  {
+    "session_id": "synth_2f8d4d5c7d6c",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1773668338.1480455
+  },
+  {
+    "session_id": "synth_2f8d4d5c7d6c",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773668387.1480455
+  },
+  {
+    "session_id": "synth_4d4e791c3c23",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1773672958.1493237
+  },
+  {
+    "session_id": "synth_2e7d7676b1d9",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1773694672.1482544
+  },
+  {
+    "session_id": "synth_7e6bbf6d73a0",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773696548.1494825
+  },
+  {
+    "session_id": "synth_cd00bb457f23",
+    "product_id": "p008",
+    "action": "add_to_cart",
+    "timestamp": 1773700774.149696
+  },
+  {
+    "session_id": "synth_cd00bb457f23",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773700813.149696
+  },
+  {
+    "session_id": "synth_cd00bb457f23",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1773701096.149696
+  },
+  {
+    "session_id": "synth_e2fb64b31576",
+    "product_id": "p018",
+    "action": "details",
+    "timestamp": 1773703824.1485965
+  },
+  {
+    "session_id": "synth_e2fb64b31576",
+    "product_id": "p016",
+    "action": "add_to_cart",
+    "timestamp": 1773703904.1485965
+  },
+  {
+    "session_id": "synth_e2fb64b31576",
+    "product_id": "p002",
+    "action": "view",
+    "timestamp": 1773703921.1485965
+  },
+  {
+    "session_id": "synth_1d15ac59142a",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1773708033.1489685
+  },
+  {
+    "session_id": "synth_1d15ac59142a",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1773708085.1489685
+  },
+  {
+    "session_id": "synth_13a740a8bda2",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1773725139.1488926
+  },
+  {
+    "session_id": "synth_7125a0fe4fc3",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1773727095.1496215
+  },
+  {
+    "session_id": "synth_7125a0fe4fc3",
+    "product_id": "p012",
+    "action": "view",
+    "timestamp": 1773727222.1496215
+  },
+  {
+    "session_id": "synth_7125a0fe4fc3",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773727247.1496215
+  },
+  {
+    "session_id": "synth_f3b6bbce1dd0",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1773732997.1504617
+  },
+  {
+    "session_id": "synth_f3b6bbce1dd0",
+    "product_id": "p012",
+    "action": "details",
+    "timestamp": 1773733085.1504617
+  },
+  {
+    "session_id": "synth_5f8a03804817",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773734526.1505227
+  },
+  {
+    "session_id": "synth_db6651165a65",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773742411.1503272
+  },
+  {
+    "session_id": "synth_db6651165a65",
+    "product_id": "p006",
+    "action": "view",
+    "timestamp": 1773742539.1503272
+  },
+  {
+    "session_id": "synth_5dcce3f51b84",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1773789499.1495407
+  },
+  {
+    "session_id": "synth_5dcce3f51b84",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773789555.1495407
+  },
+  {
+    "session_id": "synth_5dcce3f51b84",
+    "product_id": "p014",
+    "action": "add_to_cart",
+    "timestamp": 1773789639.1495407
+  },
+  {
+    "session_id": "synth_57314ff4a7e4",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773802412.1479876
+  },
+  {
+    "session_id": "synth_7b322299a068",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773807805.15051
+  },
+  {
+    "session_id": "synth_7b322299a068",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773807962.15051
+  },
+  {
+    "session_id": "synth_7b322299a068",
+    "product_id": "p009",
+    "action": "add_to_cart",
+    "timestamp": 1773807969.15051
+  },
+  {
+    "session_id": "synth_35a4b2659316",
+    "product_id": "p002",
+    "action": "add_to_cart",
+    "timestamp": 1773810234.150877
+  },
+  {
+    "session_id": "synth_35a4b2659316",
+    "product_id": "p018",
+    "action": "add_to_cart",
+    "timestamp": 1773810293.150877
+  },
+  {
+    "session_id": "synth_35a4b2659316",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1773810534.150877
+  },
+  {
+    "session_id": "synth_2ebb20429ecc",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773811722.150947
+  },
+  {
+    "session_id": "synth_2ebb20429ecc",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773811763.150947
+  },
+  {
+    "session_id": "synth_2ebb20429ecc",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1773811798.150947
+  },
+  {
+    "session_id": "synth_2ebb20429ecc",
+    "product_id": "p011",
+    "action": "view",
+    "timestamp": 1773811968.150947
+  },
+  {
+    "session_id": "synth_0627035e1312",
+    "product_id": "p005",
+    "action": "details",
+    "timestamp": 1773813990.1484628
+  },
+  {
+    "session_id": "synth_ff7829578112",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773814362.1496072
+  },
+  {
+    "session_id": "synth_797ac075e684",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1773816762.1482825
+  },
+  {
+    "session_id": "synth_797ac075e684",
+    "product_id": "p016",
+    "action": "view",
+    "timestamp": 1773816829.1482825
+  },
+  {
+    "session_id": "synth_797ac075e684",
+    "product_id": "p019",
+    "action": "add_to_cart",
+    "timestamp": 1773817022.1482825
+  },
+  {
+    "session_id": "synth_8d8c438735c0",
+    "product_id": "p001",
+    "action": "view",
+    "timestamp": 1773819861.1487663
+  },
+  {
+    "session_id": "synth_487044c85f7e",
+    "product_id": "p017",
+    "action": "view",
+    "timestamp": 1773820498.1500409
+  },
+  {
+    "session_id": "synth_487044c85f7e",
+    "product_id": "p020",
+    "action": "details",
+    "timestamp": 1773820626.1500409
+  },
+  {
+    "session_id": "synth_487044c85f7e",
+    "product_id": "p006",
+    "action": "add_to_cart",
+    "timestamp": 1773820640.1500409
+  },
+  {
+    "session_id": "synth_487044c85f7e",
+    "product_id": "p017",
+    "action": "details",
+    "timestamp": 1773820669.1500409
+  },
+  {
+    "session_id": "synth_a4c138f8a8ea",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1773843003.1483335
+  },
+  {
+    "session_id": "synth_a4c138f8a8ea",
+    "product_id": "p007",
+    "action": "details",
+    "timestamp": 1773843039.1483335
+  },
+  {
+    "session_id": "synth_876acf68bd0e",
+    "product_id": "p007",
+    "action": "add_to_cart",
+    "timestamp": 1773871295.1486588
+  },
+  {
+    "session_id": "synth_876acf68bd0e",
+    "product_id": "p003",
+    "action": "add_to_cart",
+    "timestamp": 1773871423.1486588
+  },
+  {
+    "session_id": "synth_876acf68bd0e",
+    "product_id": "p015",
+    "action": "add_to_cart",
+    "timestamp": 1773871433.1486588
+  },
+  {
+    "session_id": "synth_302968c754f2",
+    "product_id": "p008",
+    "action": "details",
+    "timestamp": 1773891490.1483192
+  },
+  {
+    "session_id": "synth_302968c754f2",
+    "product_id": "p019",
+    "action": "view",
+    "timestamp": 1773891554.1483192
+  },
+  {
+    "session_id": "synth_302968c754f2",
+    "product_id": "p006",
+    "action": "details",
+    "timestamp": 1773891740.1483192
+  },
+  {
+    "session_id": "synth_1d5e13315777",
+    "product_id": "p001",
+    "action": "add_to_cart",
+    "timestamp": 1773898898.1500823
+  },
+  {
+    "session_id": "synth_1d5e13315777",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773899067.1500823
+  },
+  {
+    "session_id": "synth_1d5e13315777",
+    "product_id": "p020",
+    "action": "add_to_cart",
+    "timestamp": 1773899096.1500823
+  },
+  {
+    "session_id": "synth_85e607acad22",
+    "product_id": "p018",
+    "action": "details",
+    "timestamp": 1773904559.1497886
+  },
+  {
+    "session_id": "synth_187f286f8cab",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1773919125.149459
+  },
+  {
+    "session_id": "synth_187f286f8cab",
+    "product_id": "p015",
+    "action": "view",
+    "timestamp": 1773919205.149459
+  },
+  {
+    "session_id": "synth_4e438018c7bc",
+    "product_id": "p003",
+    "action": "view",
+    "timestamp": 1773933905.1481273
+  },
+  {
+    "session_id": "synth_882deeabea48",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773933923.1491723
+  },
+  {
+    "session_id": "synth_4e438018c7bc",
+    "product_id": "p013",
+    "action": "add_to_cart",
+    "timestamp": 1773933949.1481273
+  },
+  {
+    "session_id": "synth_e70bf762ef3e",
+    "product_id": "p012",
+    "action": "add_to_cart",
+    "timestamp": 1773955734.1487885
+  },
+  {
+    "session_id": "synth_e70bf762ef3e",
+    "product_id": "p004",
+    "action": "details",
+    "timestamp": 1773955850.1487885
+  },
+  {
+    "session_id": "synth_e70bf762ef3e",
+    "product_id": "p013",
+    "action": "view",
+    "timestamp": 1773955920.1487885
+  },
+  {
+    "session_id": "synth_229ffdf0e3c2",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1773961295.150534
+  },
+  {
+    "session_id": "synth_229ffdf0e3c2",
+    "product_id": "p009",
+    "action": "details",
+    "timestamp": 1773961384.150534
+  },
+  {
+    "session_id": "synth_229ffdf0e3c2",
+    "product_id": "p008",
+    "action": "view",
+    "timestamp": 1773961617.150534
+  },
+  {
+    "session_id": "synth_c040701a5f5c",
+    "product_id": "p016",
+    "action": "details",
+    "timestamp": 1773964079.1503723
+  },
+  {
+    "session_id": "synth_c040701a5f5c",
+    "product_id": "p002",
+    "action": "details",
+    "timestamp": 1773964109.1503723
+  },
+  {
+    "session_id": "synth_c040701a5f5c",
+    "product_id": "p011",
+    "action": "details",
+    "timestamp": 1773964217.1503723
+  },
+  {
+    "session_id": "synth_fdd1c299a8f7",
+    "product_id": "p015",
+    "action": "details",
+    "timestamp": 1773964815.1507232
+  },
+  {
+    "session_id": "synth_45b1fd28b1c5",
+    "product_id": "p014",
+    "action": "view",
+    "timestamp": 1773967666.1500134
+  },
+  {
+    "session_id": "synth_45b1fd28b1c5",
+    "product_id": "p004",
+    "action": "view",
+    "timestamp": 1773967698.1500134
+  },
+  {
+    "session_id": "synth_0556fe17f06c",
+    "product_id": "p003",
+    "action": "details",
+    "timestamp": 1773974240.1492257
+  }
+]
