@@ -107,11 +107,7 @@ function render(){
   `).join("");
 }
  
-function openDetails(id){
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  alert(`📌 ${p.name}\n\nCPU: ${p.cpu}\nRAM: ${p.ram} Go\nSSD: ${p.ssd} Go\nGPU: ${p.gpu}\nOS: ${p.os}\n\nNote: ${p.rating} (${p.reviews} avis)\nPrix: ${money(p.price)}`);
-}
+// openDetails est défini dans recommender.js (modale avec recommandations)
  
 function addToCart(id){ state.cart[id] = (state.cart[id]||0)+1; syncCartUI(); }
 function cartCount(){ return Object.values(state.cart).reduce((a,b)=>a+b,0); }
@@ -622,3 +618,4 @@ window.addEventListener("DOMContentLoaded",()=>{
     setInterval(ping, INTERVAL);
   }, 30000);
 })();
+ 
