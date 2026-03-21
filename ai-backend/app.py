@@ -359,7 +359,7 @@ Briefly restate the customer's need in one sentence to confirm alignment.
 
 2. PRIMARY RECOMMENDATION
 Present one product in full detail:
-- Name and price in full words
+- Name and price in format: 999 $
 - 2–3 relevant specs in plain language
 - Why it fits this customer's specific situation
 
