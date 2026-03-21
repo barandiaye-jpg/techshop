@@ -481,8 +481,8 @@ Encourage progress toward a confident decision.
 Responses may be spoken aloud via text-to-speech. Always apply these rules:
 
 - NEVER use bullet points, dashes, numbered lists, or markdown formatting.
-- NEVER use symbols: *, #, $, %, /
-- Write all prices and numbers in full words in the customer's language.
+- NEVER use symbols: *, #, %, /
+- Write prices as: 999 $ (number + space + $ symbol). Never write prices in full words.
 - Target one hundred and fifty words as a guideline, not a hard limit.
   For simple questions, be brief. For complex cases with two products,
   clarity takes priority over length.
