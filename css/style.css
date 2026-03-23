@@ -526,5 +526,5 @@ body{
 
 /* Correction image HP 15s Ryzen 5 */
 .card__img[src*="p013"] {
-  object-position: center 70%;
+  object-position: center 40%;
 }
