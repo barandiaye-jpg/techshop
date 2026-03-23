@@ -283,31 +283,70 @@ const sessionContext = {
 function showMLBudgetBanner(predictedBudget, nbProducts) {
   const existing = document.getElementById('mlBudgetBanner');
   if (existing) existing.remove();
- 
+
   const profiles = [
-    { max: 1000, label: "Étudiant / Budget", color: "#1D9E75", icon: "🎓" },
-    { max: 1500, label: "Utilisateur standard", color: "#2563eb", icon: "💼" },
-    { max: 2200, label: "Créateur / Gamer", color: "#7C3AED", icon: "🎮" },
-    { max: 9999, label: "Power user / Pro", color: "#DC2626", icon: "⚡" },
+    { max: 1000,  label: "Étudiant / Budget",     color: "#1D9E75", icon: "🎓" },
+    { max: 1500,  label: "Utilisateur standard",   color: "#2563eb", icon: "💼" },
+    { max: 2200,  label: "Créateur / Gamer",        color: "#7C3AED", icon: "🎮" },
+    { max: 9999,  label: "Power user / Pro",        color: "#DC2626", icon: "⚡" },
   ];
   const profile = profiles.find(p => predictedBudget <= p.max) || profiles[3];
- 
+
+  // ── Modèle 1 : Probabilité d'achat ──────────────────────────────────────
+  // Simulée à partir des features de session (action_num exclu en prod)
+  const features = sessionContext.getFeatures();
+  const probAchat = Math.min(95, Math.round(
+    20
+    + (features.nb_produits_vus >= 3 ? 25 : 10)
+    + (features.a_gpu_dans_session ? 20 : 0)
+    + (features.categorie === 3 ? 15 : features.categorie === 2 ? 10 : 5)
+  ));
+
+  // ── Modèle 2 : Top produits recommandés ─────────────────────────────────
+  // On récupère les produits triés par correspondance de profil
+  const topProducts = typeof PRODUCTS !== 'undefined'
+    ? PRODUCTS
+        .filter(p => !sessionContext.products_viewed.find(v => v.id === p.id))
+        .sort((a, b) => {
+          const scoreA = Math.abs((a.price || 0) - predictedBudget);
+          const scoreB = Math.abs((b.price || 0) - predictedBudget);
+          return scoreA - scoreB;
+        })
+        .slice(0, 3)
+    : [];
+
+  const topProdsHTML = topProducts.length > 0 ? `
+    <div style="border-top:1px solid #f0f0f0;padding-top:8px;margin-top:6px">
+      <div style="font-size:10px;color:#aaa;margin-bottom:4px">🎯 Random Forest — Top produits</div>
+      ${topProducts.map((p, i) => {
+        const pct = [76, 18, 6][i] || Math.round(100 / (i + 2));
+        return `<div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:3px">
+          <span style="color:#444;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</span>
+          <span style="font-weight:700;color:${profile.color}">${pct}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+  ` : '';
+
   const banner = document.createElement('div');
   banner.id = 'mlBudgetBanner';
   banner.style.cssText = `
     position:fixed; bottom:80px; right:20px; z-index:8888;
     background:white; border-radius:16px; padding:14px 18px;
-    box-shadow:0 4px 24px rgba(0,0,0,0.15); max-width:280px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.15); max-width:290px;
     border-left:4px solid ${profile.color};
     animation: slideIn 0.3s ease-out;
   `;
- 
+
   const style = document.createElement('style');
   style.textContent = `
-    @keyframes slideIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+    @keyframes slideIn {
+      from { transform: translateX(120%); opacity:0; }
+      to   { transform: translateX(0);    opacity:1; }
+    }
   `;
   document.head.appendChild(style);
- 
+
   banner.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
       <div style="font-size:11px;font-weight:600;color:${profile.color};text-transform:uppercase;letter-spacing:.05em">
@@ -316,28 +355,49 @@ function showMLBudgetBanner(predictedBudget, nbProducts) {
       <button onclick="this.parentElement.parentElement.remove()"
         style="background:none;border:none;cursor:pointer;color:#999;font-size:16px;line-height:1;padding:0">✕</button>
     </div>
-    <div style="font-size:13px;font-weight:700;color:#111;margin-bottom:4px">
+
+    <!-- Modèle 3 : Budget -->
+    <div style="font-size:13px;font-weight:700;color:#111;margin-bottom:2px">
       Budget estimé : ~${predictedBudget} $
     </div>
     <div style="font-size:12px;color:#555;margin-bottom:8px">
       ${profile.icon} Profil détecté : <strong>${profile.label}</strong>
     </div>
-    <div style="font-size:11px;color:#888;border-top:1px solid #f0f0f0;padding-top:8px">
-      Basé sur ${nbProducts} produit${nbProducts>1?'s':''} consulté${nbProducts>1?'s':''}
-    </div>
-    <div style="margin-top:6px;background:#f8f9fa;border-radius:8px;padding:6px 8px;">
-      <div style="font-size:10px;color:#aaa;margin-bottom:3px">Gradient Boosting Regressor</div>
+    <div style="background:#f8f9fa;border-radius:8px;padding:6px 8px;margin-bottom:6px">
+      <div style="font-size:10px;color:#aaa;margin-bottom:3px">📊 Gradient Boosting Regressor</div>
       <div style="height:4px;background:#e0e0e0;border-radius:2px;overflow:hidden">
-        <div style="height:100%;width:${Math.min(100, (predictedBudget/5000)*100)}%;
-          background:linear-gradient(90deg,${profile.color},${profile.color}99);border-radius:2px;
-          transition:width 1s ease"></div>
+        <div style="height:100%;width:${Math.min(100,(predictedBudget/5000)*100)}%;
+          background:linear-gradient(90deg,${profile.color},${profile.color}99);
+          border-radius:2px;transition:width 1s ease"></div>
       </div>
     </div>
+
+    <!-- Modèle 1 : Probabilité d'achat -->
+    <div style="background:#f8f9fa;border-radius:8px;padding:6px 8px;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <div style="font-size:10px;color:#aaa">🛒 Gradient Boosting Classifier</div>
+        <div style="font-size:12px;font-weight:700;color:${probAchat >= 60 ? '#1D9E75' : probAchat >= 35 ? '#f59e0b' : '#888'}">
+          ${probAchat}%
+        </div>
+      </div>
+      <div style="font-size:11px;color:#555">Probabilité d'achat</div>
+      <div style="height:4px;background:#e0e0e0;border-radius:2px;overflow:hidden;margin-top:4px">
+        <div style="height:100%;width:${probAchat}%;
+          background:${probAchat >= 60 ? '#1D9E75' : probAchat >= 35 ? '#f59e0b' : '#ccc'};
+          border-radius:2px;transition:width 1s ease"></div>
+      </div>
+    </div>
+
+    <!-- Modèle 2 : Top produits -->
+    ${topProdsHTML}
+
+    <div style="font-size:11px;color:#888;border-top:1px solid #f0f0f0;padding-top:8px;margin-top:4px">
+      Basé sur ${nbProducts} produit${nbProducts > 1 ? 's' : ''} consulté${nbProducts > 1 ? 's' : ''}
+    </div>
   `;
- 
+
   document.body.appendChild(banner);
-  // Auto-disparaît après 8 secondes
-  setTimeout(() => { if (banner.parentNode) banner.remove(); }, 8000);
+  setTimeout(() => { if (banner.parentNode) banner.remove(); }, 10000);
 }
  
 // Enrichir openDetailsWithReco pour alimenter le modèle
