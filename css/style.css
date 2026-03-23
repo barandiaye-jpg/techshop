@@ -467,7 +467,7 @@ body{
   justify-content: flex-end;
   gap: 10px;
   margin-bottom: 14px;
-  margin-top: -15px;       /* ← NOUVEAU : remonte AURA */
+  margin-top: -15px;
   width: 100%;
   animation: auraFadeIn 0.5s ease;
 }
@@ -498,8 +498,9 @@ body{
   font-weight: 500;
   line-height: 1.4;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
-  max-width: 220px;        /* ← était 190px */
-  white-space: nowrap;     /* ← NOUVEAU : force 1-2 lignes */
+  max-width: 220px;        /* ← clé pour 2 lignes sans écraser la carte */
+  min-width: 220px;
+  white-space: normal;
   position: relative;
   order: 1;
 }
