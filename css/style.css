@@ -523,3 +523,8 @@ body{
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+
+/* Correction image HP 15s Ryzen 5 — recadrage centré sur l'objet */
+.card__img[src*="p013"] {
+  object-position: center top;
+}
