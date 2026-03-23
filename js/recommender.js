@@ -414,7 +414,7 @@ window.openDetailsWithReco = window.openDetails = async function(productId) {
     if (sessionContext.products_viewed.length >= 2) {
       const features = sessionContext.getFeatures();
       const predicted = BUDGET_MODEL.predict(features);
-      setTimeout(() => showMLBudgetBanner(predicted, sessionContext.products_viewed.length), 3500);
+      setTimeout(() => showMLBudgetBanner(predicted, sessionContext.products_viewed.length), 4500);
     }
   }
   return _origOpenDetails(productId);
