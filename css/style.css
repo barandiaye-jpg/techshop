@@ -524,7 +524,7 @@ body{
   letter-spacing: 0.06em;
 }
 
-/* Correction image HP 15s Ryzen 5 — recadrage centré sur l'objet */
+/* Correction image HP 15s Ryzen 5 */
 .card__img[src*="p013"] {
-  object-position: center top;
+  object-position: center 70%;
 }
