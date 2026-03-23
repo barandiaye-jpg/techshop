@@ -449,3 +449,68 @@ body{
   letter-spacing: 0.08em;
   margin-top: 8px;
 }
+
+/* ═══════════════════════════════════════
+   AURA — Présentatrice hero
+═══════════════════════════════════════ */
+
+.aura-presenter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  animation: auraFadeIn 0.6s ease;
+}
+
+@keyframes auraFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aura-presenter__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.aura-presenter__bubble {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a2e;
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  max-width: 230px;
+  position: relative;
+}
+
+.aura-presenter__bubble::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 14px;
+  border: 8px solid transparent;
+  border-right-color: rgba(255, 255, 255, 0.95);
+  border-left: 0;
+}
+
+.aura-presenter__name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
