@@ -224,59 +224,6 @@ const tts = {
 
 tts.init();
 
-
-// ─── Récupère le contexte ML de la session courante ───────────────────────
-function getMLContext() {
-  // sessionContext est défini dans recommender.js
-  if (typeof sessionContext === 'undefined' ||
-      sessionContext.products_viewed.length === 0) {
-    return null;   // Pas encore de données — AURA posera les questions normalement
-  }
-
-  const features  = sessionContext.getFeatures();
-  const budget    = typeof BUDGET_MODEL !== 'undefined'
-                    ? BUDGET_MODEL.predict(features)
-                    : null;
-
-  const profiles = [
-    { max: 1000,  label: "Étudiant / Budget",    icon: "🎓" },
-    { max: 1500,  label: "Utilisateur standard",  icon: "💼" },
-    { max: 2200,  label: "Créateur / Gamer",       icon: "🎮" },
-    { max: 9999,  label: "Power user / Pro",       icon: "⚡" },
-  ];
-  const profile = budget
-    ? profiles.find(p => budget <= p.max) || profiles[3]
-    : null;
-
-  // Probabilité d'achat (Modèle 1)
-  const probAchat = Math.min(95, Math.round(
-    20
-    + (features.nb_produits_vus >= 3 ? 25 : 10)
-    + (features.a_gpu_dans_session   ? 20 :  0)
-    + (features.categorie === 3 ? 15 : features.categorie === 2 ? 10 : 5)
-  ));
-
-  // Top 3 produits (Modèle 2)
-  const topProducts = typeof PRODUCTS !== 'undefined'
-    ? PRODUCTS
-        .filter(p => !sessionContext.products_viewed.find(v => v.id === p.id))
-        .sort((a, b) => Math.abs(a.price - budget) - Math.abs(b.price - budget))
-        .slice(0, 3)
-        .map(p => ({ id: p.id, name: p.name, price: p.price }))
-    : [];
-
-  return {
-    budget_estime:        budget,
-    profil_detecte:       profile?.label || null,
-    prob_achat_pct:       probAchat,
-    nb_produits_consultes: features.nb_produits_vus,
-    a_gpu_dans_session:   features.a_gpu_dans_session === 1,
-    categorie_dominante:  features.categorie,
-    top_produits_ml:      topProducts,
-    produits_consultes:   sessionContext.products_viewed.map(p => p.name)
-  };
-}
-
 // ===============================
 // CHATBOT
 // ===============================
@@ -507,7 +454,6 @@ function getMLContext() {
       fd.append("audio",blob,`voice.${ext}`);
       fd.append("k","5");
       fd.append("history", JSON.stringify(chatHistory));  // ← AJOUT : envoie l'historique
-      fd.append("ml_context", JSON.stringify(getMLContext()));
 
       const res=await fetch(VOICE_API_URL,{method:"POST",body:fd,signal:ctrl.signal});
       clearTimeout(timer);
@@ -585,7 +531,6 @@ function getMLContext() {
           message: text,
           history: chatHistory,  // ← AJOUT : envoie l'historique
           k: 5
-          ml_context: getMLContext()
         })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
