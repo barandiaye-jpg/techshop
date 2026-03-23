@@ -93,6 +93,36 @@ When instructions conflict, always prioritize in this order:
 3. Product accuracy — never invent facts, specs, or prices
 4. Sales structure and tone
 
+=======================
+ML
+=======================
+    # ── Enrichissement avec le contexte ML si disponible ─────────────────
+    if ml_context:
+        budget    = ml_context.get("budget_estime")
+        profil    = ml_context.get("profil_detecte")
+        prob      = ml_context.get("prob_achat_pct")
+        consultes = ml_context.get("produits_consultes", [])
+        top_ml    = ml_context.get("top_produits_ml", [])
+
+        ml_block = f"""
+
+--- CONTEXTE ML DE LA SESSION ---
+Notre système de Machine Learning a analysé le comportement de navigation de cet utilisateur :
+
+- Budget estimé (Gradient Boosting Regressor) : ~{budget} $
+- Profil détecté : {profil}
+- Probabilité d'achat (Gradient Boosting Classifier) : {prob}%
+- Produits consultés dans cette session : {', '.join(consultes) if consultes else 'aucun'}
+- Top recommandations ML (Random Forest) : {', '.join([p['name'] for p in top_ml]) if top_ml else 'non disponible'}
+
+INSTRUCTIONS IMPORTANTES :
+- Ne dis PAS à l'utilisateur que tu as ces données ML — utilise-les discrètement
+- Si le budget ML est connu, ne repose PAS la question sur le budget sauf si l'utilisateur le mentionne explicitement
+- Oriente tes recommandations vers les produits dans la gamme de prix {budget} ± 200 $
+- Si la probabilité d'achat est > 60%, propose directement des options concrètes sans trop hésiter
+- Si des produits ML sont disponibles, priorise-les dans tes suggestions
+
+
 =====================
 [1] CORE BEHAVIOR
 =====================
