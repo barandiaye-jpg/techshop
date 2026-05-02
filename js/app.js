@@ -107,7 +107,7 @@ function render(){
   `).join("");
 }
 
-// openDetails est défini dans recommender.js (modale avec recommandations)
+
 
 function addToCart(id){ state.cart[id] = (state.cart[id]||0)+1; syncCartUI(); }
 function cartCount(){ return Object.values(state.cart).reduce((a,b)=>a+b,0); }
@@ -500,7 +500,7 @@ tts.init();
     }catch(e){
       clearTimeout(timer);
       bubble.textContent=e.name==="AbortError"
-        ?"⏱️ Le serveur met trop longtemps. Réessaie."
+        ?" Le serveur met trop longtemps. Réessaie."
         :"Erreur : backend vocal inaccessible.";
       console.error(e); scrollToBottom();
     }finally{
@@ -540,7 +540,7 @@ tts.init();
       bubble.innerHTML = renderMiniMarkdown(answer);
       scrollToBottom();
 
-      // ← AJOUT : mémorise l'échange texte dans l'historique
+      //  mémorise l'échange texte dans l'historique
       chatHistory.push({ role: "user",      content: text   });
       chatHistory.push({ role: "assistant", content: answer });
       if (chatHistory.length > 16) chatHistory = chatHistory.slice(-16);
