@@ -1,3 +1,6 @@
+# Ancienne version Streamlit (plus utilisée)
+# Ce fichier est obsolète, voir FastAPI backend
+
 import streamlit as st
 
 st.set_page_config(page_title="Assistant IA", layout="wide")
@@ -32,7 +35,7 @@ if "messages" not in st.session_state:
     ]
 
 # --- (OPTIONNEL) Page complète : catalogue + chat ---
-# Si tu n’as pas besoin du catalogue dans Streamlit, tu peux enlever tout ce bloc.
+
 if not embed:
     st.title("Ordinateurs portables")
     
@@ -52,7 +55,7 @@ user_msg = st.chat_input("Ex: Je veux un laptop pour études, budget 1200$")
 def simple_reply(text: str) -> str:
     t = text.lower()
 
-    # mini logique très simple (à toi d’améliorer après)
+   
     usage = "études" if "étud" in t else "travail" if "trav" in t else "jeux" if "jeu" in t or "gaming" in t else "création" if "créa" in t or "montage" in t else None
 
     # récupérer budget (chiffres)
