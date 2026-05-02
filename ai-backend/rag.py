@@ -12,14 +12,14 @@ import numpy as np
 class Doc:
     doc_id: str
     title: str
-    text: str          # full text for TF-IDF
-    text_weighted: str # boosted text for better recall
+    text: str          
+    text_weighted: str 
     meta: Dict
     tags: List[str] = field(default_factory=list)
  
  
 class BM25:
-    """Lightweight BM25 implementation — better than TF-IDF for short queries."""
+    
  
     def __init__(self, corpus: List[List[str]], k1: float = 1.5, b: float = 0.75):
         self.k1 = k1
@@ -72,7 +72,7 @@ class HybridRAG:
     Falls back gracefully if a query has zero similarity across all docs.
     """
  
-    MIN_SCORE = 0.01          # below this → doc is irrelevant
+    MIN_SCORE = 0.01          
     TFIDF_WEIGHT = 0.4
     BM25_WEIGHT = 0.6
  
@@ -81,10 +81,10 @@ class HybridRAG:
  
         # TF-IDF on weighted text (field-boosted)
         self.vectorizer = TfidfVectorizer(
-            stop_words=None,           # keep FR + EN words
-            ngram_range=(1, 2),        # bigrams capture "gaming laptop", "16 GB"
+            stop_words=None,           
+            ngram_range=(1, 2),        
             min_df=1,
-            sublinear_tf=True,         # log normalization
+            sublinear_tf=True,         
         )
         self.tfidf_matrix = self.vectorizer.fit_transform(
             [d.text_weighted for d in docs]
@@ -125,7 +125,7 @@ class HybridRAG:
 # Field-boosted text builder
 # ---------------------------------------------------------------------------
 FIELD_WEIGHTS = {
-    "use_cases":   4,   # most discriminative
+    "use_cases":   4,   
     "description": 3,
     "category":    3,
     "name":        2,
@@ -198,6 +198,6 @@ def load_products_as_docs(path: str) -> List[Doc]:
     return docs
  
  
-# Keep old name as alias so app.py import doesn't break
+
 TfidfRAG = HybridRAG
  
