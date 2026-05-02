@@ -1,6 +1,5 @@
 // ===============================
 // TechShop — Système de recommandation
-// À inclure dans index.html après app.js
 // ===============================
  
 const BACKEND = "https://techshop-ai-backend.onrender.com";
@@ -30,7 +29,7 @@ async function trackInteraction(productId, action) {
       }),
     });
   } catch (e) {
-    // Silencieux — ne jamais bloquer l'UI pour le tracking
+    
   }
 }
  
@@ -227,7 +226,6 @@ window.addEventListener("DOMContentLoaded", () => {
  
 // ---------------------------------------------------------------------------
 // ML PRÉDICTIF — Bandeau de prédiction budget après 2 produits consultés
-// Démontre le modèle de régression du TP en temps réel
 // ---------------------------------------------------------------------------
  
 // Modèle de régression simplifié embarqué côté client
